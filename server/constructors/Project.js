@@ -41,10 +41,20 @@ class Project {
     this.mapData = options.mapData;
   }
 
-  assignJob() {
+  assignJob(worker) {
   //assignJob function, takes worker as an argument
     //gives the worker the first job from availabeJobs as a property
       //we set its currentJob property
+
+    if (worker.currentJob === null) {
+      worker.currentJob = this.availableJobs.shift();
+      console.log('This worker: ', worker.workerId, "has this job: ", worker.currentJob);
+      // Send the newly assigned job to this worker
+      worker.socket.emit('newJob', worker.currentJob);
+    } else {
+      console.log('Error: this worker already has a job');
+    }
+
   }
 
   reassignJob() {
@@ -81,8 +91,11 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   //(note: the worker that the job belongs too will emit)
     //place job[results] into completedJobs array based on its original index
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
+    // Set worker's current job to null 
     //if jobsLength === completedJobs.length
       //run completeProject
+    // else: 
+      // Assign worker new job
   }
 
   completeProject() {
