@@ -18,12 +18,11 @@ class Project {
     this.projectId = null;  // To be initialized by the projectController
 
     //create availableJobs array
-      //ex: const availableJobs = [1, 2, 3, 4, 5];
-    this.availableJobs = []; // Initialized by the initializeJobs function
+    this.availableJobs = options.dataSet || options.generateDataSet(); 
     
     //create a variable to keep track of the length of the available jobs
     //so we can know when the project is complete
-    this.jobsLength = 0;  // Later set to the length of the completed this.availableJobs array
+    this.jobsLength = this.availableJobs.length;  
     
     //create completedJobs array
       //stores the RESULTS of completed jobs
@@ -40,21 +39,6 @@ class Project {
     //mapData function, function that will be sent to client to be run on every dataset
       //This function must be provided in the options object
     this.mapData = options.mapData;
-  }
-
-  initializeJobs() {
-  //If user provided dataSet, use that as the input data. Otherwise
-  //run user-provided createDataSet function to generate the input data array
-  //initializeJobs function, argument is data (an array)
-    //example start:
-      // initializeJobs: function (data) {
-      //   if (Array.isArray(data)) {
-      //     data.forEach(function(item, index) {
-      //       availableJobs[index] = new Job(item, index, this.projectId);
-      //     });
-      //   }
-      //  jobsLength = availableJobs.length;
-      // }
   }
 
   assignJob() {
