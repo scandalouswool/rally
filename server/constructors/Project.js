@@ -58,9 +58,14 @@ class Project {
 
   reassignJob(socketId) {
   //reassignJob function, takes socketId as an argument
-    //locate the worker based on its socketId and find the job property
+    //locate the worker based on its socketId and find the assigned job 
     //unshift the job back into availableJobs array
-
+    if (this.workers[socketId]) {
+      this.availableJobs.unshift( this.workers[socketId].currentJob );
+      this.workers[socketId].currentJob = null;
+    } else {
+      console.log('Error reassigning job: no worker found with that ID');
+    }
   }
 
 /*
@@ -74,18 +79,23 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       //createWorker: function (projectId, socket) {
       //   var worker = new Worker(projectId, socket);
       //}
-    var newWorker = new Worker(projectId, socket);
-    //assign the worker a job (invoke assignJob on worker)
+    if (typeof projectId === 'number' && typeof socket === 'object') {
+      var newWorker = new Worker(projectId, socket);
+      //assign the worker a job (invoke assignJob on worker)
 
-    this.assignJob(newWorker);
-    //place the worker into the workers object (its key value is the socketId)
+      this.assignJob(newWorker);
+      //place the worker into the workers object (its key value is the socketId)
 
-    this.workers[newWorker.workerId] = newWorker;
+      this.workers[newWorker.workerId] = newWorker;
 
-    //for-in loop over all workers in the workers object, and emit to them the workers array
-    for (var key in this.workers) {
-      this.workers[key].socket.emit('updateWorkers', this.workers);
+      //for-in loop over all workers in the workers object, and emit to them the workers array
+      for (var key in this.workers) {
+        this.workers[key].socket.emit('updateWorkers', this.workers);
+      }      
+    } else {
+      console.log('Error creating worker: invalid input type');
     }
+
   }
 
   removeWorker() {
