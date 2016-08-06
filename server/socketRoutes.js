@@ -14,7 +14,7 @@ EVENT LISTENERS
   //pass the socketId for this user to projectController.js
 
 //on userReady
-  //pass the socketId to projectController.js
+  //pass the socket to projectController.js
   //pass the projectId to projectController.js
 
 //on userJobDone
