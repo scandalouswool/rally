@@ -1,9 +1,3 @@
-const Job = require('../constructors/Job.js');
-const Project = require('../constructors/Project.js');
-const Worker = require('../constructors/Worker.js');
-
-var results = [];
-
 const testOptions = {
   dataSet: null,
   generateDataSet: () => {
@@ -35,3 +29,5 @@ const testOptions = {
     console.log(results);
   }
 }
+
+module.exports = testOptions;
