@@ -42,6 +42,8 @@ class Project {
       //This function must be provided in the options object
     this.reduceResults = options.reduceResults;
 
+    this.finalResult = null;
+
     //mapData function, function that will be sent to client to be run on every dataset
       //This function must be provided in the options object
     this.mapData = options.mapData;
@@ -143,7 +145,12 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   completeProject() {
   //completeProject function
     //invoke this.reduceResults on the completedJobs array
+    this.finalResult = this.reduceResults(this.completedJobs);
+
     //for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
+    for (var key in this.workers) {
+      this.workers[key].socket.emit('finalResult', this.finalResult);
+    }  
   }
 }
 

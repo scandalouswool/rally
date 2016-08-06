@@ -4,31 +4,16 @@ const Worker = require('./constructors/Worker.js');
 
 var testProject = new Project({
   dataSet: null,
-  generateDataSet: function() {
+  generateDataSet: () => {
     return [1, 2, 3];
-  }
+  },
+  reduceResults: (dataSet) => {
+    return dataSet.reduce( (acc, next) => {
+      return acc + next;
+    }, 0);
+  }  
 }, 'testProject');
 
-// console.log(testProject.availableJobs);
-
-testProject.createWorker(123, {
-  id: 'testWorker1',
-  emit: (event, msg) => {
-    console.log('Emitting new message');
-    console.log('Event:', event);
-    console.log('Msg:', msg);
-  }
-});
-
-testProject.createWorker(123, {
-  id: 'testWorker2',
-  emit: (event, msg) => {
-    console.log('Emitting new message');
-    console.log('Event:', event);
-    console.log('Msg:', msg);
-  }
-});
-
-testProject.removeWorker('testWorker2');
-console.log(testProject.availableJobs); // [job1, job2]
-console.log(testProject.workers.testWorker1.currentJob);
+testProject.completedJobs = [2, 4, 6];
+testProject.completeProject();
+console.log(testProject.finalResult); // 12
