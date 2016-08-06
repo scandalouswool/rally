@@ -4,9 +4,11 @@ const Worker = require('./Worker.js');
 // Project object takes an options object as input, which must be in 
 // the following format:
 // options = {
-//    dataSet: ARRAY,
-//    reduceResults: FUNCTION,
-//    mapData: FUNCTION
+//    dataSet: ARRAY, // Data to be operated on. 
+//    generateDataSet: FUNCTION, (Optional input. Will use dataSet if both
+//    dataSet and generateDataSet are provided)
+//    mapData: FUNCTION,  // Function to run on every data item. 
+//    reduceResults: FUNCTION  // Function to run on completed results array
 // }
 class Project {
 
@@ -14,7 +16,7 @@ class Project {
     //create projectId
       //ex: this.projectId = projectId;
     this.projectId = null;  // To be initialized by the projectController
-    
+
     //create availableJobs array
       //ex: const availableJobs = [1, 2, 3, 4, 5];
     this.availableJobs = []; // Initialized by the initializeJobs function
@@ -26,7 +28,7 @@ class Project {
     //create completedJobs array
       //stores the RESULTS of completed jobs
       //note: the results will be placed at their original availableJobs index
-    this.createdJobs = []; 
+    this.completedJobs = []; 
   
     //create workers object to track all workers for this project
     this.workers = {};
@@ -41,6 +43,8 @@ class Project {
   }
 
   initializeJobs() {
+  //If user provided dataSet, use that as the input data. Otherwise
+  //run user-provided createDataSet function to generate the input data array
   //initializeJobs function, argument is data (an array)
     //example start:
       // initializeJobs: function (data) {
