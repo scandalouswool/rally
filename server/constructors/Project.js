@@ -92,7 +92,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       //   var worker = new Worker(projectId, socket);
       //}
     if (typeof projectId === 'number' && typeof socket === 'object') {
-      var newWorker = new Worker(socket, projectId);
+      var newWorker = new Worker(projectId, socket);
       //assign the worker a job (invoke assignJob on worker)
 
       this.assignJob(newWorker);
