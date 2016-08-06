@@ -16,7 +16,8 @@
 
 //handle all socketRoutes.js events
   //userDisconnect
-    //look up the projectId, give it the socketId to handle the worker disconnect
+    //look up the projectId, 
+    //give it the socketId to handle the worker disconnect
 
   //userReady
     //look up the projectId, tell the project to create a new worker
@@ -43,6 +44,3 @@
 
 //function completeProject
   //to be revisited
-
-
-
