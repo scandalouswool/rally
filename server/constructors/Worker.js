@@ -1,6 +1,6 @@
 //begin worker constructor, projectId and socket as arguments
 class Worker {
-  constructor(socket, projectId) {
+  constructor(projectId, socket) {
     this.projectId = projectId;
     this.workerId = socket.id;
     this.socket = socket;
