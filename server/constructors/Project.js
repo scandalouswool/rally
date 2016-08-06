@@ -43,7 +43,7 @@
 
 /*
 ==================================
-USER INTERFACE AFFECTING FUNCTIONS
+USER-INTERFACE-AFFECTING FUNCTIONS
 ==================================
 */
 
@@ -70,4 +70,7 @@ USER INTERFACE AFFECTING FUNCTIONS
 
   //completeProject function
     //invoke this.reduceResults on the completedJobs array
-    ////for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
+    //for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
+
+  //map function, function that will be sent to client to be run on every dataset
+
