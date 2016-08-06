@@ -27,10 +27,5 @@ testProject.createWorker(123, {
   }
 });
 
-console.log('Currently available jobs: ', testProject.availableJobs); // [3]
-
-testProject.reassignJob('testWorker1');
-
-console.log('Currently available jobs: ', testProject.availableJobs); // [1, 3]
-
-testProject.assignJob(testProject.workers.testWorker1);
+testProject.removeWorker('testWorker2');
+console.log(testProject.availableJobs); // [2, 3]

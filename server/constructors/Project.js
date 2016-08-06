@@ -95,14 +95,20 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     } else {
       console.log('Error creating worker: invalid input type');
     }
-
   }
 
-  removeWorker() {
+  removeWorker(socketId) {
   //removeWorker function, takes socketId as an argument
     //call reassignJob function on socketId
+    this.reassignJob(socketId);
+
     //delete worker from the worker object
+    delete this.workers[socketId];
+    
     //for-in loop over all workers in the workers object, and emit to them the workers array
+    for (var key in this.workers) {
+      this.workers[key].socket.emit('updateWorkers', this.workers);
+    }      
   }
 
   handleResult() {
