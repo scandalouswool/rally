@@ -20,7 +20,7 @@
 
   //userReady
     //look up the projectId, tell the project to create a new worker
-      // NOTES
+      // NOTES:
       // 1. new user 'ready'
       //   user sends workerId and project id to socketRouter
       //   socketRouter takes this information and passes it down to the projectcontroller
@@ -36,6 +36,13 @@
   //userJobDone
     //look up the projectId, give the job to the project
 
+//function createProject, create a project based on Project.js,
+//takes 'script' as an argument
+  //pass script into Project.js to create a new project
+  //place the project into the projects object
+
+//function completeProject
+  //to be revisited
 
 
 
