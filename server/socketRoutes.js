@@ -1,5 +1,5 @@
 //require socket.io
-
+const io = require('./server.js');
 
 /*
 ===============
