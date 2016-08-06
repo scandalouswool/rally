@@ -10,6 +10,10 @@
   //create availableJobs array
     //ex: const availableJobs = [1, 2, 3, 4, 5];
 
+  //create a variable to keep track of the length of the available jobs
+  //so we can know when the project is complete
+  var jobsLength = 0;
+
   //create completedJobs array
     //note: try to place jobs back in their original availableJobs index
 
@@ -26,12 +30,12 @@
       //       availableJobs[index] = new Job(item, index, this.projectId);
       //     });
       //   }
+      //  jobsLength = availableJobs.length;
       // }
 
-  //assignJob function, takes worker as an argument 
-  //and a CALLBACK (this callback is passed in from socketRoutes.js)
+  //assignJob function, takes worker as an argument
     //gives the worker the first job from availabeJobs as a property
-    //pass job into the callback
+      //we set its currentJob property
 
   //reassignJob function, takes socketId as an argument
     //locate the worker based on its socketId and find the job property
@@ -45,8 +49,8 @@ USER INTERFACE AFFECTING FUNCTIONS
 
   //createWorker function
     //ex start:
-      //createWorker: function (projectId, socketId) {
-      //   var worker = new Worker(projectId, socketId);
+      //createWorker: function (projectId, socket) {
+      //   var worker = new Worker(projectId, socket);
       //}
     //place the worker into the workers object (its key value is the socketId)
     //assign the worker a job (invoke assignJob on worker)
@@ -61,3 +65,9 @@ USER INTERFACE AFFECTING FUNCTIONS
   //(note: the worker that the job belongs too will emit)
     //place job[results] into completedJobs array based on its original index
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
+    //if jobsLength === completedJobs.length
+      //run completeProject
+
+  //completeProject function
+    //invoke this.reduceResults on the completedJobs array
+    ////for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
