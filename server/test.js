@@ -16,4 +16,9 @@ var testProject = new Project({
 
 testProject.completedJobs = [2, 4, 6];
 testProject.completeProject();
-console.log(testProject.finalResult); // 12
+// console.log(testProject.finalResult); // 12
+
+testProject.createWorker(1, {});
+
+
+console.log(testProject.workers.testWorker1);

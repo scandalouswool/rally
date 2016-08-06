@@ -1,47 +1,55 @@
 //require Project constructor
+const Project = require('../constructors/Project.js');
 
 //create an object to hold all of the created "projects" from the Project constructor
-  //ex:
-  // const projects = {
-  //   0: /* (the nQueens object) */ ,
-  //   1: /* etc. */
-  // }
+//key/value pair of projectId and the respective project 
+const allProjects = {};
 
-//create an object of workers created form the Worker constructor
-  //ex:
-  // const workers = {
-  //   socketId: projectId,
-  //   socketId: projectId
-  // }
+//object to hold all worker information across all projects
+//key/value pair of socketId and projectId
+const allWorkers = {};
 
-//handle all socketRoutes.js events
-  //userDisconnect
-    //look up the projectId, 
-    //give it the socketId to handle the worker disconnect
+/*
+======================
+SOCKETROUTES.JS EVENTS
+======================
+*/
 
-  //userReady
-    //look up the projectId, tell the project to create a new worker
-      // NOTES:
-      // 1. new user 'ready'
-      //   user sends workerId and project id to socketRouter
-      //   socketRouter takes this information and passes it down to the projectcontroller
+const userDisconnect = (socketId) => {
+  //look into allProjects object, find a specific project (based on its Id which is allWorkers.socketId)
+  //then remove that worker based on its socketId
+  allProjects[allWorkers[socketId]].removeWorker(socketId);
+  delete allWorkers[socketId];
+}
+  
+const userReady = (projectId, socket) => {
+  if (allProjects[projectId]) {
+    //create the new user/worker
+    allProjects[projectId].createWorker(projectId, socket);
+    //log the newly created worker into the allWorkers object
+    allWorkers[socket.id] = projectId;
+  } else {
+    console.log('Error in userReady: Project does not exist');
+  }
+}
 
-      // 2. projectcontroller
-      //   finds the relevent project
+const userJobDone = (job) => {
+  if (allProjects[job.projectId]) {
+    //if the project exists, handleResult the job
+    allProjects[job.projectId].handleResult(job);
+  } else {
+    console.log('Error in userJobDone: project does not exist');
+  }
+}
 
-      // 3. inside the project object
-      //   create a new worker with the workerId
-      //   assign job to the worker
-      //   communicate job to client
-
-  //userJobDone
-    //look up the projectId, give the job to the project
-
-//function createProject, create a project based on Project.js,
-//takes 'options' as an argument
-  //pass options into Project.js to create a new project, which will be
-  //returned. Define projectId property of new object, then place it
-  //into the properties collection
+const createProject = (options) => {
+  //this is the length of the allProjects object
+  const projectId = Object.keys(allProjects).length;
+  //create the project
+  const newProject = new Project(options, projectId);
+  //store the newly created project in the allProjects object
+  allProjects[projectId] = newProject;
+}
 
 //function completeProject
   //to be revisited

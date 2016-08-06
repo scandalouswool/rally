@@ -92,7 +92,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       //   var worker = new Worker(projectId, socket);
       //}
     if (typeof projectId === 'number' && typeof socket === 'object') {
-      var newWorker = new Worker(projectId, socket);
+      var newWorker = new Worker(socket, projectId);
       //assign the worker a job (invoke assignJob on worker)
 
       this.assignJob(newWorker);
@@ -139,7 +139,13 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
     for (var key in this.workers) {
       this.workers[key].socket.emit('updateResults', this.completedJobs);
-    }    
+    }
+
+    if (this.jobsLength === this.completedJobs.length) {
+      completeProject();
+    } else {
+      this.assignJob(this.workers[ job.workerId ]);
+    }
   }
 
   completeProject() {
