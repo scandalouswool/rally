@@ -12,14 +12,20 @@ const Worker = require('./Worker.js');
 // }
 class Project {
 
-  constructor(options) {
+  constructor(options, projectId) {
     //create projectId
       //ex: this.projectId = projectId;
-    this.projectId = null;  // To be initialized by the projectController
+    this.projectId = projectId;  // To be initialized by the projectController
 
     //create availableJobs array
-    this.availableJobs = options.dataSet || options.generateDataSet(); 
-    
+    this.availableJobs = (() => {
+      let dataSet = options.dataSet || options.generateDataSet();
+
+      return dataSet.map( (item, index) => {
+        return new Job(item, index, this.projectId);
+      });
+    })();
+
     //create a variable to keep track of the length of the available jobs
     //so we can know when the project is complete
     this.jobsLength = this.availableJobs.length;  

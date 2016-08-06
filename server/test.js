@@ -7,7 +7,9 @@ var testProject = new Project({
   generateDataSet: function() {
     return [1, 2, 3];
   }
-});
+}, 'testProject');
+
+// console.log(testProject.availableJobs);
 
 testProject.createWorker(123, {
   id: 'testWorker1',
@@ -28,4 +30,5 @@ testProject.createWorker(123, {
 });
 
 testProject.removeWorker('testWorker2');
-console.log(testProject.availableJobs); // [2, 3]
+console.log(testProject.availableJobs); // [job1, job2]
+console.log(testProject.workers.testWorker1.currentJob);
