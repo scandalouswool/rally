@@ -46,21 +46,21 @@ class Project {
     //gives the worker the first job from availabeJobs as a property
       //we set its currentJob property
 
-    if (worker.currentJob === null) {
+    if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
       console.log('This worker: ', worker.workerId, "has this job: ", worker.currentJob);
       // Send the newly assigned job to this worker
       worker.socket.emit('newJob', worker.currentJob);
     } else {
-      console.log('Error: this worker already has a job');
+      console.log('Error assigning job to worker');
     }
-
   }
 
-  reassignJob() {
+  reassignJob(socketId) {
   //reassignJob function, takes socketId as an argument
     //locate the worker based on its socketId and find the job property
     //unshift the job back into availableJobs array
+
   }
 
 /*
@@ -68,15 +68,24 @@ class Project {
 USER-INTERFACE-AFFECTING FUNCTIONS
 ==================================
 */
-  createWorker() {
+  createWorker(projectId, socket) {
   //createWorker function
     //ex start:
       //createWorker: function (projectId, socket) {
       //   var worker = new Worker(projectId, socket);
       //}
-    //place the worker into the workers object (its key value is the socketId)
+    var newWorker = new Worker(projectId, socket);
     //assign the worker a job (invoke assignJob on worker)
+
+    this.assignJob(newWorker);
+    //place the worker into the workers object (its key value is the socketId)
+
+    this.workers[newWorker.workerId] = newWorker;
+
     //for-in loop over all workers in the workers object, and emit to them the workers array
+    for (var key in this.workers) {
+      this.workers[key].socket.emit('updateWorkers', this.workers);
+    }
   }
 
   removeWorker() {
