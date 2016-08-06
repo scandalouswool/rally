@@ -49,6 +49,9 @@ class Project {
     if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
       console.log('This worker: ', worker.workerId, "has this job: ", worker.currentJob);
+
+      worker.currentJob.workerId = worker.workerId;
+
       // Send the newly assigned job to this worker
       worker.socket.emit('newJob', worker.currentJob);
     } else {
@@ -61,6 +64,7 @@ class Project {
     //locate the worker based on its socketId and find the assigned job 
     //unshift the job back into availableJobs array
     if (this.workers[socketId]) {
+      this.workers[socketId].currentJob.workerId = null;
       this.availableJobs.unshift( this.workers[socketId].currentJob );
       this.workers[socketId].currentJob = null;
     } else {
@@ -111,16 +115,23 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     }      
   }
 
-  handleResult() {
+  handleResult(job) {
   //handleResult function, takes a job object as an argument
-  //(note: the worker that the job belongs too will emit)
-    //place job[results] into completedJobs array based on its original index
-    //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
-    // Set worker's current job to null 
     //if jobsLength === completedJobs.length
       //run completeProject
     // else: 
       // Assign worker new job
+
+    //place job[results] into completedJobs array based on its original index
+    this.completedJobs[ job.jobId ] = job.result;
+
+    // Set worker's current job to null 
+    this.workers[ job.workerId ].currentJob = null;
+
+    //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
+    for (var key in this.workers) {
+      this.workers[key].socket.emit('updateResults', this.completedJobs);
+    }    
   }
 
   completeProject() {

@@ -3,6 +3,7 @@ class Job {
   constructor(item, index, projectId) {
     this.jobId = index;
     this.projectId = projectId;
+    this.workerId = null;
     this.data = item;
     this.result = null; 
   }
