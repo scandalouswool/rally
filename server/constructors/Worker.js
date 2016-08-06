@@ -1,8 +1,11 @@
 //begin worker constructor, projectId and socket as arguments
-
-  this.projectId = projectId;
-  this.workerId = socket.id;
-  this.currentJob = null;
-  this.socket = socket;
-
+class Worker {
+  constructor(projectId, socket) {
+    this.projectId = projectId;
+    this.workerId = socket.id;
+    this.socket = socket;
+    this.currentJob = null;
+  }
+}
 //export job constructor
+module.exports = Worker;

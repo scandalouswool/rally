@@ -38,9 +38,10 @@
     //look up the projectId, give the job to the project
 
 //function createProject, create a project based on Project.js,
-//takes 'script' as an argument
-  //pass script into Project.js to create a new project
-  //place the project into the projects object
+//takes 'options' as an argument
+  //pass options into Project.js to create a new project, which will be
+  //returned. Define projectId property of new object, then place it
+  //into the properties collection
 
 //function completeProject
   //to be revisited
