@@ -32,7 +32,7 @@ io.on('connect', (socket) => {
   //pass the socket to projectController.js
   //pass the projectId to projectController.js
   socket.on('userReady', (projectId) => {
-    pc.userReady(socket, projectId);
+    pc.userReady(projectId, socket);
   });
 
   //on userJobDone

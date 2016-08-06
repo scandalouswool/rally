@@ -139,7 +139,13 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
     for (var key in this.workers) {
       this.workers[key].socket.emit('updateResults', this.completedJobs);
-    }    
+    }
+
+    if (this.jobsLength === this.completedJobs.length) {
+      completeProject();
+    } else {
+      this.assignJob(this.workers[ job.workerId ]);
+    }
   }
 
   completeProject() {
