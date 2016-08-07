@@ -3,8 +3,8 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const timers = require('node-timers');
-const pc = require('/controllers/projectController.js');
-
+const projectController = require('./controllers/projectController.js');
+const pc = new projectController();
 app.use(express.static(__dirname + '/../client'));
 
 server.listen(process.env.PORT || 8000, () => {
@@ -51,3 +51,38 @@ io.on('connect', (socket) => {
     pc.createProject(project);
   });
 });
+
+// Testers
+const testOptions = {
+  dataSet: [1, 2, 3],
+  generateDataSet: () => {
+    var dataSet = [];
+    for (var i = 0; i < 5; i++) {
+      dataSet.push( [i * 100000, i * 100000 + 99999]);
+    }
+    return dataSet;
+  },  
+  mapData: (min, max) => {
+    const primeTester = (num) => {
+      for (var i = 2; i < num - 1; i++) {
+        if (num % i === 0) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    for (var i = min; i <= max; i++) {
+      if (primeTester(i)) {
+        result.push(i);
+      }
+    }
+    console.log(result.length);
+    return result;
+  },
+  reduceResult: (results) => {
+    console.log(results);
+  }
+}
+
+pc.createProject(testOptions);
