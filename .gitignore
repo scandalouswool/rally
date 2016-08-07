@@ -38,3 +38,6 @@ jspm_packages
 
 # Apple Trash FIles
 .DS_Store
+
+# Public Files (babel recreates them from files in client/src/)
+client/public/
