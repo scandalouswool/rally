@@ -64,6 +64,8 @@ class Project {
       worker.currentJob.workerId = worker.workerId;
 
       // Send the newly assigned job to this worker
+      // NOTE: do NOT use this inside the emit function. Doing so will
+      // cause a maximum stack call exceeded error, for some reason
       worker.socket.emit('newJob', worker.currentJob);
     } else {
       console.log('Error assigning job to worker');
@@ -104,6 +106,10 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       this.workers[newWorker.workerId] = newWorker;
 
       //for-in loop over all workers in the workers object, and emit to them the workers array
+      // NOTE: do NOT use this inside the emit function. Doing so will
+      // cause a maximum stack call exceeded error, for some reason
+      // TODO: refactor using socket rooms if possible, otherwise add
+      // broadcast method to project function
       var workersList = [];
       for (var key in this.workers) {
         workersList.push(this.workers[key].workerId);
@@ -112,10 +118,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       workersList.forEach( (workerId) => {
         this.io.to(workerId).emit('updateWorkers', workersList);
       });
-
-      // for (var key in this.workers) {
-      //   this.io.to(this.workers[key].workerId).emit('updateWorkers', workersList);
-      // }    
+   
     } else {
       console.log('Error creating worker: invalid input type');
     }
@@ -130,9 +133,18 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     delete this.workers[socketId];
     
     //for-in loop over all workers in the workers object, and emit to them the workers array
+    // NOTE: do NOT use this inside the emit function. Doing so will
+    // cause a maximum stack call exceeded error, for some reason
+    // TODO: refactor using socket rooms if possible, otherwise add
+    // broadcast method to project function
+    var workersList = [];
     for (var key in this.workers) {
-      // this.io.to(this.workers[key].workerId).emit('updateWorkers', this.workers);
-    }      
+      workersList.push(this.workers[key].workerId);
+    }
+
+    workersList.forEach( (workerId) => {
+      this.io.to(workerId).emit('updateWorkers', workersList);
+    });
   }
 
   handleResult(job) {
@@ -149,12 +161,24 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.workers[ job.workerId ].currentJob = null;
 
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
+    // NOTE: do NOT use this inside the emit function. Doing so will
+    // cause a maximum stack call exceeded error, for some reason
+    // TODO: refactor using socket rooms if possible, otherwise add
+    // broadcast method to project function
+    var workersList = [];
     for (var key in this.workers) {
-      // this.io.to(this.workers[key].workerId).emit('updateResults', this.completedJobs);
+      workersList.push(this.workers[key].workerId);
     }
+    var completed = this.completedJobs.map( (job) => {
+      return job;
+    });
+
+    workersList.forEach( (workerId) => {
+      this.io.to(workerId).emit('updateResults', completed);
+    });
 
     if (this.jobsLength === this.completedJobs.length) {
-      completeProject();
+      this.completeProject();
     } else {
       this.assignJob(this.workers[ job.workerId ]);
     }
@@ -166,9 +190,15 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.finalResult = this.reduceResults(this.completedJobs);
 
     //for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
+    var workersList = [];
     for (var key in this.workers) {
-      // this.io.to(this.workers[key].workerId).emit('finalResult', this.finalResult);
-    }  
+      workersList.push(this.workers[key].workerId);
+    }
+    var final = _.cloneDeep(this.finalResult);
+
+    workersList.forEach( (workerId) => {
+      this.io.to(workerId).emit('finalResult', final);
+    });
   }
 }
 

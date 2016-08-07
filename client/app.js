@@ -41,17 +41,32 @@ $(document).ready(function() {
   socket.on('newJob', function(job) {
     console.log('Working on new job:', job);
     
-    // var result = findPrimes(job.data[0], job.data[1]);
-    // job.result = result;
-    // console.log('Job complete. Result is: ', result);
-    // console.log('Sending result back to server');
-    // socket.emit('jobdone', job);
+    var result = findPrimes(job.data[0], job.data[1]);
+    job.result = result;
+    console.log('Job complete. Result is: ', result);
+    console.log('Sending result back to server');
+    socket.emit('userJobDone', job);
+
   });
 
-  socket.on('jobresult', function(result) {
-    console.log(result);
-    $('#results').append('<li>Primes between ' + result.range[0] + ' and ' + result.range[1] + ': ' + result.total);
+  socket.on('updateResults', function(results) {
+    console.log(results);
+    $('#results').empty();
+
+    results.forEach( function(item) {
+      $('#results').append('<li>Found ' + item.length + ' primes!');
+    });
+  });
+
+  socket.on('finalResult', function(final) {
+    console.log('Received final results!');
+    $('#results').append('<li>Final result! Found primes: ' + final.length);
   });
 
   sendReady();
 });
+
+
+
+
+

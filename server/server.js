@@ -5,6 +5,7 @@ const io = require('socket.io')(server);
 const timers = require('node-timers');
 const projectController = require('./controllers/projectController.js');
 const pc = new projectController();
+const _ = require('lodash');
 app.use(express.static(__dirname + '/../client'));
 
 server.listen(process.env.PORT || 8000, () => {
@@ -61,10 +62,10 @@ io.on('connect', (socket) => {
 
 // Testers
 const testOptions = {
-  dataSet: [1, 2, 3],
+  dataSet: null,
   generateDataSet: () => {
     var dataSet = [];
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 3; i++) {
       dataSet.push( [i * 100000, i * 100000 + 99999]);
     }
     return dataSet;
@@ -87,8 +88,9 @@ const testOptions = {
     console.log(result.length);
     return result;
   },
-  reduceResult: (results) => {
+  reduceResults: (results) => {
     console.log(results);
+    return _.flatten(results);
   }
 }
 
