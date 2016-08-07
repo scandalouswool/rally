@@ -28,17 +28,24 @@ $(document).ready(function() {
   var socket = io();
 
   var sendReady = function() {
-    socket.emit('ready');
+    // Hard coded for now - eventually generate from server
+    // and send to client for storage
+    var projectId = 0;  
+    socket.emit('userReady', projectId);
   }
 
-  socket.on('newjob', function(job) {
-    console.log('Working on new job');
+  socket.on('updateWorkers', function(workers) {
+    console.log('New workers list received:', workers);
+  });
+
+  socket.on('newJob', function(job) {
+    console.log('Working on new job:', job);
     
-    var result = findPrimes(job.data[0], job.data[1]);
-    job.result = result;
-    console.log('Job complete. Result is: ', result);
-    console.log('Sending result back to server');
-    socket.emit('jobdone', job);
+    // var result = findPrimes(job.data[0], job.data[1]);
+    // job.result = result;
+    // console.log('Job complete. Result is: ', result);
+    // console.log('Sending result back to server');
+    // socket.emit('jobdone', job);
   });
 
   socket.on('jobresult', function(result) {

@@ -46,14 +46,13 @@ class ProjectController {
     }
   }
 
-  createProject(options) {
+  createProject(options, io) {
     //this is the length of the allProjects object
     const projectId = Object.keys(this.allProjects).length;
     //create the project
-    const newProject = new Project(options, projectId);
+    const newProject = new Project(options, projectId, io);
     //store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-    console.log(this.allProjects);
   }
   //TODO: completeProject method
 }

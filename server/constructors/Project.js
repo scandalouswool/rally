@@ -1,5 +1,6 @@
 const Job = require('./Job.js');
 const Worker = require('./Worker.js');
+const _ = require('lodash');
 
 // Project object takes an options object as input, which must be in 
 // the following format:
@@ -12,7 +13,7 @@ const Worker = require('./Worker.js');
 // }
 class Project {
 
-  constructor(options, projectId) {
+  constructor(options, projectId, io) {
     //create projectId
       //ex: this.projectId = projectId;
     this.projectId = projectId;  // To be initialized by the projectController
@@ -47,6 +48,8 @@ class Project {
     //mapData function, function that will be sent to client to be run on every dataset
       //This function must be provided in the options object
     this.mapData = options.mapData;
+
+    this.io = io;
   }
 
   assignJob(worker) {
@@ -101,9 +104,18 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       this.workers[newWorker.workerId] = newWorker;
 
       //for-in loop over all workers in the workers object, and emit to them the workers array
+      var workersList = [];
       for (var key in this.workers) {
-        this.workers[key].socket.emit('updateWorkers', this.workers);
-      }      
+        workersList.push(this.workers[key].workerId);
+      }
+
+      workersList.forEach( (workerId) => {
+        this.io.to(workerId).emit('updateWorkers', workersList);
+      });
+
+      // for (var key in this.workers) {
+      //   this.io.to(this.workers[key].workerId).emit('updateWorkers', workersList);
+      // }    
     } else {
       console.log('Error creating worker: invalid input type');
     }
@@ -119,7 +131,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     
     //for-in loop over all workers in the workers object, and emit to them the workers array
     for (var key in this.workers) {
-      this.workers[key].socket.emit('updateWorkers', this.workers);
+      // this.io.to(this.workers[key].workerId).emit('updateWorkers', this.workers);
     }      
   }
 
@@ -138,7 +150,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
 
     //for-in loop over all workers in the workers object, and emit to them the new completedJobs array
     for (var key in this.workers) {
-      this.workers[key].socket.emit('updateResults', this.completedJobs);
+      // this.io.to(this.workers[key].workerId).emit('updateResults', this.completedJobs);
     }
 
     if (this.jobsLength === this.completedJobs.length) {
@@ -155,7 +167,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
 
     //for-in loop over all workers in the workers object, and emit to them the final result and that the job is done
     for (var key in this.workers) {
-      this.workers[key].socket.emit('finalResult', this.finalResult);
+      // this.io.to(this.workers[key].workerId).emit('finalResult', this.finalResult);
     }  
   }
 }

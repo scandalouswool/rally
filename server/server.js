@@ -25,6 +25,7 @@ io.on('connect', (socket) => {
   //on disconnect
   //pass the socketId for this user to projectController.js
   socket.on('disconnect', () => {
+    console.log('User disconnected');
     pc.userDisconnect(socket.id);
   });
   
@@ -32,12 +33,14 @@ io.on('connect', (socket) => {
   //pass the socket to projectController.js
   //pass the projectId to projectController.js
   socket.on('userReady', (projectId) => {
+    console.log('User ready for project:', projectId);
     pc.userReady(projectId, socket);
   });
 
   //on userJobDone
   //pass completed job to projectController.js
   socket.on('userJobDone', (completedJob) => {
+    console.log('User finished a job');
     pc.userJobDone(completedJob);
   });
 
@@ -50,6 +53,10 @@ io.on('connect', (socket) => {
   socket.on('createProject', (project) => {
     pc.createProject(project);
   });
+
+  socket.on('error', (error) => {
+    console.log('Socket error:', error);
+  });
 });
 
 // Testers
@@ -57,7 +64,7 @@ const testOptions = {
   dataSet: [1, 2, 3],
   generateDataSet: () => {
     var dataSet = [];
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 100; i++) {
       dataSet.push( [i * 100000, i * 100000 + 99999]);
     }
     return dataSet;
@@ -85,4 +92,4 @@ const testOptions = {
   }
 }
 
-pc.createProject(testOptions);
+pc.createProject(testOptions, io);
