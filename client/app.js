@@ -23,10 +23,11 @@ $(document).ready(function() {
 
   socket.on('newJob', function(job) {
     
+    //if myWebWorker is not null, that means we were able to create it
     if (myWebWorker !== null) {
       console.log('Web Worker assigned to the new job!');
+      //send the job item to the web worker, postMessage sends a message to the web worker
       myWebWorker.postMessage(job);
-
     } else {
       console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
 
@@ -61,11 +62,15 @@ $(document).ready(function() {
   /************************************************
   // Web Worker
   ************************************************/
+  
+  //initialize a variable for a webWorker
   var myWebWorker = null;
 
+  //this checks if your computer can run web workers, Worker is a global variable that is native to the browser
   if (typeof(Worker) !== 'undefined') {
     console.log('Initializing new Web Worker');
-    myWebWorker = new Worker('worker.js');
+    //initialize a web worker based on webWorker.js in the client folder
+    myWebWorker = new Worker('webWorker.js');
   } else {
     console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
   }
@@ -78,6 +83,7 @@ $(document).ready(function() {
   }
 
   sendReady();
+
 });
 
 
