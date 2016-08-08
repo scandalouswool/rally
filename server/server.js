@@ -6,6 +6,10 @@ const timers = require('node-timers');
 const projectController = require('./controllers/projectController.js');
 const pc = new projectController();
 const _ = require('lodash');
+
+// Tester module
+const tester = require('./projects/tester.js');
+
 app.use(express.static(__dirname + '/../client'));
 
 server.listen(process.env.PORT || 8000, () => {
@@ -19,79 +23,56 @@ EVENT LISTENERS
 */
 
 io.on('connect', (socket) => {
-  //on userConnect
-  //save socketId for this user
-  const socketId = socket.id;
-
-  //on disconnect
-  //pass the socketId for this user to projectController.js
+  
+  // 'disconnect' event handler
+  // Pass the socket.id for this user to the ProjectController object
+  // ProjectController will remove the Worker object associated with this
+  // socket connection and reassign its work to another object.
   socket.on('disconnect', () => {
     console.log('User disconnected');
     pc.userDisconnect(socket.id);
   });
   
-  //on userReady
-  //pass the socket to projectController.js
-  //pass the projectId to projectController.js
+  // 'userReady' event handler
+  // Pass the socket and projectId to the ProjectController object
+  // ProjectController will create a new Worker in the requested project
+  // and associate it with this socket connection.
+  // The socket connection will be passed to the relevant Worker object
+  // so that it can emit messages directly.
   socket.on('userReady', (projectId) => {
     console.log('User ready for project:', projectId);
     pc.userReady(projectId, socket);
   });
 
-  //on userJobDone
-  //pass completed job to projectController.js
+  // 'userJobDone' event handler
+  // Pass completed Job to the ProjectController object
+  // The completed Job object will have a 'result' property
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
     pc.userJobDone(completedJob);
   });
 
-  //on createProject
-  //pass script to projectController.js
-  //NOTES:
-  //the idea is that the user inputs relevant information on the client-side
-  //this information will then emit 'createProject'
-  //createProject will receive this information and pass it to projectController.js
+  // 'createProject' event handler
+  // Passes an 'options' object to the ProjectController
+  // Options must have the form that's defined in the Project constructor script, specifically:
+  // options = {
+  //    dataSet: ARRAY, // Data to be operated on. 
+  //    generateDataSet: FUNCTION, (Optional input. Will use dataSet if both
+  //    dataSet and generateDataSet are provided)
+  //    mapData: FUNCTION,  // Function to run on every data item. 
+  //    reduceResults: FUNCTION  // Function to run on completed results array
+  // }
+  // ProjectController will instantiate a new Project object with the 
+  // information stored in the options object.
   socket.on('createProject', (project) => {
     pc.createProject(project);
   });
 
+  // 'error' event handler
   socket.on('error', (error) => {
     console.log('Socket error:', error);
   });
 });
 
 // Testers
-const testOptions = {
-  dataSet: null,
-  generateDataSet: () => {
-    var dataSet = [];
-    for (var i = 0; i < 3; i++) {
-      dataSet.push( [i * 100000, i * 100000 + 99999]);
-    }
-    return dataSet;
-  },  
-  mapData: (min, max) => {
-    const primeTester = (num) => {
-      for (var i = 2; i < num - 1; i++) {
-        if (num % i === 0) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    for (var i = min; i <= max; i++) {
-      if (primeTester(i)) {
-        result.push(i);
-      }
-    }
-    console.log(result.length);
-    return result;
-  },
-  reduceResults: (results) => {
-    console.log(results);
-    return _.flatten(results);
-  }
-}
-
-pc.createProject(testOptions, io);
+pc.createProject(tester.testOptions);
