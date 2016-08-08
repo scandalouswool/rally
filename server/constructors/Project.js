@@ -127,6 +127,12 @@ USER-INTERFACE-AFFECTING FUNCTIONS
         this.workers[key].socket.emit('updateWorkers', workersList);
       }
 
+      // Send the user of this worker the latest results
+      var completed = this.completedJobs.map( (job) => {
+        return job;
+      });
+      newWorker.socket.emit('updateResults', completed);
+
     } else {
       console.log('Error creating worker: invalid input type');
     }
