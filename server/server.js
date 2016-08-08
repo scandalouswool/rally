@@ -16,11 +16,11 @@ server.listen(process.env.PORT || 8000, () => {
   console.log('Now listening on port', server.address().port);
 });
 
-/*
-===============
-EVENT LISTENERS
-===============
-*/
+// /*
+// ===============
+// EVENT LISTENERS
+// ===============
+// */
 
 io.on('connect', (socket) => {
   
