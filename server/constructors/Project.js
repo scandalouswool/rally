@@ -61,14 +61,13 @@ class Project {
   }
 
   assignJob(worker) {
-    console.log('Assigning job to ', worker.id);
+    console.log('Assigning job to ', worker.workerId);
     // Assigns a new job to the passed-in Worker
     // Will assign the first job from availableJobs array
 
     if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
-      console.log('This worker: ', worker.workerId, "has this job: ", worker.currentJob);
-
+      worker.currentJob.mapData = this.mapData + ''; // Send stringified mapData function
       worker.currentJob.workerId = worker.workerId;
 
       // Send the newly assigned job to this worker
@@ -163,7 +162,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   }
 
   handleResult(job) {
-    console.log('Result received for job id: ', job.id);
+    console.log('Result received for job id: ', job.jobId);
     // Places job's result into completedJobs array based on the job's original index location in availableJobs
     this.completedJobs[job.jobId] = job.result;
 

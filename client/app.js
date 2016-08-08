@@ -48,6 +48,7 @@ $(document).ready(function() {
     
     if (myWebWorker !== null) {
       console.log('Web Worker assigned to the new job!');
+      console.log('mapData is:', job.mapData);
       myWebWorker.postMessage(job);
 
     } else {
