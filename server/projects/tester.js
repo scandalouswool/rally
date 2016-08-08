@@ -1,8 +1,12 @@
+// Example of a distributed computing problem that uses the Rally API
+// mapData and reduceResults functions may use lodash methods
+const _ = require('lodash');
+
 const testOptions = {
   dataSet: null,
   generateDataSet: () => {
     var dataSet = [];
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 100; i++) {
       dataSet.push( [i * 100000, i * 100000 + 99999]);
     }
     return dataSet;
@@ -25,8 +29,8 @@ const testOptions = {
     console.log(result.length);
     return result;
   },
-  reduceResult: (results) => {
-    console.log(results);
+  reduceResults: (results) => {
+    return _.flatten(results);
   }
 }
 
