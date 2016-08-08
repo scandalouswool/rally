@@ -149,7 +149,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   }
 
   removeWorker(socketId) {
-    console.log('Removing worker for ', socketId);
+    console.log(`Removing worker ${socketId} in project ${this.projectId}`);
     // Removes the worker associated with the passed in socketId
     // First reassign the disconnected worker's job
     this.reassignJob(socketId);

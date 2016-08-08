@@ -7,7 +7,7 @@ const _ = require('lodash');
 
   The following example uses the Rally distributed computing system
   to generate an array of all prime numbers between 1 and 1,000,000.
-  The algorithm intentionally uses a brute-force algorithm.
+  This example intentionally uses a brute-force algorithm.
 
   Rally uses Project constructor to instantiate new calculation projects.
   The Project constructor takes a single 'options' object, which has the 

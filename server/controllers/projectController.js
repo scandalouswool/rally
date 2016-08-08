@@ -32,9 +32,13 @@ class ProjectController {
   userDisconnect(socketId) {
     // Identifies the project that the disconnected user was contributing to
     // and calls the removeWorker method for that project
-    if (this.allWorkers[socketId]) {
-      this.allProjects[this.allWorkers[socketId].projectId].removeWorker(socketId);
+    if (this.allWorkers[socketId] !== undefined) {
+      console.log('Removing user from global workers list:', socketId);
+
+      this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
+    } else {
+      console.log('Error: cannot find user:', socketId);
     }
   }
     
@@ -48,6 +52,7 @@ class ProjectController {
       this.allProjects[projectId].createWorker(projectId, socket);
       // Create a record of the new Worker in the allWorkers ledger
       this.allWorkers[socket.id] = projectId;
+      console.log(this.allWorkers);
     } else {
       console.log('Error in userReady: Project does not exist');
     }
