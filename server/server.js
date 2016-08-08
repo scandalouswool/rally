@@ -8,7 +8,7 @@ const pc = new projectController();
 const _ = require('lodash');
 
 // Tester module
-const tester = require('./projects/tester.js');
+const testProject = require('./projects/tester.js');
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -64,8 +64,10 @@ io.on('connect', (socket) => {
   // }
   // ProjectController will instantiate a new Project object with the 
   // information stored in the options object.
+  // The server will pass the io object to the ProjectController to directly
+  // handle the sending of socket messages
   socket.on('createProject', (project) => {
-    pc.createProject(project);
+    pc.createProject(project, io);
   });
 
   // 'error' event handler
@@ -75,4 +77,4 @@ io.on('connect', (socket) => {
 });
 
 // Testers
-pc.createProject(tester.testOptions);
+pc.createProject(testProject, io);

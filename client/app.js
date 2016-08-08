@@ -34,6 +34,12 @@ $(document).ready(function() {
     socket.emit('userReady', projectId);
   }
 
+  // Client must be able to handle the following events:
+  // - newJob
+  // - updateWorkers
+  // - updateResults
+  // - 
+
   socket.on('updateWorkers', function(workers) {
     console.log('New workers list received:', workers);
   });
