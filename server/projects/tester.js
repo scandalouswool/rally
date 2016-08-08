@@ -11,7 +11,7 @@ const testOptions = {
     }
     return dataSet;
   },  
-  mapData: (min, max) => {
+  mapData: (dataSet) => {
     const primeTester = (num) => {
       for (var i = 2; i < num - 1; i++) {
         if (num % i === 0) {
@@ -20,6 +20,10 @@ const testOptions = {
       }
       return true;
     };
+
+    var min = dataSet[0];
+    var max = dataSet[1];
+    var result = [];
 
     for (var i = min; i <= max; i++) {
       if (primeTester(i)) {

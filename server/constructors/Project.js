@@ -67,7 +67,7 @@ class Project {
 
     if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
-      worker.currentJob.mapData = this.mapData + ''; // Send stringified mapData function
+      worker.currentJob.mapData = this.mapData.toString(); // Send stringified mapData function
       worker.currentJob.workerId = worker.workerId;
 
       // Send the newly assigned job to this worker
