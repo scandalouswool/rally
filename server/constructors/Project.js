@@ -113,7 +113,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       this.workers[newWorker.workerId] = newWorker;
 
       // Iterate over all workers in the workers object, and emit to them the workers array
-      // NOTE: do NOT use this inside the emit function. Doing so will
+      // NOTE: do NOT use 'this' inside the emit function. Doing so will
       // cause a maximum stack call exceeded error, for some reason.
       // Unfortunately, this requires us to generate a workersList array
       // to pass into the socket message. Hacky. Need to refactor.
@@ -148,7 +148,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     delete this.workers[socketId];
     
     // Iterate over all workers in the workers object, and emit to them the workers array
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
@@ -171,7 +171,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.workers[job.workerId].currentJob = null;
 
     // Iterate over all workers in the workers object, and emit to them the updated results array
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
@@ -203,7 +203,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.finalResult = this.reduceResults(this.completedJobs);
 
     // Broadcast to clients that the project has been completed
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
