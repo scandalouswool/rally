@@ -1,27 +1,4 @@
 $(document).ready(function() {
-
-  /************************************************
-  // Function that finds primes between two values
-  ************************************************/
-  var findPrimes = function(min, max) {
-    var primeTester = function(n) {
-      for (var i = 2; i < n - 1; i++) {
-        if (n % i === 0) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    var result = [];
-    for (var i = min; i <= max; i++) {
-      if (primeTester(i)) {
-        result.push(i);
-      }
-    }
-    return result;
-  }
-
   /************************************************
   // Socketing
   ************************************************/
@@ -52,10 +29,13 @@ $(document).ready(function() {
 
     } else {
       console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
-      var result = findPrimes(job.data[0], job.data[1]);
-      job.result = result;
-      console.log('Job complete. Result is: ', result);
+
+      var mapDataFunc = eval('(' + job.mapData + ')');
+      job.result = mapDataFunc(job.data);
+
+      console.log('Job complete. Result is: ', job.result);
       console.log('Sending result back to server');
+      
       socket.emit('userJobDone', job);
     }
 
@@ -66,7 +46,7 @@ $(document).ready(function() {
     $('#results').empty();
 
     results.forEach( function(item) {
-      if (item.length) {
+      if (item !== null) {
         $('#results').append('<li>Found ' + item.length + ' primes!');        
       }
 

@@ -61,14 +61,13 @@ class Project {
   }
 
   assignJob(worker) {
-    console.log('Assigning job to ', worker.id);
+    console.log('Assigning job to ', worker.workerId);
     // Assigns a new job to the passed-in Worker
     // Will assign the first job from availableJobs array
 
     if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
-      console.log('This worker: ', worker.workerId, "has this job: ", worker.currentJob);
-
+      worker.currentJob.mapData = this.mapData.toString(); // Send stringified mapData function
       worker.currentJob.workerId = worker.workerId;
 
       // Send the newly assigned job to this worker
@@ -113,7 +112,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       this.workers[newWorker.workerId] = newWorker;
 
       // Iterate over all workers in the workers object, and emit to them the workers array
-      // NOTE: do NOT use this inside the emit function. Doing so will
+      // NOTE: do NOT use 'this' inside the emit function. Doing so will
       // cause a maximum stack call exceeded error, for some reason.
       // Unfortunately, this requires us to generate a workersList array
       // to pass into the socket message. Hacky. Need to refactor.
@@ -148,7 +147,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     delete this.workers[socketId];
     
     // Iterate over all workers in the workers object, and emit to them the workers array
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
@@ -163,7 +162,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   }
 
   handleResult(job) {
-    console.log('Result received for job id: ', job.id);
+    console.log('Result received for job id: ', job.jobId);
     // Places job's result into completedJobs array based on the job's original index location in availableJobs
     this.completedJobs[job.jobId] = job.result;
 
@@ -171,7 +170,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.workers[job.workerId].currentJob = null;
 
     // Iterate over all workers in the workers object, and emit to them the updated results array
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
@@ -203,7 +202,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     this.finalResult = this.reduceResults(this.completedJobs);
 
     // Broadcast to clients that the project has been completed
-    // NOTE: do NOT use this inside the emit function. Doing so will
+    // NOTE: do NOT use 'this' inside the emit function. Doing so will
     // cause a maximum stack call exceeded error, for some reason.
     // Unfortunately, this requires us to generate a workersList array
     // to pass into the socket message. Hacky. Need to refactor.
