@@ -13,5 +13,7 @@ onmessage = function(event) {
   job.result = result;
   console.log('Job complete. Result is: ', result);
   console.log('Sending result back to server');
+
+  //send the information back to the client when the job is done
   postMessage(job);
 }
