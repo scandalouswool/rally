@@ -66,7 +66,7 @@ $(document).ready(function() {
     $('#results').empty();
 
     results.forEach( function(item) {
-      if (item.length) {
+      if (item !== null) {
         $('#results').append('<li>Found ' + item.length + ' primes!');        
       }
 
