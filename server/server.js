@@ -29,7 +29,7 @@ io.on('connect', (socket) => {
   // ProjectController will remove the Worker object associated with this
   // socket connection and reassign its work to another object.
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    console.log('User disconnected:', socket.id);
     pc.userDisconnect(socket.id);
   });
   
