@@ -66,7 +66,10 @@ $(document).ready(function() {
     $('#results').empty();
 
     results.forEach( function(item) {
-      $('#results').append('<li>Found ' + item.length + ' primes!');
+      if (item.length) {
+        $('#results').append('<li>Found ' + item.length + ' primes!');        
+      }
+
     });
   });
 
