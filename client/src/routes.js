@@ -2,10 +2,8 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import App from './components/app'
-import HomeView from './components/home.js'
-import MenuView from './containers/menu.js'
-
-console.log(MenuView);
+import HomeView from './components/home'
+import MenuView from './containers/menu'
 
 export default (
   <Route path='/' component={App}>
