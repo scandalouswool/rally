@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const timers = require('node-timers');
+const path = require('path');
 const projectController = require('./controllers/projectController.js');
 const pc = new projectController();
 const _ = require('lodash');
@@ -11,6 +12,9 @@ const _ = require('lodash');
 const testProject = require('./projects/nQueens.js');
 
 app.use(express.static(__dirname + '/../client'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname + '/../client/index.html'));
+});
 
 server.listen(process.env.PORT || 8000, () => {
   console.log('Now listening on port', server.address().port);
