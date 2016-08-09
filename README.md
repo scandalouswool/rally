@@ -9,7 +9,7 @@
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
 1. [Team](#team)
-1.[Notes for Developtment Team](#notes)
+1. [Notes for Development Team](#notes-for-development-team)
 
 ## Team
 
@@ -37,7 +37,7 @@ Open the server with Nodemon.
 npm start
 ```
 
-## Notes for Development Team:
+## Notes for Development Team
 
 1. Socket event handlers for server:
   - 'disconnect': user disconnected its socket connection
