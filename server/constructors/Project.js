@@ -72,8 +72,9 @@ class Project {
 
     if (worker.currentJob === null && this.availableJobs.length) {
       worker.currentJob = this.availableJobs.shift();
-      worker.currentJob.mapData = this.mapData.toString(); // Send stringified mapData function
+      worker.currentJob.mapData = this.mapData.toString(); 
       worker.currentJob.workerId = worker.workerId;
+      worker.currentJob.totalJobs = this.jobsLength;
 
       // Send the newly assigned job to this worker
       // NOTE: do NOT use 'this' inside the emit function. Doing so will

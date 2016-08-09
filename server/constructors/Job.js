@@ -4,6 +4,7 @@ class Job {
     this.jobId = index;
     this.projectId = projectId;
     this.workerId = null;
+    this.totalJobs = null;
     this.data = item;
     this.result = null;
     this.mapData = null; 
