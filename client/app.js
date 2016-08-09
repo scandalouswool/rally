@@ -44,11 +44,11 @@ $(document).ready(function() {
 
   socket.on('updateResults', function(results) {
     console.log(results);
-    $('#results').empty();
+    $('#nQueensSolutions').empty();
 
     results.forEach( function(item) {
       if (item !== null) {
-        $('#results').append('<li>Found ' + item.length + ' primes!');        
+        $('#nQueensSolutions').append('<li>Worker found ' + item + ' solutions!');        
       }
 
     });
@@ -56,7 +56,7 @@ $(document).ready(function() {
 
   socket.on('finalResult', function(final) {
     console.log('Received final results!');
-    $('#results').append('<li>Final result! Found primes: ' + final.length);
+    $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
   });
 
   /************************************************
