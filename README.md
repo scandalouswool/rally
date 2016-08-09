@@ -19,4 +19,4 @@ Building a Distributed Network With Your Browser
   - 'newJob': received new Job from server
   - 'updateWorkers': received list of all workers
   - 'updateResults': received array of all results so far
-  - 'finalResult': Project has concluded and received final result
+  - 'finalResult': Project has concluded and received final result 
