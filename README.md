@@ -2,9 +2,6 @@
 
 > Rally - Building A Distributed Network With Your Browser
 
-## Team
-
-  - Development Team Members: Frank Lee, Edmund To, Leah Loversky, Clay Han
 
 ## Table of Contents
 
@@ -12,6 +9,11 @@
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
 1. [Team](#team)
+1.[Notes for Developtment Team](#notes)
+
+## Team
+
+  - Development Team Members: Frank Lee, Edmund To, Leah Loversky, Clay Han
 
 ## Requirements
 
