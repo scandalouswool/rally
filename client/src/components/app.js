@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div>
-        Connection to React
+        This is the app view.
+        {this.props.children}
       </div>
-    );
+    )
   }
 }
