@@ -1,10 +1,39 @@
-# rally
-Building a Distributed Network With Your Browser
+# Project Name
 
-## Instructions to Run
+> Rally - Building A Distributed Network With Your Browser
 
-1. Run npm build:dev
-2. Run npm start
+## Team
+
+  - Development Team Members: Frank Lee, Edmund To, Leah Loversky, Clay Han
+
+## Table of Contents
+
+1. [Requirements](#requirements)
+1. [Development](#development)
+    1. [Installing Dependencies](#installing-dependencies)
+1. [Team](#team)
+
+## Requirements
+
+- Node 4.4.7
+- PostgreSQL or MySQL
+
+### Installing Dependencies
+
+Install all npm dependencies.
+```sh
+npm install
+```
+
+Initiate webpack.
+```sh
+npm run build: dev
+```
+
+Open the server with Nodemon.
+```sh
+npm start
+```
 
 ## Notes for Development Team:
 
