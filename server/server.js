@@ -8,7 +8,7 @@ const pc = new projectController();
 const _ = require('lodash');
 
 // Tester module
-const testProject = require('./projects/tester.js');
+const testProject = require('./projects/nQueens.js');
 
 app.use(express.static(__dirname + '/../client'));
 
