@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 class SelectedProjectView extends Component {
   render() {
     if (!this.props.project) {
-      return <div>Select a project</div>;
+      return <div className="padded">Select a project</div>;
     }
 
     return (
-      <div>
+      <div className="padded">
         <h3>Currently Selected Project:</h3>
         <div>{this.props.project.title}</div>
       </div>

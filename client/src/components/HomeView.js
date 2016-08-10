@@ -4,9 +4,10 @@ import { Link } from 'react-router';
 class HomeView extends Component {
   render() {
     return (
-      <div>
-        <div>Yay crowdsourced distributed computing. This is more information about our app...</div>
-        <button><Link to='menu'>Begin</Link></button>
+      <div className="jumbotron">
+        <h1>Race to the finish line</h1>
+        <p>Process the toughest, largest problems in less time than you ever imagined</p>
+        <p><a className="btn btn-primary btn-lg" href="/menu" role="button">Click here to discover projects</a></p>
       </div>
     )
   }
