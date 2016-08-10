@@ -11,3 +11,13 @@ export function createdSocket(socket) {
     payload: socket
   }
 }
+
+// TODO: updateWorkers
+
+// TODO: newJob
+
+// TODO: updateResults
+
+// TODO: finalResults
+
+// TODO: allProjects
