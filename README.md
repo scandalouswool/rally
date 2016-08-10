@@ -44,6 +44,7 @@ npm start
   - 'userReady': user is ready to receive Job
   - 'userJobDone': user sent back a finished Job
   - 'createProject': need to instantiate a new Project
+  - 'getAllProjects': user is requesting list of all Projects
   - 'error'
 
 2. Socket event handlers for client:
@@ -51,3 +52,4 @@ npm start
   - 'updateWorkers': received list of all workers
   - 'updateResults': received array of all results so far
   - 'finalResult': Project has concluded and received final result 
+  - 'allProjects': received a list of all project IDs from server
