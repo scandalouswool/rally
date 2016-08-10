@@ -59,6 +59,12 @@ $(document).ready(function() {
     $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
   });
 
+  socket.emit('getAllProjects');
+
+  socket.on('allProjects', function(allProjects) {
+    console.log(allProjects);
+  })
+
   /************************************************
   // Web Worker
   ************************************************/

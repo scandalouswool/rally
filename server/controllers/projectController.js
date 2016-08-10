@@ -84,12 +84,12 @@ class ProjectController {
   }
 
   sendAllProjects(socket) {
-    // Map the 'allProjects' into a simplified object that only contains 
+    // Map the 'allProjects' object into a simplified object that only contains 
     // project ids and send the result to the passed-in socket
-    projectIds = _.forEach(this.allProjects, (project, key) => {
+    let projectIds = _.map(this.allProjects, (project, key) => {
       return key;
     });
-    socket.emit('allProjects', projectIds)
+    socket.emit('allProjects', projectIds);
   }
 
   //TODO: completeProject method
