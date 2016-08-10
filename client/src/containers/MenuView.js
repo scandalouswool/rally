@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { selectProject } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
-import {Link} from 'react-router';
 import ProjectView from '../components/ProjectView';
 
 class MenuView extends Component {
@@ -21,8 +21,9 @@ class MenuView extends Component {
   }
 
   render() {
+    console.log(this.props.createdSocket);
     return (
-      <div>
+      <div className="padded">
         <div>
           <SelectedProjectView />
         </div>
