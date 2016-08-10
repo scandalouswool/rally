@@ -13,7 +13,12 @@ export function createdSocket(socket) {
 }
 
 // TODO: updateWorkers
-
+export function updateWorkers(workersList){
+	return {
+		type: 'WORKERS_UPDATED',
+		payload: workersList
+	}
+}
 // TODO: newJob
 
 // TODO: updateResults
