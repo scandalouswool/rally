@@ -20,6 +20,26 @@ export function updateWorkers(workersList){
 	}
 }
 // TODO: newJob
+export function newJob(job){
+	return {
+		type: 'NEW_JOB', 
+		payload: job
+	}
+}
+
+export function completeJob(job){
+	return {
+		type: 'COMPLETE_JOB', 
+		payload: job
+	}
+}
+
+export function sendCompleteJob(socket, job){
+	return {
+		type: 'SEND_COMPLETE_JOB', 
+		payload: {socket, job}
+	}
+}
 
 // TODO: updateResults
 
