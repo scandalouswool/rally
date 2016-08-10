@@ -75,7 +75,7 @@ class ProjectController {
   createProject(options, io) {
     // Create a new instance of Project with the pass-in options parameters
     // Assign a project ID to the new Project and create a new Project
-    const projectId = Object.keys(this.allProjects).length;
+    const projectId = 'project' + Object.keys(this.allProjects).length;
     const newProject = new Project(options, projectId, io);
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
