@@ -21,8 +21,6 @@ class MenuView extends Component {
   }
 
   render() {
-    console.log(this.props.createdSocket);
-
     return (
       <div>
         <div>

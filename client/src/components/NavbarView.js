@@ -18,7 +18,7 @@ class NavbarView extends Component {
             </div>
             <ul className='nav navbar-nav'>
               <li><Link to='/'>Home</Link></li>
-              <li><Link to='/menu'>Algorithms</Link></li>
+              <li><Link to='/menu'>Projects</Link></li>
               <li><Link to='/'>Login</Link></li>  
             </ul>
           </div>

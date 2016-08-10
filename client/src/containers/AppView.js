@@ -11,7 +11,7 @@ export default class AppView extends Component {
     this.socket = io();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     console.log('This is the socket state: ', this.socket);
 
     const sendReady = () => {
@@ -26,13 +26,18 @@ export default class AppView extends Component {
     // - updateWorkers
     // - updateResults
     // - finalResult
+    // - connect
+    this.socket.on('connect', () => {
+      this.props.createdSocket(this.socket);
+    });
 
     this.socket.on('updateWorkers', (workers) => {
-      // console.log('New workers list received:', workers);
+      // Send action 'updateWorkers'
       console.log('Updating workers in updateWorkers: ', workers);
     });
 
     this.socket.on('newJob', (job) => {
+      // Send action 'newJob'
       
       // //if myWebWorker is not null, that means we were able to create it
       // if (myWebWorker !== null) {
@@ -62,6 +67,8 @@ export default class AppView extends Component {
     });
 
     this.socket.on('updateResults', (results) => {
+      // Send action updateResults
+
       // console.log(results);
       // $('#nQueensSolutions').empty();
 
@@ -75,9 +82,15 @@ export default class AppView extends Component {
     });
 
     this.socket.on('finalResult', (final) => {
+      // Send action 'finalResult'
+
       // console.log('Received final results!');
       // $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
       console.log('Updating finalResult: ', final);
+    });
+
+    this.socket.on('allProjects', () => {
+      // Send action 'allProjects'
     });
 
     // setTimeout(() => sendReady(), 2000);
