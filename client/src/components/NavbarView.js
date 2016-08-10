@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import some function from actions
-import { saveSocket } from '../actions/index';
+import { saveSocket } from '../actions/actions';
 
 class NavbarView extends Component {
 

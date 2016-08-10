@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { selectProject } from '../actions/index';
+import { selectProject } from '../actions/actions';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';

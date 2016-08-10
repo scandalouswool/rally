@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob } from '../actions/index';
+import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob } from '../actions/actions';
 
 export default class AppView extends Component {
   constructor() {
