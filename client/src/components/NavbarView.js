@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import io from 'socket.io-client';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// import some function from actions
+import { saveSocket } from '../actions/index';
 
-class Navbar extends Component {
+class NavbarView extends Component {
+
   render() {
     return (
       <div>
@@ -22,4 +28,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default NavbarView;

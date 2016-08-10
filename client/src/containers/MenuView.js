@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { selectAlgorithm } from '../actions/index';
+import { selectProject } from '../actions/index';
 import { bindActionCreators } from 'redux';
-import SelectedAlgorithm from './selectedAlgorithm';
+import SelectedProjectView from './SelectedProjectView';
 import {Link} from 'react-router';
-import Algorithm from '../components/algorithm';
+import ProjectView from '../components/ProjectView';
 
 class MenuView extends Component {
 
   renderList() {
-    return this.props.algorithms.map( (algorithm) => {
+    return this.props.projects.map( (project) => {
       return (
-        <button key={algorithm.title}>
-          <Link to='/algorithm' onClick={() =>  this.props.selectAlgorithm(algorithm) }>
-              {algorithm.title}
+        <button key={project.title}>
+          <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
+              {project.title}
           </Link>
         </button>
       );
@@ -22,10 +22,11 @@ class MenuView extends Component {
 
   render() {
     console.log(this.props.createdSocket);
+
     return (
       <div>
         <div>
-          <SelectedAlgorithm />
+          <SelectedProjectView />
         </div>
         <ul className="list-group col-sm-4">
           {this.renderList()}
@@ -38,20 +39,20 @@ function mapStateToProps(state) {
   //Whatever is returned from here will show up 
   //as props inside of MenuView
   return {
-    algorithms: state.algorithms,
-    algorithm: state.selectedAlgorithm
+    projects: state.projects,
+    project: state.selectedProject
   }
 }
 
 //anything returned from this function will end up as props
 // on the MenuView container
 function mapDispatchToProps(dispatch) {
-//   //whenever selectAlgorithm is called, the result should be passed
+//   //whenever selectProject is called, the result should be passed
 //   //to all of our reducers
-  return bindActionCreators({ selectAlgorithm: selectAlgorithm }, dispatch)
+  return bindActionCreators({ selectProject: selectProject }, dispatch)
 }
 
 //promote booklist from a component to a container - it needs to know
-//about this new dispatch method, selectAlgorithm. Make it available
+//about this new dispatch method, selectProject. Make it available
 //as a prop
 export default connect(mapStateToProps, mapDispatchToProps)(MenuView);

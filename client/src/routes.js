@@ -1,19 +1,19 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import App from './containers/app';
-import HomeView from './components/home';
-import MenuView from './containers/menu';
-import AlgorithmView from './components/algorithm';
-import SelectedAlgorithm from './containers/selectedAlgorithm';
-import ErrorView from './components/error';
+import AppView from './containers/AppView';
+import HomeView from './components/HomeView';
+import MenuView from './containers/MenuView';
+import ProjectView from './components/ProjectView';
+import SelectedProjectView from './containers/SelectedProjectView';
+import ErrorView from './components/ErrorView';
 
 export default (
-  <Route path='/' component={App}>
+  <Route path='/' component={AppView}>
     <IndexRoute component={HomeView} />
     <Route path='menu' component={MenuView} />
-    <Route path='algorithm' component={AlgorithmView} />
-    <Route path='selectedAlgorithm' component={SelectedAlgorithm} />
+    <Route path='project' component={ProjectView} />
+    <Route path='selectedproject' component={SelectedProjectView} />
     <Route path='*' component={ErrorView} />
   </Route>
 )

@@ -5,7 +5,7 @@
 //this reducer is responsible for
 export default function (state = null, action) {
   switch(action.type) {
-  case 'ALGORITHM_SELECTED':
+  case 'PROJECT_SELECTED':
     return action.payload;
   }
 

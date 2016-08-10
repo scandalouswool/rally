@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import Navbar from '../components/navbar';
+import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createdSocket } from '../actions/index';
 
-export default class App extends Component {
+export default class AppView extends Component {
   constructor() {
     super();
     this.socket = io();
@@ -91,7 +91,7 @@ export default class App extends Component {
   render() {
     return (
       <div className='app'>
-        <Navbar />
+        <NavbarView />
       
         <div className='container'>
           {this.props.children}
@@ -112,4 +112,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ createdSocket: createdSocket }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(AppView);
