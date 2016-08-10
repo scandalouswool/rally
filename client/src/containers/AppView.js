@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob } from '../actions/actions';
+import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults} from '../actions/actions';
 
 export default class AppView extends Component {
   constructor() {
@@ -73,6 +73,7 @@ export default class AppView extends Component {
     });
 
     this.socket.on('updateResults', (results) => {
+      this.props.updateResults(results); 
       // Send action updateResults
 
       // console.log(results);
@@ -84,7 +85,7 @@ export default class AppView extends Component {
       //   }
 
       // });
-      console.log('Updating results in updateResults: ', results);
+      //console.log('Updating results in updateResults: ', results);
     });
 
     this.socket.on('finalResult', (final) => {
@@ -128,7 +129,7 @@ export default class AppView extends Component {
 // }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob }, dispatch)
+  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(AppView);

@@ -42,6 +42,13 @@ export function sendCompleteJob(socket, job){
 }
 
 // TODO: updateResults
+export function updateResults(results) {
+	return {
+		type: 'COMPLETED_RESULTS', 
+		payload: results
+	}
+}
+
 
 // TODO: finalResults
 
