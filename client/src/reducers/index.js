@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
-import AlgorithmsList from './reducer_algorithms';
-import SelectedAlgorithm from './reducer_selected_algorithm';
+import ProjectsList from './reducer_projects';
+import SelectedProject from './reducer_selected_project';
 import CreatedSocket from './reducer_socket_methods';
 
 const rootReducer = combineReducers({
-  algorithms: AlgorithmsList,
-  selectedAlgorithm: SelectedAlgorithm,
+  projects: ProjectsList,
+  selectedProject: SelectedProject,
   createdSocket: CreatedSocket
 });
 

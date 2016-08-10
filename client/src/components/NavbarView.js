@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 // import some function from actions
 import { saveSocket } from '../actions/index';
 
-class Navbar extends Component {
+class NavbarView extends Component {
 
   render() {
     return (
@@ -28,4 +28,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default NavbarView;

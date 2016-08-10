@@ -1,13 +1,13 @@
-export function selectAlgorithm(algorithm) {
+export function selectProject(project) {
   return {
-    type: 'ALGORITHM_SELECTED',
-    payload: algorithm
+    type: 'PROJECT_SELECTED',
+    payload: project
   }
 }
 
 export function createdSocket(socket) {
   return {
-    type: 'ALGORITHM_SELECTED',
+    type: 'SOCKET_CREATED',
     payload: socket
   }
 }
