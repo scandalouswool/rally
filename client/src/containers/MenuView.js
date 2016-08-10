@@ -8,17 +8,17 @@ import ProjectView from '../components/ProjectView';
 
 class MenuView extends Component {
 
-  // renderList() {
-  //   return this.props.projects.map( (project) => {
-  //     return (
-  //       <button key={project.title}>
-  //         <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
-  //             {project.title}
-  //         </Link>
-  //       </button>
-  //     );
-  //   });
-  // }
+  renderList() {
+    return this.props.projects.map( (project) => {
+      return (
+        <button key={project.title}>
+          <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
+              {project.title}
+          </Link>
+        </button>
+      );
+    });
+  }
 
   render() {
     console.log(this.props.createdSocket);
@@ -27,18 +27,9 @@ class MenuView extends Component {
         <div>
           <SelectedProjectView />
         </div>
-
-          <ul className="list-group col-sm-4">
-            {this.props.projects.map( (project) => {
-              return (
-                <button key={project.title}>
-                  <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
-                      {project.title}
-                  </Link>
-                </button>
-              );
-            })}
-          </ul>
+        <ul className="list-group col-sm-4">
+          {this.renderList()}
+        </ul>
       </div>
     )
   }
