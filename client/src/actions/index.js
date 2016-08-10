@@ -4,3 +4,10 @@ export function selectAlgorithm(algorithm) {
     payload: algorithm
   }
 }
+
+export function createdSocket(socket) {
+  return {
+    type: 'ALGORITHM_SELECTED',
+    payload: socket
+  }
+}

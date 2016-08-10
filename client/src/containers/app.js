@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Navbar from '../components/navbar';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { createdSocket } from '../actions/index';
 
 export default class App extends Component {
   constructor() {
@@ -51,11 +54,11 @@ export default class App extends Component {
 
       // const that = this;
 
-      setTimeout(() => {
-        console.log('Sending finished job');
-        job.result = [];
-        this.socket.emit('userJobDone', job);
-      }, 2000);
+      // setTimeout(() => {
+      //   console.log('Sending finished job');
+      //   job.result = [];
+      //   this.socket.emit('userJobDone', job);
+      // }, 2000);
     });
 
     this.socket.on('updateResults', (results) => {
@@ -77,7 +80,11 @@ export default class App extends Component {
       console.log('Updating finalResult: ', final);
     });
 
-    setTimeout(() => sendReady(), 2000);
+    // setTimeout(() => sendReady(), 2000);
+    const socketMethods = {
+      socket: this.socket,
+      sendReady: sendReady
+    }
 
   }
 
@@ -101,8 +108,8 @@ export default class App extends Component {
 //   }
 // }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ selectAlgorithm: selectAlgorithm }, dispatch)
-// }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ createdSocket: createdSocket }, dispatch)
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);
