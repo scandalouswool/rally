@@ -12,6 +12,9 @@ const _ = require('lodash');
 const testProject = require('./projects/nQueens.js');
 
 app.use(express.static(__dirname + '/../client'));
+
+//this is for when the user chooses to enter our site with a specific path
+//it will route them to index.html. The front-end will then handle the route
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });

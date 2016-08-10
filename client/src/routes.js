@@ -5,7 +5,7 @@ import App from './components/app';
 import HomeView from './components/home';
 import MenuView from './containers/menu';
 import AlgorithmView from './components/algorithm';
-import CreateAlgorithmView from './components/createAlgorithm';
+import SelectedAlgorithm from './containers/selectedAlgorithm';
 import ErrorView from './components/error';
 
 export default (
@@ -13,7 +13,7 @@ export default (
     <IndexRoute component={HomeView} />
     <Route path='menu' component={MenuView} />
     <Route path='algorithm' component={AlgorithmView} />
-    <Route path='createalgorithm' component={CreateAlgorithmView} />
+    <Route path='selectedAlgorithm' component={SelectedAlgorithm} />
     <Route path='*' component={ErrorView} />
   </Route>
 )
