@@ -1,4 +1,5 @@
 const Project = require('../constructors/Project.js');
+const _ = require('lodash');
 
 // ProjectController is responsible for creating and terminating 
 // projects. It also routes incoming socket messages to the appropriate
@@ -80,6 +81,15 @@ class ProjectController {
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
     console.log(this.allProjects);
+  }
+
+  sendAllProjects(socket) {
+    // Map the 'allProjects' into a simplified object that only contains 
+    // project ids and send the result to the passed-in socket
+    projectIds = _.forEach(this.allProjects, (project, key) => {
+      return key;
+    });
+    socket.emit('allProjects', projectIds)
   }
 
   //TODO: completeProject method

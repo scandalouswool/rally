@@ -77,6 +77,13 @@ io.on('connect', (socket) => {
     pc.createProject(project, io);
   });
 
+  // 'getAllProjects' event handler
+  // Passes a socket to the ProjetController object
+  // The server will send back an object containing the project IDs of all existing projects 
+  socket.on('getAllProjects', () => {
+    pc.sendAllProjects(socket);
+  });
+
   // 'error' event handler
   socket.on('error', (error) => {
     console.log('Socket error:', error);
