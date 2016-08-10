@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import App from './components/app';
+import App from './containers/app';
 import HomeView from './components/home';
 import MenuView from './containers/menu';
 import AlgorithmView from './components/algorithm';
