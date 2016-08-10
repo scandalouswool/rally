@@ -1,30 +1,35 @@
 import React, { Component } from 'react';
-//connect is a function
 import { connect } from 'react-redux'
 import { selectAlgorithm } from '../actions/index';
-//makes sure actions flow through all our reducers
 import { bindActionCreators } from 'redux';
+import SelectedAlgorithm from './selectedAlgorithm';
+import {Link} from 'react-router';
+import Algorithm from '../components/algorithm';
 
 class MenuView extends Component {
 
   renderList() {
     return this.props.algorithms.map( (algorithm) => {
-      // console.log("This is this.props.algo, ", this.props.selectAlgorithm);
       return (
-        <li 
-          key={algorithm.title} 
-          onClick={() =>  this.props.selectAlgorithm(algorithm) } >
-          {algorithm.title}
-        </li>
+        <button key={algorithm.title}>
+          <Link to='/algorithm' onClick={() =>  this.props.selectAlgorithm(algorithm) }>
+              {algorithm.title}
+          </Link>
+        </button>
       );
     });
   }
 
   render() {
     return (
-      <ul className="list-group col-sm-4">
-        {this.renderList()}
-      </ul>
+      <div>
+        <div>
+          <SelectedAlgorithm />
+        </div>
+        <ul className="list-group col-sm-4">
+          {this.renderList()}
+        </ul>
+      </div>
     )
   }
 }
@@ -32,7 +37,8 @@ function mapStateToProps(state) {
   //Whatever is returned from here will show up 
   //as props inside of MenuView
   return {
-    algorithms: state.algorithms
+    algorithms: state.algorithms,
+    algorithm: state.selectedAlgorithm
   }
 }
 
@@ -48,21 +54,3 @@ function mapDispatchToProps(dispatch) {
 //about this new dispatch method, selectAlgorithm. Make it available
 //as a prop
 export default connect(mapStateToProps, mapDispatchToProps)(MenuView);
-
-
-// ==============
-// OLD REACT CODE
-// ==============
-// class MenuView extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-  
-//   render() {
-//     return (
-//       <div>This is the menu view</div>
-//     )
-//   }
-// }
-
-// export default MenuView;

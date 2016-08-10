@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-export default class App extends Component {
-
+class Navbar extends Component {
   render() {
     return (
-      <div className='app'>
-
+      <div>
         <nav className='navbar navbar-default'>
           <div className='container-fluid'>
             <div className='navbar-header'>
@@ -19,11 +17,9 @@ export default class App extends Component {
             </ul>
           </div>
         </nav>
-
-        <div className='container'>
-          {this.props.children}
-        </div>
       </div>
     )
   }
 }
+
+export default Navbar;
