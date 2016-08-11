@@ -4,7 +4,7 @@
   "description": "Building a Distributed Network Through Your Browser",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "nodemon --use_strict server/server.js",
     "build:dev": "webpack --config --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
