@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createdSocket } from '../actions/index';
+import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults} from '../actions/actions';
 
 export default class AppView extends Component {
   constructor() {
@@ -33,12 +33,12 @@ export default class AppView extends Component {
 
     this.socket.on('updateWorkers', (workers) => {
       // Send action 'updateWorkers'
-      console.log('Updating workers in updateWorkers: ', workers);
+      this.props.updateWorkers(workers); 
     });
 
     this.socket.on('newJob', (job) => {
       // Send action 'newJob'
-      
+      this.props.newJob(job)
       // //if myWebWorker is not null, that means we were able to create it
       // if (myWebWorker !== null) {
       //   console.log('Web Worker assigned to the new job!');
@@ -55,7 +55,7 @@ export default class AppView extends Component {
         
       //   this.socket.emit('userJobDone', job);
       // }
-      console.log('Updating job in newJob: ', job);
+      //console.log('Updating job in newJob: ', job);
 
       // const that = this;
 
@@ -64,9 +64,16 @@ export default class AppView extends Component {
       //   job.result = [];
       //   this.socket.emit('userJobDone', job);
       // }, 2000);
+      setTimeout(()=> {
+        job.result = [];
+        console.log('Sending completed job');
+        this.props.sendCompleteJob(this.socket, job)   
+      }, 1000); 
+      
     });
 
     this.socket.on('updateResults', (results) => {
+      this.props.updateResults(results); 
       // Send action updateResults
 
       // console.log(results);
@@ -78,15 +85,15 @@ export default class AppView extends Component {
       //   }
 
       // });
-      console.log('Updating results in updateResults: ', results);
+      //console.log('Updating results in updateResults: ', results);
     });
 
     this.socket.on('finalResult', (final) => {
       // Send action 'finalResult'
-
+      this.props.finalResults(final); 
       // console.log('Received final results!');
       // $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
-      console.log('Updating finalResult: ', final);
+      //console.log('Updating finalResult: ', final);
     });
 
     this.socket.on('allProjects', () => {
@@ -122,7 +129,7 @@ export default class AppView extends Component {
 // }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createdSocket: createdSocket }, dispatch)
+  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(AppView);
