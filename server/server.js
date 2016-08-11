@@ -16,7 +16,8 @@ app.use(express.static(__dirname + '/../client'));
 
 // For accessing the Web Worker script file
 app.get('/webworker', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/src/webworker/webworker.js'));
+  console.log('Sending');
+  res.sendFile(path.resolve(__dirname + '/../client/src/webworker/webworker.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
