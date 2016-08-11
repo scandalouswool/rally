@@ -40,6 +40,7 @@ export default class AppView extends Component {
     // myWebWorker will send back a Job object with the 
     // data field populated. Send this object to the server
     myWebWorker.onmessage = (event) => {
+      console.log('Sending completed job to server');
       const job = event.data;
       this.socket.emit('userJobDone', job);
     }
