@@ -50,7 +50,7 @@ io.on('connect', (socket) => {
     console.log('User disconnected:', socket.id);
     pc.userDisconnect(socket.id);
   });
-  
+ 
   // 'userReady' event handler
   // Pass the socket and projectId to the ProjectController object
   // ProjectController will create a new Worker in the requested project
