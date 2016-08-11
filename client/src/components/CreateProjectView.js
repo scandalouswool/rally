@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { createProject } from '../actions/actions';
+import { Link } from 'react-router';
 
 class CreateProjectView extends Component {
   generateProjectOptions(e) {
@@ -15,6 +19,7 @@ class CreateProjectView extends Component {
   
     console.log(projectOptions);
     // Send projectOptions to the server
+    this.props.createProject(projectOptions);
   }
 
   render() {
@@ -34,10 +39,17 @@ class CreateProjectView extends Component {
           ReduceResults Function <br></br>
           <input type="text" ref="reduceResults" /> <br></br>
         </form>
-        <button onClick={this.generateProjectOptions.bind(this)}>Submit</button>
+        <button onClick={this.generateProjectOptions.bind(this)}><Link to='menu'>Submit</Link></button>
       </div>
     )
   }
 }
 
-export default CreateProjectView;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      createProject 
+    }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(CreateProjectView);

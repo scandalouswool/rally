@@ -78,6 +78,7 @@ io.on('connect', (socket) => {
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
   socket.on('createProject', (project) => {
+    console.log('Creating project...', project);
     pc.createProject(project, io);
   });
 

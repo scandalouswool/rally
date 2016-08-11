@@ -65,3 +65,10 @@ export function updateProjects(projects) {
     payload: projects
   }
 }
+
+export function createProject(projectOptions) {
+  return {
+    type: 'CREATE_PROJECT',
+    payload: projectOptions
+  }
+}

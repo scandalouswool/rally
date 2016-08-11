@@ -36,7 +36,7 @@ export default class AppView extends Component {
     // - finalResult
     // - connect
     this.socket.on('connect', () => {
-      // this.props.createdSocket(this.socket);
+      this.props.createdSocket(this.socket);
     });
 
     this.socket.on('updateWorkers', (workers) => {
