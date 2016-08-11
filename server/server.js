@@ -10,7 +10,7 @@ const _ = require('lodash');
 
 // Tester module
 const nQueens = require('./projects/nQueens.js');
-const testProject = require('./projects/tester.js');
+const primes = require('./projects/primes.js');
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -114,8 +114,8 @@ io.on('connect', (socket) => {
   });
 });
 
-// Testers
-pc.createProject(testProject, io);
+// Default Projects
+pc.createProject(primes, io);
 pc.createProject(nQueens, io);
 
 // setInterval( () => {
