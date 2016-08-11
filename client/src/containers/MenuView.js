@@ -13,9 +13,9 @@ class MenuView extends Component {
     if (this.props.projects) {
       return this.props.projects.map( (project) => {
         return (
-          <button key={project.title}>
+          <button key={project}>
             <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
-                {project.title}
+                {project}
             </Link>
           </button>
         );

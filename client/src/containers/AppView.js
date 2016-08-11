@@ -98,7 +98,6 @@ export default class AppView extends Component {
 
     this.socket.on('updateProjects', (projects) => {
       // Send action 'updateProjects'
-      console.log('Receiving new projects:', projects);
       this.props.updateProjects(projects);
     });
 
