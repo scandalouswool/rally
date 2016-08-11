@@ -13,28 +13,29 @@ export function createdSocket(socket) {
 }
 
 // TODO: updateWorkers
-export function updateWorkers(workersList){
+export function updateWorkers(workersList) {
 	return {
 		type: 'WORKERS_UPDATED',
 		payload: workersList
 	}
 }
+
 // TODO: newJob
-export function newJob(job){
+export function newJob(job) {
 	return {
 		type: 'NEW_JOB', 
 		payload: job
 	}
 }
 
-export function completeJob(job){
+export function completeJob(job) {
 	return {
 		type: 'COMPLETE_JOB', 
 		payload: job
 	}
 }
 
-export function sendCompleteJob(socket, job){
+export function sendCompleteJob(socket, job) {
 	return {
 		type: 'SEND_COMPLETE_JOB', 
 		payload: {socket, job}
@@ -50,11 +51,24 @@ export function updateResults(results) {
 }
 
 // TODO: finalResults
-export function finalResults(final){
+export function finalResults(final) {
 	return {
 		type: 'FINAL_RESULTS', 
 		payload: final
 	}
 }
 
-// TODO: allProjects
+// TODO: updateProjects
+export function updateProjects(projects) {
+  return {
+    type: 'ALL_PROJECTS',
+    payload: projects
+  }
+}
+
+export function createProject(projectOptions) {
+  return {
+    type: 'CREATE_PROJECT',
+    payload: projectOptions
+  }
+}

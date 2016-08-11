@@ -14,6 +14,7 @@ const _ = require('lodash');
   following structure:
 
     options = {
+      title: STRING,
       dataSet: ARRAY,
       generateDataSet: FUNCTION,
       mapData: FUNCTION,
@@ -44,6 +45,8 @@ const _ = require('lodash');
   will be 2 + 4 + 6 + 8, which is 20.
 */
 const testOptions = {
+  title: 'Primes',
+
   dataSet: null,
 
   generateDataSet: () => {

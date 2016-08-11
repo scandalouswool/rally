@@ -78,18 +78,40 @@ class ProjectController {
     // Assign a project ID to the new Project and create a new Project
     const projectId = 'project' + Object.keys(this.allProjects).length;
     const newProject = new Project(options, projectId, io);
+
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-    console.log(this.allProjects);
+
+    // Send the updated projects list to all socket connections
+    let projectList = [];
+    for (var key in this.allProjects) {
+      projectList.push({
+        projectId: this.allProjects[key].projectId,
+        title: this.allProjects[key].title
+      });
+    }
+
+    io.emit('updateProjects', projectList);
   }
 
   sendAllProjects(socket) {
     // Map the 'allProjects' object into a simplified object that only contains 
     // project ids and send the result to the passed-in socket
-    let projectIds = _.map(this.allProjects, (project, key) => {
-      return key;
-    });
-    socket.emit('allProjects', projectIds);
+    // let projectIds = _.map(this.allProjects, (project, key) => {
+    //   return key;
+    // });
+
+    let projectList = [];
+    for (var key in this.allProjects) {
+      projectList.push({
+        projectId: this.allProjects[key].projectId,
+        title: this.allProjects[key].title,
+        mapData: this.allProjects[key].mapData.toString(),
+        reduceResults: this.allProjects[key].reduceResults.toString()
+      });
+    }
+
+    socket.emit('updateProjects', projectList);
   }
 
   //TODO: completeProject method

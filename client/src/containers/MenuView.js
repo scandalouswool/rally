@@ -5,25 +5,32 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
 import ProjectView from '../components/ProjectView';
+import CreateProjectView from '../components/CreateProjectView';
 
 class MenuView extends Component {
 
   renderList() {
-    return this.props.projects.map( (project) => {
-      return (
-        <button key={project.title}>
-          <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
-              {project.title}
-          </Link>
-        </button>
-      );
-    });
+
+    if (this.props.projects) {
+      return this.props.projects.map( (project) => {
+        return (
+          <button key={project.projectId}>
+            <Link to='/project' onClick={() => this.props.selectProject(project) }>
+                {project.title}
+            </Link>
+          </button>
+        );
+      });
+    }
   }
 
   render() {
     console.log(this.props.createdSocket);
     return (
       <div className="padded">
+        <button><Link to='createProject'>Create New Project</Link>
+        </button>
+
         <div>
           <SelectedProjectView />
         </div>

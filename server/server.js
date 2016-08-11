@@ -9,7 +9,8 @@ const pc = new projectController();
 const _ = require('lodash');
 
 // Tester module
-const testProject = require('./projects/nQueens.js');
+const nQueens = require('./projects/nQueens.js');
+const testProject = require('./projects/tester.js');
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -30,6 +31,9 @@ server.listen(process.env.PORT || 8000, () => {
 // */
 
 io.on('connect', (socket) => {
+  // On initial connection, send the projects list to the client
+  console.log('User connected:', socket.id);
+  pc.sendAllProjects(socket);
   
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
@@ -74,6 +78,7 @@ io.on('connect', (socket) => {
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
   socket.on('createProject', (project) => {
+    console.log('Creating project...', project);
     pc.createProject(project, io);
   });
 
@@ -92,3 +97,8 @@ io.on('connect', (socket) => {
 
 // Testers
 pc.createProject(testProject, io);
+pc.createProject(nQueens, io);
+
+// setInterval( () => {
+//   pc.createProject(nQueens, io);
+// }, 2000);
