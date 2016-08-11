@@ -27,9 +27,7 @@ Install all npm dependencies.
 npm install
 ```
 
-Configure firebase environment:
-1. Create client/src/environment/ folder containing environment.js
-2. Add the following code to environment.js, replacing empty strings with firebase config variables:
+Create client/src/environment/ folder with a file called environment.js. Add the following code to environment.js, replacing empty strings with firebase config variables:
 ```sh
 const ENV = {
   apiKey: '',
