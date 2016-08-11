@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import io from 'socket.io-client';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-// import some function from actions
-import { saveSocket } from '../actions/actions';
 
 class NavbarView extends Component {
 
@@ -17,16 +12,16 @@ class NavbarView extends Component {
               <a className="navbar-brand" href="/">Rally</a>
             </div>
             <ul className="nav navbar-nav">
-              <li><Link to='/'>Home</Link></li>
-              <li><Link to='menu'>Projects</Link></li>
-              <li><Link to='project'>Current Project</Link></li> 
-              <li><Link to='login'>Log In</Link></li>
-              <li><Link to='login'>Log Out</Link></li>              
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="menu">Projects</Link></li>
+              <li><Link to="project">Current Project</Link></li>
+              <li><Link to="login">Log In</Link></li>
+              <li><Link to="login">Log Out</Link></li>
             </ul>
           </div>
         </nav>
       </div>
-    )
+    );
   }
 }
 
