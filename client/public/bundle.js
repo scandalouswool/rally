@@ -79,7 +79,7 @@
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
-	var _environment = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./environment/environment\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _environment = __webpack_require__(328);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37422,6 +37422,24 @@
 		}
 		return state;
 	};
+
+/***/ },
+/* 328 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var ENV = {
+	  apiKey: 'AIzaSyCMR8XF3pH9D9JEHfbJzkT4FHpShSgRtK8',
+	  authDomain: 'rally-3d842.firebaseapp.com',
+	  databaseURL: 'https://rally-3d842.firebaseio.com',
+	  storageBucket: 'rally-3d842.appspot.com'
+	};
+
+	exports.ENV = ENV;
 
 /***/ }
 /******/ ]);
