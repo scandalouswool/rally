@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   createdSocket: CreatedSocket,
   updateWorkers: UpdateWorkers,
   updateJob: UpdateJob,
-  updateResults: UpdateResults 
+  updateResults: UpdateResults
 });
 
 export default rootReducer;

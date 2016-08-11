@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults} from '../actions/actions';
+import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults} from '../actions/actions';
 
 export default class AppView extends Component {
   constructor() {
@@ -90,7 +90,7 @@ export default class AppView extends Component {
 
     this.socket.on('finalResult', (final) => {
       // Send action 'finalResult'
-
+      this.props.finalResults(final); 
       // console.log('Received final results!');
       // $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
       //console.log('Updating finalResult: ', final);
@@ -129,7 +129,7 @@ export default class AppView extends Component {
 // }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults }, dispatch)
+  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(AppView);

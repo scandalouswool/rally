@@ -49,7 +49,12 @@ export function updateResults(results) {
 	}
 }
 
-
 // TODO: finalResults
+export function finalResults(final){
+	return {
+		type: 'FINAL_RESULTS', 
+		payload: final
+	}
+}
 
 // TODO: allProjects
