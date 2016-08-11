@@ -9,7 +9,8 @@ const pc = new projectController();
 const _ = require('lodash');
 
 // Tester module
-const testProject = require('./projects/nQueens.js');
+const nQueens = require('./projects/nQueens.js');
+const testProject = require('./projects/tester.js');
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -95,3 +96,4 @@ io.on('connect', (socket) => {
 
 // Testers
 pc.createProject(testProject, io);
+pc.createProject(nQueens, io);

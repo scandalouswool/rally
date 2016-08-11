@@ -89,7 +89,7 @@ class ProjectController {
     let projectIds = _.map(this.allProjects, (project, key) => {
       return key;
     });
-    console.log('Sending all projects');
+    console.log('Sending all projects', projectIds);
     socket.emit('updateProjects', projectIds);
   }
 
