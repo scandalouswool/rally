@@ -10,7 +10,8 @@ import { createdSocket,
          completeJob, 
          sendCompleteJob, 
          updateResults, 
-         finalResults
+         finalResults,
+         createWebWorker
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -20,7 +21,32 @@ export default class AppView extends Component {
   }
 
   componentWillMount() {
-    console.log('This is the socket state: ', this.socket);
+    /************************************************
+    // Web Worker Handlers
+    ************************************************/
+    
+    //initialize a variable for a webWorker
+    let myWebWorker = null;
+
+    //this checks if your computer can run web workers, Worker is a global variable that is native to the browser
+    if (typeof(Worker) !== 'undefined') {
+      console.log('Initializing new Web Worker');
+      //initialize a web worker based on webWorker.js in the client folder
+      myWebWorker = new Worker('/webworker');
+    } else {
+      console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
+    }
+
+    // myWebWorker will send back a Job object with the 
+    // data field populated. Send this object to the server
+    myWebWorker.onmessage = (event) => {
+      const job = event.data;
+      this.socket.emit('userJobDone', job);
+    }
+
+    /************************************************
+    // Web Socket Handlers
+    ************************************************/
 
     const sendReady = () => {
       // Hard coded for now - eventually generate from server
@@ -44,32 +70,25 @@ export default class AppView extends Component {
     });
 
     this.socket.on('newJob', (job) => {
-      this.props.newJob(job)
-      // //if myWebWorker is not null, that means we were able to create it
-      // if (myWebWorker !== null) {
-      //   console.log('Web Worker assigned to the new job!');
-      //   //send the job item to the web worker, postMessage sends a message to the web worker
-      //   myWebWorker.postMessage(job);
-      // } else {
-      //   console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
+      this.props.newJob(job);
 
-      //   var mapDataFunc = eval('(' + job.mapData + ')');
-      //   job.result = mapDataFunc(job.data);
+      //if myWebWorker is not null, that means we were able to create it
+      if (myWebWorker !== null) {
+        console.log('Web Worker assigned to the new job!');
+        //send the job item to the web worker, postMessage sends a message to the web worker
+        myWebWorker.postMessage(job);
+      } else {
+        console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
 
-      //   console.log('Job complete. Result is: ', job.result);
-      //   console.log('Sending result back to server');
+        var mapDataFunc = eval('(' + job.mapData + ')');
+        job.result = mapDataFunc(job.data);
+
+        console.log('Job complete. Result is: ', job.result);
+        console.log('Sending result back to server');
         
-      //   this.socket.emit('userJobDone', job);
-      // }
-      //console.log('Updating job in newJob: ', job);
-
-      // const that = this;
-
-      setTimeout(() => {
-        console.log('Sending finished job');
-        job.result = [];
         this.socket.emit('userJobDone', job);
-      }, 2000);
+      }
+      console.log('Updating job in newJob: ', job);
     });
 
     this.socket.on('updateResults', (results) => {
@@ -105,8 +124,7 @@ export default class AppView extends Component {
     const socketMethods = {
       socket: this.socket,
       sendReady: sendReady
-    }
-
+    }    
   }
 
   render() {
@@ -122,12 +140,11 @@ export default class AppView extends Component {
   }
 }
 
-
-// function mapStateToProps(state) {
-//   return {
-
-//   }
-// }
+function mapStateToProps(state) {
+  return {
+    webWorker: createWebWorker
+  }
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
@@ -138,8 +155,9 @@ function mapDispatchToProps(dispatch) {
       completeJob, 
       sendCompleteJob, 
       updateResults, 
-      finalResults 
+      finalResults,
+      createWebWorker 
     }, dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(AppView);
+export default connect(mapStateToProps, mapDispatchToProps)(AppView);

@@ -42,6 +42,7 @@ npm start
 1. Socket event handlers for server:
   - 'disconnect': user disconnected its socket connection
   - 'userReady': user is ready to receive Job
+  - 'userDisconnect': user leaves a project
   - 'userJobDone': user sent back a finished Job
   - 'createProject': need to instantiate a new Project
   - 'getAllProjects': user is requesting list of all Projects

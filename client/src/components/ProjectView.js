@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import SelectedProjectView from '../containers/SelectedProjectView';
 
 class ProjectView extends Component {
-  constructor(props) {
-    super(props);
-
-
-  }
-
   connectToProject() {
-    console.log(`Connecting to project`);
+    console.log('Joining...');
+    this.props.socket.emit('userReady', this.props.project.projectId);
   }
 
   disconnectFromProject() {
-    console.log(`Disconnecting from project`);
+    console.log(`Disconnecting from project: ${this.props.project['title']}`);
+    this.props.socket.emit('userDisconnect');
+    // TODO: terminate the existing worker
   }
 
   render() {
     console.log(this.props.project);
+    console.log(this.props.project['title']);
     
     return (
       <div>
         <SelectedProjectView />
         This is the project view. <br />
-        <button onClick={this.connectToProject}>Join</button>
-        <button onClick={this.disconnectFromProject}>Leave</button>
+        <button onClick={this.connectToProject.bind(this)}>Join</button>
+        <button onClick={this.disconnectFromProject.bind(this)}>Leave</button>
       </div>
     )
   }
@@ -33,7 +32,8 @@ class ProjectView extends Component {
 
 function mapStateToProps(state) {
   return {
-    project: state.selectedProject
+    project: state.selectedProject,
+    socket: state.createdSocket
   }
 }
 

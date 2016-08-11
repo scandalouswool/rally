@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 class SelectedProjectView extends Component {
   constructor(props) {
     super(props);
-
-    this.webWorker = null;
   }
 
   render() {

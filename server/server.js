@@ -14,6 +14,11 @@ const testProject = require('./projects/tester.js');
 
 app.use(express.static(__dirname + '/../client'));
 
+// For accessing the Web Worker script file
+app.get('/webworker', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../client/src/webworker/webworker.js'));
+});
+
 //this is for when the user chooses to enter our site with a specific path
 //it will route them to index.html. The front-end will then handle the route
 app.get('*', (req, res) => {
@@ -53,6 +58,11 @@ io.on('connect', (socket) => {
   socket.on('userReady', (projectId) => {
     console.log('User ready for project:', projectId);
     pc.userReady(projectId, socket);
+  });
+
+  socket.on('userDisconnect', () => {
+    console.log('User left the project:', socket.id);
+    pc.userDisconnect(socket.id);
   });
 
   // 'userJobDone' event handler
