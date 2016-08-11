@@ -23,6 +23,7 @@ app.get('/webworker', (req, res) => {
 //this is for when the user chooses to enter our site with a specific path
 //it will route them to index.html. The front-end will then handle the route
 app.get('*', (req, res) => {
+  console.log('Sending index file');
   res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });
 
