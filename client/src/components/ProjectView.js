@@ -33,7 +33,7 @@ class ProjectView extends Component {
           Number of results so far: {this.props.results === null ? 'zero' : this.props.results.length}
         </div>
       </div>
-    )
+    );
   }
 }
 

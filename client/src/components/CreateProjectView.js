@@ -41,7 +41,7 @@ class CreateProjectView extends Component {
         </form>
         <button onClick={this.generateProjectOptions.bind(this)}><Link to='menu'>Submit</Link></button>
       </div>
-    )
+    );
   }
 }
 
