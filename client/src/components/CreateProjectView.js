@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class CreateProjectView extends Component {
   render() {
     return (
-      <div>
+      <div className="padded">
         This is the create project view.
       </div>
     )

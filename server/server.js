@@ -98,6 +98,6 @@ io.on('connect', (socket) => {
 pc.createProject(testProject, io);
 pc.createProject(nQueens, io);
 
-setInterval( () => {
-  pc.createProject(nQueens, io);
-}, 2000);
+// setInterval( () => {
+//   pc.createProject(nQueens, io);
+// }, 2000);

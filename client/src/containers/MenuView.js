@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
 import ProjectView from '../components/ProjectView';
+import CreateProjectView from '../components/CreateProjectView';
 
 class MenuView extends Component {
 
@@ -27,6 +28,9 @@ class MenuView extends Component {
     console.log(this.props.createdSocket);
     return (
       <div className="padded">
+        <button><Link to='createProject'>Create New Project</Link>
+        </button>
+
         <div>
           <SelectedProjectView />
         </div>

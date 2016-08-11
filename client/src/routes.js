@@ -9,6 +9,7 @@ import SelectedProjectView from './containers/SelectedProjectView';
 import LoginView from './components/LoginView';
 import SignupView from './components/SignupView';
 import ErrorView from './components/ErrorView';
+import CreateProjectView from './components/CreateProjectView';
 
 console.log(LoginView);
 
@@ -17,6 +18,7 @@ export default (
     <IndexRoute component={HomeView} />
     <Route path='menu' component={MenuView} />
     <Route path='project' component={ProjectView} />
+    <Route path='createProject' component={CreateProjectView} />
     <Route path='selectedproject' component={SelectedProjectView} />
     <Route path='login' component={LoginView} />
     <Route path='signup' component={SignupView} />
