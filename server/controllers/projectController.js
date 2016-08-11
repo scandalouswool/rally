@@ -105,7 +105,9 @@ class ProjectController {
     for (var key in this.allProjects) {
       projectList.push({
         projectId: this.allProjects[key].projectId,
-        title: this.allProjects[key].title
+        title: this.allProjects[key].title,
+        mapData: this.allProjects[key].mapData.toString(),
+        reduceResults: this.allProjects[key].reduceResults.toString()
       });
     }
 

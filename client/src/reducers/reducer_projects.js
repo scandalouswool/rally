@@ -4,11 +4,22 @@
 //This is hardcoded
 
 export default function (state = null, action) {
-  console.log('Insider reducer. Initial state is:', state);
   switch(action.type) {
     case 'ALL_PROJECTS':
       console.log('Receiving the projects list:', action.payload);
-      return action.payload;
+
+      const newState = action.payload.map( (project) => {
+        return {
+          projectId: project.projectId,
+          title: project.title,
+          mapData: eval(project.mapData),
+          reduceResults: eval(project.reduceResults)
+        }
+      });
+
+      console.log(newState);
+
+      return newState;
 
     default:
       return state;
