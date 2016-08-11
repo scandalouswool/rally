@@ -81,6 +81,12 @@ class ProjectController {
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
     console.log(this.allProjects);
+
+    // Send the updated projects list to all socket connections
+    let projectIds = _.map(this.allProjects, (project, key) => {
+      return key;
+    });
+    io.emit('updateProjects', projectIds);
   }
 
   sendAllProjects(socket) {
