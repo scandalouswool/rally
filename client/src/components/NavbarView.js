@@ -21,7 +21,7 @@ class NavbarView extends Component {
               <li><Link to='menu'>Projects</Link></li>
               <li><Link to='project'>Current Project</Link></li> 
               <li><Link to='login'>Log In</Link></li>
-              <li><Link to='signup'>Sign Up</Link></li>
+              <li><Link to='login'>Log Out</Link></li>              
             </ul>
           </div>
         </nav>

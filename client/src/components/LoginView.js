@@ -10,6 +10,10 @@ class LoginView extends Component {
           <input id="password" className="form-control" type="password" placeholder="Password"/>
           <button className="btn btn-success btn-block" type="submit" value="Save">Log In</button>
         </form>
+
+        <div>
+          <span><a href='/signup'>Don't have an account? Sign up here!</a></span>
+        </div>
       </div>
     )
   }
