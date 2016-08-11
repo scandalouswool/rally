@@ -17,6 +17,8 @@ class Project {
   constructor(options, projectId, io) {
     // Project ID is created by the ProjectController and passed to Project
     this.projectId = projectId;  
+
+    this.title = options.title;
     
     // Used for timer events
     this.projectBeginTime = null;

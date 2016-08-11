@@ -3,6 +3,8 @@
 const _ = require('lodash');
 
 const nQueenOptions = {
+  title: 'nQueens',
+
   dataSet: null,
 
   generateDataSet: () => {
