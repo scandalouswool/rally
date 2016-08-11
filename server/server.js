@@ -99,6 +99,13 @@ io.on('connect', (socket) => {
     pc.sendAllProjects(socket);
   });
 
+  // 'fetchProjectResults' event handler
+  // Send results for this project to the requestor
+  // Eliminate this event after refactoring backend of use socket rooms
+  socket.on('fetchProjectResults', (projectId) => {
+    pc.sendProjectResults(projectId, socket);
+  });
+
   // 'error' event handler
   socket.on('error', (error) => {
     console.log('Socket error:', error);

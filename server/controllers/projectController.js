@@ -114,6 +114,13 @@ class ProjectController {
     socket.emit('updateProjects', projectList);
   }
 
+  sendProjectResults(projectId, socket) {
+    let results = this.allProjects[projectId].completedJobs.map( (item) => {
+      return item;
+    });
+    socket.emit('updateResults', results);
+  }
+
   //TODO: completeProject method
   completeProject() {
     console.log('Project done');

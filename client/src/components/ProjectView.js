@@ -4,6 +4,11 @@ import { bindActionCreators } from 'redux';
 import SelectedProjectView from '../containers/SelectedProjectView';
 
 class ProjectView extends Component {
+  componentDidMount() {
+    console.log('Fetching results for this project');
+    this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
+  }
+
   connectToProject() {
     console.log('Joining...');
     this.props.socket.emit('userReady', this.props.project.projectId);
