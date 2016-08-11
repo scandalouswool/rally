@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SelectedProjectView from '../containers/SelectedProjectView';
+import Progress from 'react-progressbar';
 
 class ProjectView extends Component {
   componentDidMount() {
@@ -21,8 +22,11 @@ class ProjectView extends Component {
   }
 
   render() {
-    console.log(this.props.results);
-    
+    console.log('inside project view')
+    console.log('results', this.props.results);
+    console.log('project', this.props.project); 
+    console.log('job', this.props.job); 
+    console.log('###############'); 
     return (
       <div>
         <SelectedProjectView />
@@ -32,16 +36,31 @@ class ProjectView extends Component {
         <div>
           Number of results so far: {this.props.results === null ? 'zero' : this.props.results.length}
         </div>
+        <div>
+          Total number of jobs: {this.props.results === null ? 'zero': this.props.job.totalJobs}
+        </div>
+        <div>
+        Progress: {this.props.results === null ? 'zero': Math.floor(this.props.results.length / this.props.job.totalJobs * 100)}
+          {this.props.results === null ? '': '%'}
+          <Progress color='DarkBlue' completed={this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
+        </div>
+        <div>
+        Result: {this.props.results}
+        </div>
       </div>
     );
   }
 }
 
+
+
 function mapStateToProps(state) {
+  console.log(state)
   return {
     project: state.selectedProject,
     socket: state.createdSocket,
-    results: state.updateResults
+    results: state.updateResults,
+    job: state.updateJob
   }
 }
 
