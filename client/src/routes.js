@@ -11,8 +11,6 @@ import SignupView from './components/SignupView';
 import ErrorView from './components/ErrorView';
 import CreateProjectView from './components/CreateProjectView';
 
-console.log(LoginView);
-
 export default (
   <Route path='/' component={AppView}>
     <IndexRoute component={HomeView} />
