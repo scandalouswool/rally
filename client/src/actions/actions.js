@@ -72,3 +72,10 @@ export function createProject(projectOptions) {
     payload: projectOptions
   }
 }
+
+export function createWebWorker(webWorkers) {
+  return {
+    type: 'CREATE_WEB_WORKER',
+    payload: webWorkers
+  }
+}

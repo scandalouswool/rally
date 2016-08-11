@@ -14,6 +14,11 @@ const testProject = require('./projects/tester.js');
 
 app.use(express.static(__dirname + '/../client'));
 
+// For accessing the Web Worker script file
+app.get('/webworker', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../client/src/webworker/webworker.js'));
+});
+
 //this is for when the user chooses to enter our site with a specific path
 //it will route them to index.html. The front-end will then handle the route
 app.get('*', (req, res) => {
@@ -55,6 +60,11 @@ io.on('connect', (socket) => {
     pc.userReady(projectId, socket);
   });
 
+  socket.on('userDisconnect', () => {
+    console.log('User left the project:', socket.id);
+    pc.userDisconnect(socket.id);
+  });
+
   // 'userJobDone' event handler
   // Pass completed Job to the ProjectController object
   // The completed Job object will have a 'result' property
@@ -87,6 +97,13 @@ io.on('connect', (socket) => {
   // The server will send back an object containing the project IDs of all existing projects 
   socket.on('getAllProjects', () => {
     pc.sendAllProjects(socket);
+  });
+
+  // 'fetchProjectResults' event handler
+  // Send results for this project to the requestor
+  // Eliminate this event after refactoring backend of use socket rooms
+  socket.on('fetchProjectResults', (projectId) => {
+    pc.sendProjectResults(projectId, socket);
   });
 
   // 'error' event handler
