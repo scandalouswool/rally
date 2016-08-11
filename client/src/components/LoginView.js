@@ -12,7 +12,7 @@ class LoginView extends Component {
         </form>
 
         <div>
-          <span><a href='/signup'>Don"t have an account? Sign up here!</a></span>
+          <span><a href='/signup'>Don't have an account? Sign up here!</a></span>
         </div>
       </div>
     )
