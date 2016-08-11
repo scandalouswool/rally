@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class SelectedProjectView extends Component {
+  constructor(props) {
+    super(props);
+
+    this.webWorker = null;
+  }
+
   render() {
     if (!this.props.project) {
       return <div className="padded">Select a project</div>;

@@ -3,9 +3,16 @@
 
 //This is hardcoded
 
-export default function () {
-  return [
-    {title: 'nQueens'},
-    {title: 'Primes'}
-  ]
+export default function (state = null, action) {
+  console.log('Insider reducer. Initial state is:', state);
+  switch(action.type) {
+    case 'ALL_PROJECTS':
+      console.log('Receiving the projects list:', action.payload);
+      return action.payload;
+
+    default:
+      return state;
+  }
+
+  return state;
 }

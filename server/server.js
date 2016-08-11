@@ -30,6 +30,9 @@ server.listen(process.env.PORT || 8000, () => {
 // */
 
 io.on('connect', (socket) => {
+  // On initial connection, send the projects list to the client
+  console.log('User connected:', socket.id);
+  pc.sendAllProjects(socket);
   
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object

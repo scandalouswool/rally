@@ -3,7 +3,15 @@ import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults} from '../actions/actions';
+import { createdSocket,
+         updateProjects, 
+         updateWorkers, 
+         newJob, 
+         completeJob, 
+         sendCompleteJob, 
+         updateResults, 
+         finalResults
+       } from '../actions/actions';
 
 export default class AppView extends Component {
   constructor() {
@@ -28,16 +36,14 @@ export default class AppView extends Component {
     // - finalResult
     // - connect
     this.socket.on('connect', () => {
-      this.props.createdSocket(this.socket);
+      // this.props.createdSocket(this.socket);
     });
 
     this.socket.on('updateWorkers', (workers) => {
-      // Send action 'updateWorkers'
       this.props.updateWorkers(workers); 
     });
 
     this.socket.on('newJob', (job) => {
-      // Send action 'newJob'
       this.props.newJob(job)
       // //if myWebWorker is not null, that means we were able to create it
       // if (myWebWorker !== null) {
@@ -59,17 +65,11 @@ export default class AppView extends Component {
 
       // const that = this;
 
-      // setTimeout(() => {
-      //   console.log('Sending finished job');
-      //   job.result = [];
-      //   this.socket.emit('userJobDone', job);
-      // }, 2000);
-      setTimeout(()=> {
+      setTimeout(() => {
+        console.log('Sending finished job');
         job.result = [];
-        console.log('Sending completed job');
-        this.props.sendCompleteJob(this.socket, job)   
-      }, 1000); 
-      
+        this.socket.emit('userJobDone', job);
+      }, 2000);
     });
 
     this.socket.on('updateResults', (results) => {
@@ -96,8 +96,10 @@ export default class AppView extends Component {
       //console.log('Updating finalResult: ', final);
     });
 
-    this.socket.on('allProjects', () => {
-      // Send action 'allProjects'
+    this.socket.on('updateProjects', (projects) => {
+      // Send action 'updateProjects'
+      console.log('Receiving new projects:', projects);
+      this.props.updateProjects(projects);
     });
 
     // setTimeout(() => sendReady(), 2000);
@@ -129,7 +131,16 @@ export default class AppView extends Component {
 // }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createdSocket, updateWorkers, newJob, completeJob, sendCompleteJob, updateResults, finalResults }, dispatch)
+  return bindActionCreators(
+    { createdSocket, 
+      updateProjects,
+      updateWorkers, 
+      newJob, 
+      completeJob, 
+      sendCompleteJob, 
+      updateResults, 
+      finalResults 
+    }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(AppView);

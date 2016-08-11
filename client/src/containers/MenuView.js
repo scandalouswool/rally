@@ -9,15 +9,18 @@ import ProjectView from '../components/ProjectView';
 class MenuView extends Component {
 
   renderList() {
-    return this.props.projects.map( (project) => {
-      return (
-        <button key={project.title}>
-          <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
-              {project.title}
-          </Link>
-        </button>
-      );
-    });
+
+    if (this.props.projects) {
+      return this.props.projects.map( (project) => {
+        return (
+          <button key={project.title}>
+            <Link to='/project' onClick={() =>  this.props.selectProject(project) }>
+                {project.title}
+            </Link>
+          </button>
+        );
+      });
+    }
   }
 
   render() {
