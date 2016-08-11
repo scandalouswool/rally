@@ -16,8 +16,7 @@ class ProjectView extends Component {
   }
 
   render() {
-    console.log(this.props.project);
-    console.log(this.props.project['title']);
+    console.log(this.props.results);
     
     return (
       <div>
@@ -25,6 +24,9 @@ class ProjectView extends Component {
         This is the project view. <br />
         <button onClick={this.connectToProject.bind(this)}>Join</button>
         <button onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+        <div>
+          Number of results so far: {this.props.results === null ? 'zero' : this.props.results.length}
+        </div>
       </div>
     )
   }
@@ -33,7 +35,8 @@ class ProjectView extends Component {
 function mapStateToProps(state) {
   return {
     project: state.selectedProject,
-    socket: state.createdSocket
+    socket: state.createdSocket,
+    results: state.updateResults
   }
 }
 
