@@ -93,9 +93,12 @@
 
 	// Initialize Firebase
 
+<<<<<<< 464341d4b6aeeff488f0064fe361c8de13563964
 
 	// Alter before deployment to Heroku
 
+=======
+>>>>>>> Changes
 	var firebaseApp = _firebase2.default.initializeApp(_environment.ENV);
 
 	_reactDom2.default.render(_react2.default.createElement(
@@ -103,10 +106,13 @@
 	  { store: store },
 	  _react2.default.createElement(_reactRouter.Router, { history: _reactRouter.browserHistory, routes: _routes2.default })
 	), document.getElementById('app'));
+<<<<<<< 464341d4b6aeeff488f0064fe361c8de13563964
 
 	// Initialize authentication listener
 	// (Not sure why this has to be set timeout...change if proves unnecessary)
 	setTimeout(store.dispatch((0, _actions.startListeningToAuth)(firebaseApp)));
+=======
+>>>>>>> Changes
 
 /***/ },
 /* 2 */
@@ -73512,7 +73518,7 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
@@ -74281,6 +74287,7 @@
 
 	exports.ENV = ENV;
 
+<<<<<<< 464341d4b6aeeff488f0064fe361c8de13563964
 /***/ },
 /* 490 */
 /***/ function(module, exports, __webpack_require__) {
@@ -74842,5 +74849,7 @@
 	  }
 	};
 
+=======
+>>>>>>> Changes
 /***/ }
 /******/ ]);
