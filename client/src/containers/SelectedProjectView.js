@@ -8,7 +8,7 @@ class SelectedProjectView extends Component {
 
   render() {
     if (!this.props.project) {
-      return <div className="padded">Select a project</div>;
+      return <h3>Select a project to begin</h3>;
     }
 
     return (

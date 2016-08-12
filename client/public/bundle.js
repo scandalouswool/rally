@@ -36715,10 +36715,10 @@
 	        return this.props.projects.map(function (project) {
 	          return _react2.default.createElement(
 	            'button',
-	            { key: project.projectId },
+	            { className: 'btn-success btn-sm', key: project.projectId },
 	            _react2.default.createElement(
 	              _reactRouter.Link,
-	              { to: '/project', onClick: function onClick() {
+	              { className: 'white', to: '/project', onClick: function onClick() {
 	                  return _this2.props.selectProject(project);
 	                } },
 	              project.title
@@ -36732,13 +36732,13 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'center-block' },
 	        _react2.default.createElement(
 	          'button',
-	          null,
+	          { className: 'btn-success btn-lg' },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: 'createProject' },
+	            { to: 'createProject', className: 'white' },
 	            'Create New Project'
 	          )
 	        ),
@@ -36821,9 +36821,9 @@
 	    value: function render() {
 	      if (!this.props.project) {
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'padded' },
-	          'Select a project'
+	          'h3',
+	          null,
+	          'Select a project to begin'
 	        );
 	      }
 
