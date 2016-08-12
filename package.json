@@ -7,7 +7,7 @@
     "start": "nodemon --use_strict server/server.js",
     "build:start": "npm start & npm run build:dev",
     "build:dev": "webpack --config --watch",
-    "postinstall": "node_modules/.bin/webpackwebpack -p --config ./webpack.config.js --progress",
+    "postinstall": "node_modules/.bin/webpack -p --config ./webpack.config.js --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
