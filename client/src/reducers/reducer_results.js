@@ -4,7 +4,8 @@ export default function (state = [], action) {
 			console.log('inside completed results', action.payload)
       let nextState = action.payload.map( (item) => {
         if (item === null) {
-          return 0;
+          console.log('Null result found');
+          return [];
         } else {
           return item;
         }
