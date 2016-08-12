@@ -10,7 +10,16 @@ const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 // Initialize Firebase
 import firebase from 'firebase';
-import { ENV } from './environment/environment';
+
+// Alter before deployment to Heroku
+// import { ENV } from './environment/environment';
+const ENV = {
+  apiKey: process.env.apiKey,
+  authDomain: process.env.apiKey,
+  databaseURL: process.env.databaseURL,
+  storageBucket: process.env.storageBucket
+};
+
 const firebaseApp = firebase.initializeApp(ENV);
 
 ReactDOM.render(
