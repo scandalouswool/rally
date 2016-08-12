@@ -27,7 +27,7 @@ class MenuView extends Component {
   render() {
     console.log(this.props.createdSocket);
     return (
-      <div className="padded">
+      <div>
         <button><Link to='createProject'>Create New Project</Link>
         </button>
 

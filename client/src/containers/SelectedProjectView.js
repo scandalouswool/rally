@@ -12,7 +12,7 @@ class SelectedProjectView extends Component {
     }
 
     return (
-      <div className="padded">
+      <div>
         <h3>Currently Selected Project:</h3>
         <div>{this.props.project.title}</div>
       </div>
