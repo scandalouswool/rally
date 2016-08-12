@@ -21,7 +21,7 @@ const ENV = {
 };
 console.log(process.env);
 console.log('Checking retrieval of ENV', ENV);
-const firebaseApp = firebase.initializeApp(ENV);
+// const firebaseApp = firebase.initializeApp(ENV);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
