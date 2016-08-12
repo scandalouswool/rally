@@ -27,6 +27,7 @@ class ProjectView extends Component {
     let visualization;
     console.log('Project is:', this.props.project);
     console.log('Project type:', this.props.project.projectType);
+    console.log('Project total number of jobs:', this.props.project.jobsLength);
     if (this.props.project.projectType === 'primes') {
       visualization = <PrimesVisualView />
     } else {
@@ -46,7 +47,7 @@ class ProjectView extends Component {
         <div>
           Total number of jobs: {this.props.results === null ? 'zero': this.props.job.totalJobs}
         </div>
-        <div>
+        <div className="progressbar">
           Progress: {this.props.results === null ? 'zero': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
           {this.props.results === null ? '': '%'}
           <Progress color='#3CC76A' completed={this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />

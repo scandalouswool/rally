@@ -73,10 +73,8 @@ export default class AppView extends Component {
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
 
-      //if myWebWorker is not null, that means we were able to create it
       if (myWebWorker !== null) {
         console.log('Web Worker assigned to the new job!');
-        //send the job item to the web worker, postMessage sends a message to the web worker
         myWebWorker.postMessage(job);
       } else {
         console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
@@ -94,34 +92,16 @@ export default class AppView extends Component {
 
     this.socket.on('updateResults', (results) => {
       this.props.updateResults(results); 
-      // Send action updateResults
-
-      // console.log(results);
-      // $('#nQueensSolutions').empty();
-
-      // results.forEach( function(item) {
-      //   if (item !== null) {
-      //     $('#nQueensSolutions').append('<li>Worker found ' + item + ' solutions!');        
-      //   }
-
-      // });
-      //console.log('Updating results in updateResults: ', results);
     });
 
     this.socket.on('finalResult', (final) => {
-      // Send action 'finalResult'
       this.props.finalResults(final); 
-      // console.log('Received final results!');
-      // $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
-      //console.log('Updating finalResult: ', final);
     });
 
     this.socket.on('updateProjects', (projects) => {
-      // Send action 'updateProjects'
       this.props.updateProjects(projects);
     });
 
-    // setTimeout(() => sendReady(), 2000);
     const socketMethods = {
       socket: this.socket,
       sendReady: sendReady

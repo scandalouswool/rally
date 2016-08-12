@@ -3,7 +3,6 @@
 */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { UpdateResults } from '../actions/actions';
 import _ from 'lodash';
 
 class PrimesVisualView extends Component {
@@ -18,21 +17,20 @@ class PrimesVisualView extends Component {
     this.graph = d3.select('#visualizer').append('svg')
       .attr('width', this.svgWidth)
       .attr('height', this.svgHeight);
-    console.log('Defined graph', this.graph);
-    console.log(this.props.results.length);
+    
+    console.log('Drawing primes visualization');
     this.drawPrimesGraph();
   }
 
-  componentWillReceiveProps() {
-    console.log('Receiving component');
+  // componentWillReceiveProps() {
+  componentDidUpdate() {
+    console.log('Updating primes visualization');
     this.drawPrimesGraph();
   }
 
   drawPrimesGraph() {
-    console.log('Drawing graph', this.graph);
-
     const xScale = d3.scaleLinear()
-      .domain([0, 20])
+      .domain([0, this.props.project.jobsLength])
       .range([0, this.svgWidth]);
 
     const yScale = d3.scaleLinear()
@@ -40,8 +38,9 @@ class PrimesVisualView extends Component {
       .range([0, this.svgHeight]);
 
     let notes = this.graph.selectAll('rect')
-      .data(this.props.results);
-    console.log(notes);
+      .data(this.props.results, (d, i) => {
+        return d;
+      });
     
     // ENTER
     notes.enter()
@@ -50,7 +49,7 @@ class PrimesVisualView extends Component {
         return xScale(i);
       })
       .attr('y', (d) => {
-        return this.svgHeight - yScale(d === null ? 0 : d.length)
+        return this.svgHeight - yScale(d.length)
       })
       .attr('height', (d) => {
         return yScale(d.length);
@@ -67,7 +66,7 @@ class PrimesVisualView extends Component {
         return xScale(i);
       })
       .attr('y', (d) => {
-        return this.svgHeight - yScale(d === null ? 0 : d.length)
+        return this.svgHeight - yScale(d.length)
       })
       .attr('height', (d) => {
         return yScale(d.length);
@@ -94,7 +93,8 @@ class PrimesVisualView extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: state.updateResults
+    results: state.updateResults,
+    project: state.selectedProject
   };
 }
 
