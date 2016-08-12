@@ -12,6 +12,7 @@ class NavbarView extends Component {
     firebase.auth().signOut()
       .then(() => {
         console.log('Successfully logged out!');
+        // Need to fire action to log out?
       })
       .catch((error) => {
         console.log('Error logging out: ' + error);

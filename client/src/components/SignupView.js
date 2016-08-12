@@ -9,7 +9,7 @@ class SignupView extends Component {
       name: '',
       email: '',
       password: '',
-      error: 'Error'
+      error: ''
     };
   }
 
@@ -26,8 +26,6 @@ class SignupView extends Component {
         // Firebase method that saves the user's name
         let user = firebase.auth().currentUser;
         user.updateProfile({ displayName: name })
-          .then(() => {
-          })
           .catch(() => {
             this.setState({
               error: 'Please enter a legitimate name. Sorry if that was your actual name.'
