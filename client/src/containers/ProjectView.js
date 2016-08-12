@@ -46,6 +46,7 @@ class ProjectView extends Component {
       } else {
         visualization = undefined;
       }
+
       console.log('Results so far:', this.props.results[projectId]);
       console.log('Workers in this project:', thisProject.workers);
       return (
