@@ -3,7 +3,6 @@
 */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { UpdateResults } from '../actions/actions';
 import _ from 'lodash';
 
 class PrimesVisualView extends Component {
@@ -23,8 +22,10 @@ class PrimesVisualView extends Component {
     this.drawPrimesGraph();
   }
 
-  componentWillReceiveProps() {
-    console.log('Receiving component');
+  // componentWillReceiveProps() {
+  componentDidUpdate() {
+    console.log('Updating component');
+    console.log('Results:', this.props.results);
     this.drawPrimesGraph();
   }
 
@@ -32,7 +33,7 @@ class PrimesVisualView extends Component {
     console.log('Drawing graph', this.graph);
 
     const xScale = d3.scaleLinear()
-      .domain([0, 20])
+      .domain([0, this.props.project.jobsLength])
       .range([0, this.svgWidth]);
 
     const yScale = d3.scaleLinear()
@@ -40,7 +41,9 @@ class PrimesVisualView extends Component {
       .range([0, this.svgHeight]);
 
     let notes = this.graph.selectAll('rect')
-      .data(this.props.results);
+      .data(this.props.results, (d, i) => {
+        return d;
+      });
     console.log(notes);
     
     // ENTER
@@ -50,7 +53,7 @@ class PrimesVisualView extends Component {
         return xScale(i);
       })
       .attr('y', (d) => {
-        return this.svgHeight - yScale(d === null ? 0 : d.length)
+        return this.svgHeight - yScale(d.length)
       })
       .attr('height', (d) => {
         return yScale(d.length);
@@ -67,7 +70,7 @@ class PrimesVisualView extends Component {
         return xScale(i);
       })
       .attr('y', (d) => {
-        return this.svgHeight - yScale(d === null ? 0 : d.length)
+        return this.svgHeight - yScale(d.length)
       })
       .attr('height', (d) => {
         return yScale(d.length);
@@ -94,7 +97,8 @@ class PrimesVisualView extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: state.updateResults
+    results: state.updateResults,
+    project: state.selectedProject
   };
 }
 

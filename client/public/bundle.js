@@ -28752,10 +28752,8 @@
 	      this.socket.on('newJob', function (job) {
 	        _this2.props.newJob(job);
 
-	        //if myWebWorker is not null, that means we were able to create it
 	        if (myWebWorker !== null) {
 	          console.log('Web Worker assigned to the new job!');
-	          //send the job item to the web worker, postMessage sends a message to the web worker
 	          myWebWorker.postMessage(job);
 	        } else {
 	          console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
@@ -28773,34 +28771,16 @@
 
 	      this.socket.on('updateResults', function (results) {
 	        _this2.props.updateResults(results);
-	        // Send action updateResults
-
-	        // console.log(results);
-	        // $('#nQueensSolutions').empty();
-
-	        // results.forEach( function(item) {
-	        //   if (item !== null) {
-	        //     $('#nQueensSolutions').append('<li>Worker found ' + item + ' solutions!');        
-	        //   }
-
-	        // });
-	        //console.log('Updating results in updateResults: ', results);
 	      });
 
 	      this.socket.on('finalResult', function (final) {
-	        // Send action 'finalResult'
 	        _this2.props.finalResults(final);
-	        // console.log('Received final results!');
-	        // $('#nQueensSolutions').append('<li>Final nQueens result after applying the mirror-image algorithm: ' + final);
-	        //console.log('Updating finalResult: ', final);
 	      });
 
 	      this.socket.on('updateProjects', function (projects) {
-	        // Send action 'updateProjects'
 	        _this2.props.updateProjects(projects);
 	      });
 
-	      // setTimeout(() => sendReady(), 2000);
 	      var socketMethods = {
 	        socket: this.socket,
 	        sendReady: sendReady
@@ -36943,6 +36923,7 @@
 	      var visualization = void 0;
 	      console.log('Project is:', this.props.project);
 	      console.log('Project type:', this.props.project.projectType);
+	      console.log('Project total number of jobs:', this.props.project.jobsLength);
 	      if (this.props.project.projectType === 'primes') {
 	        visualization = _react2.default.createElement(_PrimesVisual2.default, null);
 	      } else {
@@ -56567,8 +56548,6 @@
 
 	var _reactRedux = __webpack_require__(176);
 
-	var _actions = __webpack_require__(312);
-
 	var _lodash = __webpack_require__(475);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -56606,10 +56585,14 @@
 	      console.log(this.props.results.length);
 	      this.drawPrimesGraph();
 	    }
+
+	    // componentWillReceiveProps() {
+
 	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps() {
-	      console.log('Receiving component');
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      console.log('Updating component');
+	      console.log('Results:', this.props.results);
 	      this.drawPrimesGraph();
 	    }
 	  }, {
@@ -56619,18 +56602,20 @@
 
 	      console.log('Drawing graph', this.graph);
 
-	      var xScale = d3.scaleLinear().domain([0, 20]).range([0, this.svgWidth]);
+	      var xScale = d3.scaleLinear().domain([0, this.props.project.jobsLength]).range([0, this.svgWidth]);
 
 	      var yScale = d3.scaleLinear().domain([0, 5000]).range([0, this.svgHeight]);
 
-	      var notes = this.graph.selectAll('rect').data(this.props.results);
+	      var notes = this.graph.selectAll('rect').data(this.props.results, function (d, i) {
+	        return d;
+	      });
 	      console.log(notes);
 
 	      // ENTER
 	      notes.enter().append('rect').attr('x', function (d, i) {
 	        return xScale(i);
 	      }).attr('y', function (d) {
-	        return _this2.svgHeight - yScale(d === null ? 0 : d.length);
+	        return _this2.svgHeight - yScale(d.length);
 	      }).attr('height', function (d) {
 	        return yScale(d.length);
 	      }).attr('width', this.svgWidth / 20 - 5).attr('fill', '#3CC76A');
@@ -56640,7 +56625,7 @@
 	      notes.transition().ease(d3.easeSin).attr('x', function (d, i) {
 	        return xScale(i);
 	      }).attr('y', function (d) {
-	        return _this2.svgHeight - yScale(d === null ? 0 : d.length);
+	        return _this2.svgHeight - yScale(d.length);
 	      }).attr('height', function (d) {
 	        return yScale(d.length);
 	      }).attr('width', this.svgWidth / 20 - 5).attr('fill', '#3CC76A');
@@ -56670,7 +56655,8 @@
 
 	function mapStateToProps(state) {
 	  return {
-	    results: state.updateResults
+	    results: state.updateResults,
+	    project: state.selectedProject
 	  };
 	}
 
@@ -73676,6 +73662,7 @@
 	        return {
 	          projectId: project.projectId,
 	          projectType: project.projectType,
+	          jobsLength: project.jobsLength,
 	          title: project.title
 	        };
 	      });
@@ -73800,26 +73787,34 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	exports.default = function () {
-		var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-		var action = arguments[1];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
 
-		switch (action.type) {
-			case 'COMPLETED_RESULTS':
-				console.log('inside completed results', action.payload);
-				return action.payload;
+	  switch (action.type) {
+	    case 'COMPLETED_RESULTS':
+	      console.log('inside completed results', action.payload);
+	      var nextState = action.payload.map(function (item) {
+	        if (item === null) {
+	          return 0;
+	        } else {
+	          return item;
+	        }
+	      });
 
-			case 'FINAL_RESULTS':
-				console.log('inside final result reducer', action.payload);
-				return action.payload;
+	      return nextState;
 
-			default:
-				return state;
-		}
-		return state;
+	    case 'FINAL_RESULTS':
+	      console.log('inside final result reducer', action.payload);
+	      return action.payload;
+
+	    default:
+	      return state;
+	  }
+	  return state;
 	};
 
 /***/ },

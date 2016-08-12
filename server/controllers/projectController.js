@@ -88,6 +88,7 @@ class ProjectController {
       projectList.push({
         projectId: this.allProjects[key].projectId,
         projectType: this.allProjects[key].projectType,
+        jobsLength: this.allProjects[key].jobsLength,
         title: this.allProjects[key].title
       });
     }
@@ -107,6 +108,7 @@ class ProjectController {
       projectList.push({
         projectId: this.allProjects[key].projectId,
         projectType: this.allProjects[key].projectType,
+        jobsLength: this.allProjects[key].jobsLength,
         title: this.allProjects[key].title
       });
     }

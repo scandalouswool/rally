@@ -27,6 +27,7 @@ class ProjectView extends Component {
     let visualization;
     console.log('Project is:', this.props.project);
     console.log('Project type:', this.props.project.projectType);
+    console.log('Project total number of jobs:', this.props.project.jobsLength);
     if (this.props.project.projectType === 'primes') {
       visualization = <PrimesVisualView />
     } else {

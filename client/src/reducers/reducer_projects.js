@@ -12,6 +12,7 @@ export default function (state = null, action) {
         return {
           projectId: project.projectId,
           projectType: project.projectType,
+          jobsLength: project.jobsLength,
           title: project.title
         }
       });

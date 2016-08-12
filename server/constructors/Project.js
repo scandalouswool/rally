@@ -43,7 +43,8 @@ class Project {
     
     // Creates completedJobs array which stores the RESULTS of completed jobs
     // Each job's result is placed at that job's original availableJobs index
-    this.completedJobs = []; 
+    this.completedJobs = [];
+    // this.completedJobs = _.times(this.jobsLength, _.constant([])); 
   
     // Creates workers object to track all workers for this project
     // Workers object takes workerId as key and stores the Worker object
