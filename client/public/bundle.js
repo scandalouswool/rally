@@ -36722,7 +36722,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props.createdSocket);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -56581,8 +56580,8 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.graph = d3.select('#visualizer').append('svg').attr('width', this.svgWidth).attr('height', this.svgHeight);
-	      console.log('Defined graph', this.graph);
-	      console.log(this.props.results.length);
+
+	      console.log('Drawing primes visualization');
 	      this.drawPrimesGraph();
 	    }
 
@@ -56591,16 +56590,13 @@
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      console.log('Updating component');
-	      console.log('Results:', this.props.results);
+	      console.log('Updating primes visualization');
 	      this.drawPrimesGraph();
 	    }
 	  }, {
 	    key: 'drawPrimesGraph',
 	    value: function drawPrimesGraph() {
 	      var _this2 = this;
-
-	      console.log('Drawing graph', this.graph);
 
 	      var xScale = d3.scaleLinear().domain([0, this.props.project.jobsLength]).range([0, this.svgWidth]);
 
@@ -56609,7 +56605,6 @@
 	      var notes = this.graph.selectAll('rect').data(this.props.results, function (d, i) {
 	        return d;
 	      });
-	      console.log(notes);
 
 	      // ENTER
 	      notes.enter().append('rect').attr('x', function (d, i) {
@@ -73667,8 +73662,6 @@
 	        };
 	      });
 
-	      console.log(newState);
-
 	      return newState;
 
 	    default:
@@ -73716,8 +73709,6 @@
 
 	  switch (action.type) {
 	    case 'SOCKET_CREATED':
-	      console.log(state);
-	      console.log(action.payload);
 	      return action.payload;
 
 	    case 'SEND_COMPLETE_JOB':

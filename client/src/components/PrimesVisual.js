@@ -17,21 +17,18 @@ class PrimesVisualView extends Component {
     this.graph = d3.select('#visualizer').append('svg')
       .attr('width', this.svgWidth)
       .attr('height', this.svgHeight);
-    console.log('Defined graph', this.graph);
-    console.log(this.props.results.length);
+    
+    console.log('Drawing primes visualization');
     this.drawPrimesGraph();
   }
 
   // componentWillReceiveProps() {
   componentDidUpdate() {
-    console.log('Updating component');
-    console.log('Results:', this.props.results);
+    console.log('Updating primes visualization');
     this.drawPrimesGraph();
   }
 
   drawPrimesGraph() {
-    console.log('Drawing graph', this.graph);
-
     const xScale = d3.scaleLinear()
       .domain([0, this.props.project.jobsLength])
       .range([0, this.svgWidth]);
@@ -44,7 +41,6 @@ class PrimesVisualView extends Component {
       .data(this.props.results, (d, i) => {
         return d;
       });
-    console.log(notes);
     
     // ENTER
     notes.enter()
