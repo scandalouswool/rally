@@ -1,7 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import firebase from 'firebase';
 
 class NavbarView extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleLogout(event) {
+    event.preventDefault();
+    firebase.auth().signOut()
+      .then(() => {
+        console.log('Successfully logged out!');
+      })
+      .catch((error) => {
+        console.log('Error logging out: ' + error);
+      });
+    this.context.router.push('/');
+  }
 
   render() {
     return (
@@ -12,7 +28,7 @@ class NavbarView extends Component {
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
-                <span className="icon-bar"></span> 
+                <span className="icon-bar"></span>
               </button>
               <Link className="navbar-brand" to="/">Rally</Link>
             </div>
@@ -24,7 +40,7 @@ class NavbarView extends Component {
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="login"><span className="glyphicon glyphicon-log-in"></span> Log In</Link></li>
-                <li><Link to="login"><span className="glyphicon glyphicon-log-out"></span> Log Out</Link></li>
+                <li><Link to="" onClick={this.handleLogout.bind(this)}><span className="glyphicon glyphicon-log-out"></span> Log Out</Link></li>
               </ul>
             </div>
           </div>
@@ -33,5 +49,10 @@ class NavbarView extends Component {
     );
   }
 }
+
+// Attach router to NavbarView's context
+NavbarView.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 
 export default NavbarView;
