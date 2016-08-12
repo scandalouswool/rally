@@ -22,11 +22,6 @@ class ProjectView extends Component {
   }
 
   render() {
-    console.log('inside project view')
-    console.log('results', this.props.results);
-    console.log('project', this.props.project); 
-    console.log('job', this.props.job); 
-    console.log('###############'); 
     return (
       <div>
         <SelectedProjectView />
@@ -34,18 +29,18 @@ class ProjectView extends Component {
         <button onClick={this.connectToProject.bind(this)}>Join</button>
         <button onClick={this.disconnectFromProject.bind(this)}>Leave</button>
         <div>
-          Number of results so far: {this.props.results === null ? 'zero' : this.props.results.length}
+          Current number of job: {this.props.results === null ? 'zero' : this.props.results.length}
         </div>
         <div>
           Total number of jobs: {this.props.results === null ? 'zero': this.props.job.totalJobs}
         </div>
         <div>
-        Progress: {this.props.results === null ? 'zero': Math.floor(this.props.results.length / this.props.job.totalJobs * 100)}
+          Progress: {this.props.results === null ? 'zero': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
           {this.props.results === null ? '': '%'}
-          <Progress color='DarkBlue' completed={this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
+          <Progress color='#3CC76A' completed={this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
         </div>
         <div>
-        Result: {this.props.results}
+        Final Result: {Array.isArray(this.props.results)? '' : this.props.results}
         </div>
       </div>
     );
@@ -55,7 +50,6 @@ class ProjectView extends Component {
 
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     project: state.selectedProject,
     socket: state.createdSocket,
