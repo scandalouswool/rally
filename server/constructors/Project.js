@@ -98,7 +98,7 @@ class Project {
     // Reassigns the job that was previously assigned to a disconnected user
     // Locates the worker based on its socketId and find the assigned job.
     // Then the method puts job into the front of the availableJobs array
-    if (this.workers[socketId]) {
+    if (this.workers[socketId] && this.workers[socketId].currentJob) {
       this.workers[socketId].currentJob.workerId = null;
       this.availableJobs.unshift( this.workers[socketId].currentJob );
       this.workers[socketId].currentJob = null;

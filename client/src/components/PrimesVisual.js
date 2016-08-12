@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { UpdateResults } from '../actions/actions';
+import _ from 'lodash';
 
 class PrimesVisualView extends Component {
   constructor(props) {
@@ -18,7 +19,12 @@ class PrimesVisualView extends Component {
       .attr('width', this.svgWidth)
       .attr('height', this.svgHeight);
     console.log('Defined graph', this.graph);
+    console.log(this.props.results.length);
+    this.drawPrimesGraph();
+  }
 
+  componentWillReceiveProps() {
+    console.log('Receiving component');
     this.drawPrimesGraph();
   }
 
@@ -30,12 +36,11 @@ class PrimesVisualView extends Component {
       .range([0, this.svgWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, 4])
-      .range([this.svgHeight, 0]);
+      .domain([0, 5000])
+      .range([0, this.svgHeight]);
 
     let notes = this.graph.selectAll('rect')
-      // .data(this.props.results);
-      .data([[1], [1, 2], [1, 2, 3], [1, 2, 3, 4]]);
+      .data(this.props.results);
     console.log(notes);
     
     // ENTER
@@ -44,12 +49,14 @@ class PrimesVisualView extends Component {
       .attr('x', (d, i) => {
         return xScale(i);
       })
-      .attr('y', 0)
+      .attr('y', (d) => {
+        return this.svgHeight - yScale(d === null ? 0 : d.length)
+      })
       .attr('height', (d) => {
         return yScale(d.length);
       })
-      .attr('width', this.svgWidth / 4)
-      .attr('fill', 'blue');
+      .attr('width', this.svgWidth / 20 - 5)
+      .attr('fill', '#3CC76A');
 
     // UPDATE
 
@@ -59,12 +66,14 @@ class PrimesVisualView extends Component {
       .attr('x', (d, i) => {
         return xScale(i);
       })
-      .attr('y', 0)
+      .attr('y', (d) => {
+        return this.svgHeight - yScale(d === null ? 0 : d.length)
+      })
       .attr('height', (d) => {
         return yScale(d.length);
       })
-      .attr('width', this.svgWidth / 4)
-      .attr('fill', 'blue');
+      .attr('width', this.svgWidth / 20 - 5)
+      .attr('fill', '#3CC76A');
 
     // EXIT
     notes.exit()
@@ -74,7 +83,9 @@ class PrimesVisualView extends Component {
   render() {
     return (
       <div>
-        <div id="visualizer">This is a visualizer</div>
+        This is a visualizer
+        <div id="visualizer"></div>
+        <div>{this.props.results === null ? 'zero' : this.props.results.length}</div>
       </div>
     )
   }
@@ -83,7 +94,7 @@ class PrimesVisualView extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: UpdateResults
+    results: state.updateResults
   };
 }
 
