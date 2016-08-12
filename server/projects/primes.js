@@ -46,6 +46,7 @@ const _ = require('lodash');
 */
 const testOptions = {
   title: 'Primes',
+  projectType: 'primes',
 
   dataSet: null,
 

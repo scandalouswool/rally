@@ -71,15 +71,15 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(321);
+	var _store = __webpack_require__(322);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	var _firebase = __webpack_require__(328);
+	var _firebase = __webpack_require__(329);
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
-	var _environment = __webpack_require__(330);
+	var _environment = __webpack_require__(331);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28614,19 +28614,19 @@
 
 	var _SelectedProjectView2 = _interopRequireDefault(_SelectedProjectView);
 
-	var _LoginView = __webpack_require__(318);
+	var _LoginView = __webpack_require__(319);
 
 	var _LoginView2 = _interopRequireDefault(_LoginView);
 
-	var _SignupView = __webpack_require__(319);
+	var _SignupView = __webpack_require__(320);
 
 	var _SignupView2 = _interopRequireDefault(_SignupView);
 
-	var _ErrorView = __webpack_require__(320);
+	var _ErrorView = __webpack_require__(321);
 
 	var _ErrorView2 = _interopRequireDefault(_ErrorView);
 
-	var _CreateProjectView = __webpack_require__(317);
+	var _CreateProjectView = __webpack_require__(318);
 
 	var _CreateProjectView2 = _interopRequireDefault(_CreateProjectView);
 
@@ -36615,7 +36615,7 @@
 
 	var _ProjectView2 = _interopRequireDefault(_ProjectView);
 
-	var _CreateProjectView = __webpack_require__(317);
+	var _CreateProjectView = __webpack_require__(318);
 
 	var _CreateProjectView2 = _interopRequireDefault(_CreateProjectView);
 
@@ -36810,6 +36810,10 @@
 
 	var _SelectedProjectView2 = _interopRequireDefault(_SelectedProjectView);
 
+	var _PrimesVisual = __webpack_require__(317);
+
+	var _PrimesVisual2 = _interopRequireDefault(_PrimesVisual);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36849,11 +36853,19 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props.results);
+	      var visualization = void 0;
+	      console.log('Project is:', this.props.project);
+	      console.log('Project type:', this.props.project.projectType);
+	      if (this.props.project.projectType === 'primes') {
+	        visualization = _react2.default.createElement(_PrimesVisual2.default, null);
+	      } else {
+	        visualization = undefined;
+	      }
 
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        visualization,
 	        _react2.default.createElement(_SelectedProjectView2.default, null),
 	        'This is the project view. ',
 	        _react2.default.createElement('br', null),
@@ -36892,6 +36904,117 @@
 
 /***/ },
 /* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(176);
+
+	var _actions = __webpack_require__(312);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 PRIMES ALGORITHM VISUALIZATION
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+
+	var PrimesVisualView = function (_Component) {
+	  _inherits(PrimesVisualView, _Component);
+
+	  function PrimesVisualView(props) {
+	    _classCallCheck(this, PrimesVisualView);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PrimesVisualView).call(this, props));
+
+	    _this.graph = null;
+	    _this.svgWidth = 600;
+	    _this.svgHeight = 400;
+	    return _this;
+	  }
+
+	  _createClass(PrimesVisualView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.graph = d3.select('#visualizer').append('svg').attr('width', this.svgWidth).attr('height', this.svgHeight);
+	      console.log('Defined graph', this.graph);
+
+	      this.drawPrimesGraph();
+	    }
+	  }, {
+	    key: 'drawPrimesGraph',
+	    value: function drawPrimesGraph() {
+	      console.log('Drawing graph', this.graph);
+
+	      var xScale = d3.scaleLinear().domain([0, 20]).range([0, this.svgWidth]);
+
+	      var yScale = d3.scaleLinear().domain([0, 4]).range([this.svgHeight, 0]);
+
+	      var notes = this.graph.selectAll('rect')
+	      // .data(this.props.results);
+	      .data([[1], [1, 2], [1, 2, 3], [1, 2, 3, 4]]);
+	      console.log(notes);
+
+	      // ENTER
+	      notes.enter().append('rect').attr('x', function (d, i) {
+	        return xScale(i);
+	      }).attr('y', 0).attr('height', function (d) {
+	        return yScale(d.length);
+	      }).attr('width', this.svgWidth / 4).attr('fill', 'blue');
+
+	      // UPDATE
+
+	      notes.transition().ease(d3.easeSin).attr('x', function (d, i) {
+	        return xScale(i);
+	      }).attr('y', 0).attr('height', function (d) {
+	        return yScale(d.length);
+	      }).attr('width', this.svgWidth / 4).attr('fill', 'blue');
+
+	      // EXIT
+	      notes.exit().remove();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'visualizer' },
+	          'This is a visualizer'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PrimesVisualView;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	  return {
+	    results: _actions.UpdateResults
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PrimesVisualView);
+
+/***/ },
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37010,7 +37133,7 @@
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(CreateProjectView);
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37093,7 +37216,7 @@
 	exports.default = LoginView;
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37157,7 +37280,7 @@
 	exports.default = SignupView;
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37206,7 +37329,7 @@
 	exports.default = ErrorView;
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37217,27 +37340,27 @@
 
 	var _redux = __webpack_require__(183);
 
-	var _reducer_projects = __webpack_require__(322);
+	var _reducer_projects = __webpack_require__(323);
 
 	var _reducer_projects2 = _interopRequireDefault(_reducer_projects);
 
-	var _reducer_selected_project = __webpack_require__(323);
+	var _reducer_selected_project = __webpack_require__(324);
 
 	var _reducer_selected_project2 = _interopRequireDefault(_reducer_selected_project);
 
-	var _reducer_socket_methods = __webpack_require__(324);
+	var _reducer_socket_methods = __webpack_require__(325);
 
 	var _reducer_socket_methods2 = _interopRequireDefault(_reducer_socket_methods);
 
-	var _reducer_workers = __webpack_require__(325);
+	var _reducer_workers = __webpack_require__(326);
 
 	var _reducer_workers2 = _interopRequireDefault(_reducer_workers);
 
-	var _reducer_update_job = __webpack_require__(326);
+	var _reducer_update_job = __webpack_require__(327);
 
 	var _reducer_update_job2 = _interopRequireDefault(_reducer_update_job);
 
-	var _reducer_results = __webpack_require__(327);
+	var _reducer_results = __webpack_require__(328);
 
 	var _reducer_results2 = _interopRequireDefault(_reducer_results);
 
@@ -37255,7 +37378,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37275,9 +37398,8 @@
 	      var newState = action.payload.map(function (project) {
 	        return {
 	          projectId: project.projectId,
-	          title: project.title,
-	          mapData: eval(project.mapData),
-	          reduceResults: eval(project.reduceResults)
+	          projectType: project.projectType,
+	          title: project.title
 	        };
 	      });
 
@@ -37293,7 +37415,7 @@
 	};
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37315,7 +37437,7 @@
 	};
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37348,7 +37470,7 @@
 	};
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37370,7 +37492,7 @@
 	};
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37395,7 +37517,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37424,7 +37546,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37434,12 +37556,12 @@
 	 *
 	 *   firebase = require('firebase');
 	 */
-	__webpack_require__(329);
+	__webpack_require__(330);
 	module.exports = firebase;
 
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*! @license Firebase v3.2.1
@@ -38013,7 +38135,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports) {
 
 	'use strict';
