@@ -36834,7 +36834,7 @@
 	        return _react2.default.createElement(
 	          'h3',
 	          null,
-	          'Select a project to begin'
+	          'Please select or create a project to begin'
 	        );
 	      }
 
@@ -36844,12 +36844,12 @@
 	        _react2.default.createElement(
 	          'h3',
 	          null,
-	          'Currently Selected Project:'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          this.props.project.title
+	          'Currently Selected Project: ',
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'customGreen' },
+	            this.props.project.title
+	          )
 	        )
 	      );
 	    }
@@ -36952,16 +36952,17 @@
 	        null,
 	        visualization,
 	        _react2.default.createElement(_SelectedProjectView2.default, null),
-	        'This is the project view. ',
+	        'Project View',
+	        _react2.default.createElement('br', null),
 	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this.connectToProject.bind(this) },
+	          { className: 'btn-success btn-lg', onClick: this.connectToProject.bind(this) },
 	          'Join'
 	        ),
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this.disconnectFromProject.bind(this) },
+	          { className: 'btn-danger btn-lg', onClick: this.disconnectFromProject.bind(this) },
 	          'Leave'
 	        ),
 	        _react2.default.createElement(
