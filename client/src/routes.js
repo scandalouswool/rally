@@ -4,12 +4,12 @@ import { Route, IndexRoute } from 'react-router';
 import AppView from './containers/AppView';
 import HomeView from './components/HomeView';
 import MenuView from './containers/MenuView';
-import ProjectView from './components/ProjectView';
+import ProjectView from './containers/ProjectView';
 import SelectedProjectView from './containers/SelectedProjectView';
 import LoginView from './components/LoginView';
 import SignupView from './components/SignupView';
 import ErrorView from './components/ErrorView';
-import CreateProjectView from './components/CreateProjectView';
+import CreateProjectView from './containers/CreateProjectView';
 
 export default (
   <Route path='/' component={AppView}>
