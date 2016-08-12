@@ -1,4 +1,8 @@
-.card {
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.customGreen {
   color: #3CC76A;
 }
 
