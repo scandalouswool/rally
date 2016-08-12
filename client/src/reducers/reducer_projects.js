@@ -11,9 +11,8 @@ export default function (state = null, action) {
       const newState = action.payload.map( (project) => {
         return {
           projectId: project.projectId,
-          title: project.title,
-          mapData: eval(project.mapData),
-          reduceResults: eval(project.reduceResults)
+          projectType: project.projectType,
+          title: project.title
         }
       });
 

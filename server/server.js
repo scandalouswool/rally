@@ -10,18 +10,20 @@ const _ = require('lodash');
 
 // Tester module
 const nQueens = require('./projects/nQueens.js');
-const testProject = require('./projects/tester.js');
+const primes = require('./projects/primes.js');
 
 app.use(express.static(__dirname + '/../client'));
 
 // For accessing the Web Worker script file
 app.get('/webworker', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/src/webworker/webworker.js'));
+  console.log('Sending', req.url);
+  res.sendFile(path.resolve(__dirname + '/../client/src/webworker/webWorker.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
 //it will route them to index.html. The front-end will then handle the route
 app.get('*', (req, res) => {
+  console.log('Sending index file');
   res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });
 
@@ -48,7 +50,7 @@ io.on('connect', (socket) => {
     console.log('User disconnected:', socket.id);
     pc.userDisconnect(socket.id);
   });
-  
+ 
   // 'userReady' event handler
   // Pass the socket and projectId to the ProjectController object
   // ProjectController will create a new Worker in the requested project
@@ -112,8 +114,8 @@ io.on('connect', (socket) => {
   });
 });
 
-// Testers
-pc.createProject(testProject, io);
+// Default Projects
+pc.createProject(primes, io);
 pc.createProject(nQueens, io);
 
 // setInterval( () => {

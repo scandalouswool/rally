@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const nQueenOptions = {
   title: 'nQueens',
+  projectType: 'nQueens',
 
   dataSet: null,
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SelectedProjectView from '../containers/SelectedProjectView';
 import Progress from 'react-progressbar';
+import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
   componentDidMount() {
@@ -22,8 +23,19 @@ class ProjectView extends Component {
   }
 
   render() {
+
+    let visualization;
+    console.log('Project is:', this.props.project);
+    console.log('Project type:', this.props.project.projectType);
+    if (this.props.project.projectType === 'primes') {
+      visualization = <PrimesVisualView />
+    } else {
+      visualization = undefined;
+    }
+    
     return (
       <div>
+        {visualization}
         <SelectedProjectView />
         This is the project view. <br />
         <button onClick={this.connectToProject.bind(this)}>Join</button>
