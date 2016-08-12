@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SignupView extends Component {
   render() {
     return (
-      <div className="padded container center-text">
+      <div className="container center-text">
         <form className="form-login">
           <h2>Sign Up</h2>
           <input id="username" className="form-control" type="text" placeholder="Username"/>

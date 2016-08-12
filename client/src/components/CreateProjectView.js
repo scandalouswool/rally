@@ -24,7 +24,7 @@ class CreateProjectView extends Component {
 
   render() {
     return (
-      <div className="padded">
+      <div>
         This is the create project view.
       
         <form method="post">

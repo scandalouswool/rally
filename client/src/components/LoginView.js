@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 class LoginView extends Component {
   render() {
     return (
-     <div className="padded container center-text">
+     <div className="container center-text">
         <form className="form-login">
           <h2>Log In</h2>
           <input id="username" className="form-control" type="text" placeholder="Username"/>
