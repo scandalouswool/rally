@@ -37,9 +37,11 @@ class ProjectView extends Component {
       <div>
         {visualization}
         <SelectedProjectView />
-        This is the project view. <br />
-        <button onClick={this.connectToProject.bind(this)}>Join</button>
-        <button onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+        Project View
+        <br />
+        <br />
+        <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
+        <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
         <div>
           Current number of job: {this.props.results === null ? 'zero' : this.props.results.length}
         </div>
