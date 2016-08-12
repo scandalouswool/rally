@@ -36924,7 +36924,166 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SelectedProjectView);
 
 /***/ },
+<<<<<<< c39d28f477aa7454874fb97959a04891130b97b9
 /* 316 */,
+=======
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(176);
+
+	var _redux = __webpack_require__(183);
+
+	var _SelectedProjectView = __webpack_require__(315);
+
+	var _SelectedProjectView2 = _interopRequireDefault(_SelectedProjectView);
+
+	var _reactProgressbar = __webpack_require__(317);
+
+	var _reactProgressbar2 = _interopRequireDefault(_reactProgressbar);
+
+	var _PrimesVisual = __webpack_require__(474);
+
+	var _PrimesVisual2 = _interopRequireDefault(_PrimesVisual);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProjectView = function (_Component) {
+	  _inherits(ProjectView, _Component);
+
+	  function ProjectView() {
+	    _classCallCheck(this, ProjectView);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProjectView).apply(this, arguments));
+	  }
+
+	  _createClass(ProjectView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('Fetching results for this project');
+	      this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
+	    }
+	  }, {
+	    key: 'connectToProject',
+	    value: function connectToProject() {
+	      console.log('Joining...');
+	      this.props.socket.emit('userReady', this.props.project.projectId);
+	    }
+	  }, {
+	    key: 'disconnectFromProject',
+	    value: function disconnectFromProject() {
+	      console.log('Disconnecting from project: ' + this.props.project['title']);
+	      this.props.socket.emit('userDisconnect');
+	      // TODO: terminate the existing worker
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+
+	      var visualization = void 0;
+
+	      if (!this.props.project) {
+
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          'Please select a new project to view.'
+	        );
+	      } else {
+
+	        console.log('Project is:', this.props.project);
+	        console.log('Project type:', this.props.project.projectType);
+	        console.log('Project total number of jobs:', this.props.project.jobsLength);
+
+	        if (this.props.project.projectType === 'primes') {
+	          visualization = _react2.default.createElement(_PrimesVisual2.default, null);
+	        } else {
+	          visualization = undefined;
+	        }
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        visualization,
+	        _react2.default.createElement(_SelectedProjectView2.default, null),
+	        'Project View',
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'btn-success btn-lg', onClick: this.connectToProject.bind(this) },
+	          'Join'
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'btn-danger btn-lg', onClick: this.disconnectFromProject.bind(this) },
+	          'Leave'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Current number of job: ',
+	          this.props.results === null ? 'zero' : this.props.results.length
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Total number of jobs: ',
+	          this.props.results === null ? 'zero' : this.props.job.totalJobs
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'progressbar' },
+	          'Progress: ',
+	          this.props.results === null ? 'zero' : Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100),
+	          this.props.results === null ? '' : '%',
+	          _react2.default.createElement(_reactProgressbar2.default, { color: '#3CC76A', completed: this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Final Result: ',
+	          Array.isArray(this.props.results) ? '' : this.props.results
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ProjectView;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	  return {
+	    project: state.selectedProject,
+	    socket: state.createdSocket,
+	    results: state.updateResults,
+	    job: state.updateJob
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(ProjectView);
+
+/***/ },
+>>>>>>> Bug fixes
 /* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -56464,7 +56623,138 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
+<<<<<<< c39d28f477aa7454874fb97959a04891130b97b9
 /* 474 */,
+=======
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(176);
+
+	var _lodash = __webpack_require__(475);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 PRIMES ALGORITHM VISUALIZATION
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+
+	var PrimesVisualView = function (_Component) {
+	  _inherits(PrimesVisualView, _Component);
+
+	  function PrimesVisualView(props) {
+	    _classCallCheck(this, PrimesVisualView);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PrimesVisualView).call(this, props));
+
+	    _this.graph = null;
+	    _this.svgWidth = 600;
+	    _this.svgHeight = 400;
+	    return _this;
+	  }
+
+	  _createClass(PrimesVisualView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.graph = d3.select('#visualizer').append('svg').attr('width', this.svgWidth).attr('height', this.svgHeight);
+
+	      console.log('Drawing primes visualization');
+	      this.drawPrimesGraph();
+	    }
+
+	    // componentWillReceiveProps() {
+
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      console.log('Updating primes visualization');
+	      this.drawPrimesGraph();
+	    }
+	  }, {
+	    key: 'drawPrimesGraph',
+	    value: function drawPrimesGraph() {
+	      var _this2 = this;
+
+	      var xScale = d3.scaleLinear().domain([0, this.props.project.jobsLength]).range([0, this.svgWidth]);
+
+	      var yScale = d3.scaleLinear().domain([0, 5000]).range([0, this.svgHeight]);
+
+	      var notes = this.graph.selectAll('rect').data(this.props.results, function (d, i) {
+	        return d;
+	      });
+
+	      // ENTER
+	      notes.enter().append('rect').attr('x', function (d, i) {
+	        return xScale(i);
+	      }).attr('y', function (d) {
+	        return _this2.svgHeight - yScale(d === null ? 0 : d.length);
+	      }).attr('height', function (d) {
+	        return yScale(d === null ? 0 : d.length);
+	      }).attr('width', this.svgWidth / 20 - 5).attr('fill', '#3CC76A');
+
+	      // UPDATE
+
+	      notes.transition().ease(d3.easeSin).attr('x', function (d, i) {
+	        return xScale(i);
+	      }).attr('y', function (d) {
+	        return _this2.svgHeight - yScale(d.length);
+	      }).attr('height', function (d) {
+	        return yScale(d === null ? 0 : d.length);
+	      }).attr('width', this.svgWidth / 20 - 5).attr('fill', '#3CC76A');
+
+	      // EXIT
+	      notes.exit().remove();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'This is a visualizer',
+	        _react2.default.createElement('div', { id: 'visualizer' }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          this.props.results === null ? 'zero' : this.props.results.length
+	        )
+	      );
+	    }
+	  }]);
+
+	  return PrimesVisualView;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	  return {
+	    results: state.updateResults,
+	    project: state.selectedProject
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PrimesVisualView);
+
+/***/ },
+>>>>>>> Bug fixes
 /* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -73662,7 +73952,8 @@
 	      console.log('inside completed results', action.payload);
 	      var nextState = action.payload.map(function (item) {
 	        if (item === null) {
-	          return 0;
+	          console.log('Null result found');
+	          return [];
 	        } else {
 	          return item;
 	        }

@@ -25,15 +25,29 @@ class ProjectView extends Component {
   render() {
 
     let visualization;
-    console.log('Project is:', this.props.project);
-    console.log('Project type:', this.props.project.projectType);
-    console.log('Project total number of jobs:', this.props.project.jobsLength);
-    if (this.props.project.projectType === 'primes') {
-      visualization = <PrimesVisualView />
+
+    if (!this.props.project) {
+
+      return (
+        <div>
+          Please select a new project to view.
+        </div>
+      )
+
     } else {
-      visualization = undefined;
-    }
+      
+      console.log('Project is:', this.props.project);
+      console.log('Project type:', this.props.project.projectType);
+      console.log('Project total number of jobs:', this.props.project.jobsLength);
+      
+      if (this.props.project.projectType === 'primes') {
+        visualization = <PrimesVisualView />
+      } else {
+        visualization = undefined;
+      }
     
+    }
+
     return (
       <div>
         {visualization}
