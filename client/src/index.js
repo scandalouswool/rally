@@ -19,6 +19,7 @@ const ENV = {
   databaseURL: process.env.databaseURL,
   storageBucket: process.env.storageBucket
 };
+console.log(process.env);
 console.log('Checking retrieval of ENV', ENV);
 const firebaseApp = firebase.initializeApp(ENV);
 
