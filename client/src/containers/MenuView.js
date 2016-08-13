@@ -6,6 +6,8 @@ import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
 import ProjectView from './ProjectView';
 import CreateProjectView from './CreateProjectView';
+import CreateNQueensView from '../components/CreateNQueensView';
+
 
 class MenuView extends Component {
 
@@ -26,8 +28,11 @@ class MenuView extends Component {
 
   render() {
     return (
+
       <div className="center-block">
         <Link to='createProject' className="white"><button className="btn-success btn-lg">Create New Project</button></Link>
+        <button><Link to='createProject'>Create New Project</Link></button>
+        <button><Link to='createNQueens'>Create n-Queens Project</Link></button>
 
         <div>
           <SelectedProjectView />
