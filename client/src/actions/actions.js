@@ -101,7 +101,7 @@ export function startListeningToAuth(firebaseApp) {
   };
 }
 
-// Sets username on sign up
+// Sets username on signup
 export function setUsername(userIdentifiers) {
   return {
     type: 'LOGIN',

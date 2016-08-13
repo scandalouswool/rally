@@ -66,7 +66,7 @@ class SignupView extends Component {
   render() {
     return (
       <div className="container center-text">
-        <form className="form-login">
+        <form className="form-login" onSubmit={this.handleSignup.bind(this)}>
           <h2>Sign Up</h2>
           <input
             id="name"

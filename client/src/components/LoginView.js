@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import firebase from 'firebase';
 
 class LoginView extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class LoginView extends Component {
   render() {
     return (
      <div className="container center-text">
-        <form className="form-login">
+        <form className="form-login" onSubmit={this.handleLogin.bind(this)}>
           <h2>Log In</h2>
           <input
             id="email"
