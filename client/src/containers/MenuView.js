@@ -30,11 +30,10 @@ class MenuView extends Component {
     console.log(this.props.createdSocket);
     return (
 
-
       <div className="center-block">
         <Link to='createProject' className="white"><button className="btn-success btn-lg">Create New Project</button></Link>
-        <button><Link to='createProject'>Create New Project</Link></button>
-        <button><Link to='createNQueens'>Create n-Queens Project</Link></button>
+        <Link to='createNQueens' className="white"><button className="btn-success btn-lg">Create n-Queens Project</button></Link>
+
         <div>
           <SelectedProjectView />
         </div>

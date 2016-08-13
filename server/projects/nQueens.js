@@ -14,7 +14,7 @@ const nQueenOptions = {
     // change the n here! 
     // the n in n-Queens
     // need to change in reduced results 
-    var n = 16; 
+    var n = 10; 
 
     var min = '10'; // initial state of the minDiagonal conflict after branch in level 1
     var maj = '0'; // initial state of the majorDiagonal conflict after branch in level 1
@@ -67,7 +67,7 @@ const nQueenOptions = {
   reduceResults: (results) => {
     
     // change the n here! 
-    var n = 16; 
+    var n = 10; 
     var total = 0; 
 
     if (n % 2 === 0){
