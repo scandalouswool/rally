@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
 import ProjectView from './ProjectView';
 import CreateProjectView from './CreateProjectView';
+import CreateNQueensView from '../components/CreateNQueensView';
 
 class MenuView extends Component {
 
@@ -14,6 +15,7 @@ class MenuView extends Component {
     if (this.props.projects) {
       return this.props.projects.map( (project) => {
         return (
+
           <Link className="white" to='/project' onClick={() => this.props.selectProject(project) }>
             <button className="btn-success btn-sm" key={project.projectId}>
                 {project.title}
@@ -25,9 +27,12 @@ class MenuView extends Component {
   }
 
   render() {
+    console.log(this.props.createdSocket);
     return (
+
       <div className="center-block">
         <Link to='createProject' className="white"><button className="btn-success btn-lg">Create New Project</button></Link>
+        <Link to='createNQueens' className="white"><button className="btn-success btn-lg">Create n-Queens Project</button></Link>
 
         <div>
           <SelectedProjectView />
