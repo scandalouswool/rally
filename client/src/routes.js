@@ -24,4 +24,4 @@ export default (
     <Route path='signup' component={SignupView} />
     <Route path='*' component={ErrorView} />
   </Route>
-)
+);

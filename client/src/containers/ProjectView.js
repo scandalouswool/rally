@@ -26,6 +26,7 @@ class ProjectView extends Component {
 
     if (this.props.project === null) {
       this.context.router.push('menu');
+      return null;
     } else {
       let visualization;
       console.log('Project is:', this.props.project);

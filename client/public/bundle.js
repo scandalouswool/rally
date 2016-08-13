@@ -85,7 +85,7 @@
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
-	var _environment = __webpack_require__(491);
+	var _environment = __webpack_require__(492);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36361,7 +36361,7 @@
 	      }).catch(function (error) {
 	        console.log('Error logging out: ' + error);
 	      });
-	      this.context.router.push('/');
+	      this.context.router.push('/menu');
 	    }
 	  }, {
 	    key: 'goToLogin',
@@ -36408,11 +36408,7 @@
 	                _react2.default.createElement('span', { className: 'icon-bar' }),
 	                _react2.default.createElement('span', { className: 'icon-bar' })
 	              ),
-	              _react2.default.createElement(
-	                _reactRouter.Link,
-	                { className: 'navbar-brand', to: '/' },
-	                'Rally'
-	              )
+	              _react2.default.createElement('img', { className: 'logo', src: '../../assets/logo.png' })
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -37250,7 +37246,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'jumbotron text-center' },
+	          { className: 'jumbotron text-center roundingIt' },
 	          _react2.default.createElement('div', { className: 'jumbler' }),
 	          _react2.default.createElement(
 	            'div',
@@ -37258,7 +37254,12 @@
 	            _react2.default.createElement(
 	              'h1',
 	              { className: 'card' },
-	              'We like fast'
+	              'We like ',
+	              _react2.default.createElement(
+	                'b',
+	                null,
+	                'fast'
+	              )
 	            ),
 	            _react2.default.createElement(
 	              'p',
@@ -37643,66 +37644,77 @@
 	    key: 'render',
 	    value: function render() {
 
-	      var visualization = void 0;
-	      console.log('Project is:', this.props.project);
-	      console.log('Project type:', this.props.project.projectType);
-	      console.log('Project total number of jobs:', this.props.project.jobsLength);
-	      if (this.props.project.projectType === 'primes') {
-	        visualization = _react2.default.createElement(_PrimesVisual2.default, null);
+	      if (this.props.project === null) {
+	        this.context.router.push('menu');
+	        return null;
 	      } else {
-	        visualization = undefined;
+	        var visualization = void 0;
+	        console.log('Project is:', this.props.project);
+	        console.log('Project type:', this.props.project.projectType);
+	        console.log('Project total number of jobs:', this.props.project.jobsLength);
+	        if (this.props.project.projectType === 'primes') {
+	          visualization = _react2.default.createElement(_PrimesVisual2.default, null);
+	        } else {
+	          visualization = undefined;
+	        }
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          visualization,
+	          _react2.default.createElement(_SelectedProjectView2.default, null),
+	          'Project View',
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'btn-success btn-lg', onClick: this.connectToProject.bind(this) },
+	            'Join'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'btn-danger btn-lg', onClick: this.disconnectFromProject.bind(this) },
+	            'Leave'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            'Current number of jobs: ',
+	            this.props.results.length === 0 ? 'Project is currently not in progress' : this.props.results.length
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            'Total number of jobs: ',
+	            this.props.results.length === 0 ? 'Project is currently not in progress' : this.props.job.totalJobs
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'progressbar' },
+	            'Progress: ',
+	            this.props.results.length === 0 ? '0' : Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100),
+	            '%',
+	            _react2.default.createElement(_reactProgressbar2.default, { color: '#3CC76A', completed: this.props.results.length === 0 ? 0 : this.props.results.length / this.props.job.totalJobs * 100 })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            'Final Result: ',
+	            Array.isArray(this.props.results) ? '' : this.props.results
+	          )
+	        );
 	      }
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        visualization,
-	        _react2.default.createElement(_SelectedProjectView2.default, null),
-	        'Project View',
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(
-	          'button',
-	          { className: 'btn-success btn-lg', onClick: this.connectToProject.bind(this) },
-	          'Join'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { className: 'btn-danger btn-lg', onClick: this.disconnectFromProject.bind(this) },
-	          'Leave'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Current number of jobs: ',
-	          this.props.results.length === 0 ? 'Project is currently not in progress' : this.props.results.length
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Total number of jobs: ',
-	          this.props.results.length === 0 ? 'Project is currently not in progress' : this.props.job.totalJobs
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'progressbar' },
-	          'Progress: ',
-	          this.props.results.length === 0 ? '0' : Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100),
-	          '%',
-	          _react2.default.createElement(_reactProgressbar2.default, { color: '#3CC76A', completed: this.props.results.length === 0 ? 0 : this.props.results.length / this.props.job.totalJobs * 100 })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Final Result: ',
-	          Array.isArray(this.props.results) ? '' : this.props.results
-	        )
-	      );
 	    }
 	  }]);
 
 	  return ProjectView;
 	}(_react.Component);
+
+	// Attach router to context
+
+
+	ProjectView.contextTypes = {
+	  router: _react.PropTypes.object.isRequired
+	};
 
 	function mapStateToProps(state) {
 	  return {
@@ -74614,7 +74626,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        '404. The page you\'re looking for doesn\'t even exist!'
+	        '404. The page you\'re looking for doesn\'t exist!'
 	      );
 	    }
 	  }]);
@@ -74660,7 +74672,7 @@
 
 	var _reducer_results2 = _interopRequireDefault(_reducer_results);
 
-	var _reducer_auth = __webpack_require__(492);
+	var _reducer_auth = __webpack_require__(491);
 
 	var _reducer_auth2 = _interopRequireDefault(_reducer_auth);
 
@@ -74860,24 +74872,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var ENV = {
-	  apiKey: 'AIzaSyCMR8XF3pH9D9JEHfbJzkT4FHpShSgRtK8',
-	  authDomain: 'rally-3d842.firebaseapp.com',
-	  databaseURL: 'https://rally-3d842.firebaseio.com',
-	  storageBucket: 'rally-3d842.appspot.com'
-	};
-
-	exports.ENV = ENV;
-
-/***/ },
-/* 492 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
 	exports.default = function (state, action) {
 	  switch (action.type) {
@@ -74904,6 +74898,24 @@
 	      };
 	  }
 	};
+
+/***/ },
+/* 492 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var ENV = {
+	  apiKey: 'AIzaSyCMR8XF3pH9D9JEHfbJzkT4FHpShSgRtK8',
+	  authDomain: 'rally-3d842.firebaseapp.com',
+	  databaseURL: 'https://rally-3d842.firebaseio.com',
+	  storageBucket: 'rally-3d842.appspot.com'
+	};
+
+	exports.ENV = ENV;
 
 /***/ }
 /******/ ]);

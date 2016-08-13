@@ -19,7 +19,7 @@ class NavbarView extends Component {
       .catch((error) => {
         console.log('Error logging out: ' + error);
       });
-    this.context.router.push('/');
+    this.context.router.push('/menu');
   }
 
   goToLogin(event) {
@@ -52,7 +52,7 @@ class NavbarView extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <Link className="navbar-brand" to="/">Rally</Link>
+              <img className="logo" src="../../assets/logo.png"></img>
             </div>
             <div className="collapse navbar-collapse" id="myNavbar">
               <ul className="nav navbar-nav">
