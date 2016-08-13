@@ -8,7 +8,6 @@ import ProjectView from './ProjectView';
 import CreateProjectView from './CreateProjectView';
 import CreateNQueensView from '../components/CreateNQueensView';
 
-
 class MenuView extends Component {
 
   renderList() {
@@ -16,6 +15,7 @@ class MenuView extends Component {
     if (this.props.projects) {
       return this.props.projects.map( (project) => {
         return (
+
           <Link className="white" to='/project' onClick={() => this.props.selectProject(project) }>
             <button className="btn-success btn-sm" key={project.projectId}>
                 {project.title}
@@ -27,13 +27,14 @@ class MenuView extends Component {
   }
 
   render() {
+    console.log(this.props.createdSocket);
     return (
+
 
       <div className="center-block">
         <Link to='createProject' className="white"><button className="btn-success btn-lg">Create New Project</button></Link>
         <button><Link to='createProject'>Create New Project</Link></button>
         <button><Link to='createNQueens'>Create n-Queens Project</Link></button>
-
         <div>
           <SelectedProjectView />
         </div>
