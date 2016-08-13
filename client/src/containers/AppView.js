@@ -4,19 +4,19 @@ import NavbarView from '../components/NavbarView';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createdSocket,
-         updateProjects, 
-         updateWorkers, 
-         newJob, 
-         completeJob, 
-         sendCompleteJob, 
-         updateResults, 
+         updateProjects,
+         updateWorkers,
+         newJob,
+         completeJob,
+         sendCompleteJob,
+         updateResults,
          finalResults,
          createWebWorker
        } from '../actions/actions';
 
 export default class AppView extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.socket = io();
   }
 
@@ -24,7 +24,7 @@ export default class AppView extends Component {
     /************************************************
     // Web Worker Handlers
     ************************************************/
-    
+
     //initialize a variable for a webWorker
     let myWebWorker = null;
 
@@ -105,26 +105,27 @@ export default class AppView extends Component {
     const socketMethods = {
       socket: this.socket,
       sendReady: sendReady
-    };    
+    };
   }
 
   render() {
     return (
-      <div className='app'>
-        <NavbarView />
-      
-        <div className='container'>
+      <div className="app">
+        <NavbarView auth={this.props.auth}/>
+
+        <div className="container">
           {this.props.children}
         </div>
       </div>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    webWorker: createWebWorker
-  }
+    webWorker: createWebWorker,
+    auth: state.auth
+  };
 }
 
 function mapDispatchToProps(dispatch) {
