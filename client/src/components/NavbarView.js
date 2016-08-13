@@ -5,6 +5,8 @@ import firebase from 'firebase';
 class NavbarView extends Component {
   constructor(props) {
     super(props);
+
+    console.log('Navbar props: ', this.props);
   }
 
   handleLogout(event) {
@@ -20,7 +22,26 @@ class NavbarView extends Component {
     this.context.router.push('/');
   }
 
+  goToLogin(event) {
+    event.preventDefault();
+    this.context.router.push('login');
+  }
+
   render() {
+    // This is the login or logout button depending on the user's authentication state
+    let text, className, route, clickHandler;
+    if (this.props.auth.uid) {
+      text = ' Log Out';
+      className = 'glyphicon glyphicon-log-out';
+      route = '';
+      clickHandler = this.handleLogout.bind(this);
+    } else {
+      text = ' Log In';
+      className = 'glyphicon glyphicon-log-in';
+      route = 'login';
+      clickHandler = this.goToLogin.bind(this);
+    }
+
     return (
       <div>
         <nav className="navbar navbar-inverse">
@@ -40,8 +61,7 @@ class NavbarView extends Component {
                 <li><Link to="project"><span className="glyphicon glyphicon-blackboard"></span> Current Project</Link></li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li><Link to="login"><span className="glyphicon glyphicon-log-in"></span> Log In</Link></li>
-                <li><Link to="" onClick={this.handleLogout.bind(this)}><span className="glyphicon glyphicon-log-out"></span> Log Out</Link></li>
+                <li><Link to={route} onClick={clickHandler}><span className={className}></span>{text}</Link></li>
               </ul>
             </div>
           </div>
