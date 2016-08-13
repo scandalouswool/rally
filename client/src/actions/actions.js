@@ -79,3 +79,33 @@ export function createWebWorker(webWorkers) {
     payload: webWorkers
   }
 }
+
+// Adds firebase listener for changes to client's authentication state
+export function startListeningToAuth(firebaseApp) {
+  return (dispatch, getState) => {
+    firebaseApp.auth().onAuthStateChanged((authData) => {
+      // If firebase event is user logging in, set auth state to that user
+      if (authData) {
+        dispatch({
+          type: 'LOGIN',
+          uid: authData.uid,
+          username: authData.displayName
+        });
+      // Otherwise, event is user logging out, so set state accordingly
+      } else {
+        dispatch({
+          type: 'LOGOUT'
+        });
+      }
+    });
+  };
+}
+
+// Sets username on signup
+export function setUsername(userIdentifiers) {
+  return {
+    type: 'LOGIN',
+    uid: userIdentifiers.uid,
+    username: userIdentifiers.username
+  };
+}

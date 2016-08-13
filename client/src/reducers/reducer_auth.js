@@ -1,12 +1,25 @@
 export default (state, action) => {
   switch (action.type) {
-    case 'ATTEMPTING_LOGIN':
-      console.log('Login attempted');
-      return { // These will be intended values of redux state
+
+    case 'LOGIN':
+      return {
+        currently: 'LOGGED_IN',
+        username: action.username,
+        uid: action.uid
       };
-    case 'LOGIN_USER':
-      return { // These will be intended values of redux state
+
+    case 'LOGOUT':
+      return {
+        currently: 'GUEST',
+        username: 'guest',
+        uid: null
       };
-    default: return state || null;
+
+    default:
+      return state || {
+        currently: 'GUEST',
+        username: 'guest',
+        uid: null
+      };
   }
 };
