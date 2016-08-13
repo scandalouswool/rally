@@ -14,11 +14,11 @@ class MenuView extends Component {
     if (this.props.projects) {
       return this.props.projects.map( (project) => {
         return (
-          <button className="btn-success btn-sm" key={project.projectId}>
-            <Link className="white" to='/project' onClick={() => this.props.selectProject(project) }>
+          <Link className="white" to='/project' onClick={() => this.props.selectProject(project) }>
+            <button className="btn-success btn-sm" key={project.projectId}>
                 {project.title}
-            </Link>
-          </button>
+            </button>
+          </Link>
         );
       });
     }
@@ -27,8 +27,7 @@ class MenuView extends Component {
   render() {
     return (
       <div className="center-block">
-        <button className="btn-success btn-lg"><Link to='createProject' className="white">Create New Project</Link>
-        </button>
+        <Link to='createProject' className="white"><button className="btn-success btn-lg">Create New Project</button></Link>
 
         <div>
           <SelectedProjectView />

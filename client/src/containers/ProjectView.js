@@ -44,15 +44,15 @@ class ProjectView extends Component {
         <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
         <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
         <div>
-          Current number of job: {this.props.results === null ? 'zero' : this.props.results.length}
+          Current number of jobs: {this.props.results.length === 0  ? 'Project is currently not in progress' : this.props.results.length}
         </div>
         <div>
-          Total number of jobs: {this.props.results === null ? 'zero': this.props.job.totalJobs}
+          Total number of jobs: {this.props.results.length === 0 ? 'Project is currently not in progress': this.props.job.totalJobs}
         </div>
         <div className="progressbar">
-          Progress: {this.props.results === null ? 'zero': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
-          {this.props.results === null ? '': '%'}
-          <Progress color='#3CC76A' completed={this.props.results === null ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
+          Progress: {this.props.results.length === 0 ? '0': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
+          %
+          <Progress color='#3CC76A' completed={this.props.results.length === 0 ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
         </div>
         <div>
         Final Result: {Array.isArray(this.props.results)? '' : this.props.results}
