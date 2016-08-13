@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 class LoginView extends Component {
@@ -7,7 +7,8 @@ class LoginView extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     };
   }
 
@@ -18,9 +19,19 @@ class LoginView extends Component {
 
     let email = this.state.email.trim();
     let password = this.state.password.trim();
-    console.log('Login to be handled');
 
-    firebase.auth().signInWithEmailAndPassword(email, password);
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(() => {
+        // Route to homepage
+        this.context.router.push('/');
+      })
+      .catch((error) => {
+        this.setState({
+          email: '',
+          password: '',
+          error: 'Invalid email or password :('
+        });
+      });
   }
 
   // Save username and password form inputs to component's state
@@ -35,17 +46,43 @@ class LoginView extends Component {
      <div className="container center-text">
         <form className="form-login">
           <h2>Log In</h2>
-          <input id="username" className="form-control" type="text" placeholder="Username"/>
-          <input id="password" className="form-control" type="password" placeholder="Password"/>
-          <Link to="/"><button className="btn btn-success btn-block" type="submit" value="Save">Log In</button></Link>
+          <input
+            id="email"
+            className="form-control"
+            type="text"
+            placeholder="Email"
+            value={this.state.email}
+            onChange={this.handleInputChange.bind(this)}/>
+          <input
+            id="password"
+            className="form-control"
+            type="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.handleInputChange.bind(this)}
+          />
+          <button
+            className="btn btn-success btn-block"
+            type="submit"
+            value="Save"
+            onClick={this.handleLogin.bind(this)}>
+            Log In
+          </button>
         </form>
 
         <div>
           <span><Link to="/signup">Don't have an account? Sign up here!</Link></span>
         </div>
+
+        <div>{this.state.error}</div>
       </div>
     );
   }
 }
+
+// Attach router to NavbarView's context
+LoginView.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 
 export default LoginView;

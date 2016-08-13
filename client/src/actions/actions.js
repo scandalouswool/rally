@@ -80,12 +80,11 @@ export function createWebWorker(webWorkers) {
   }
 }
 
-// Auth action: adds firebase listener for changes to client's authentication state
+// Adds firebase listener for changes to client's authentication state
 export function startListeningToAuth(firebaseApp) {
   return (dispatch, getState) => {
     firebaseApp.auth().onAuthStateChanged((authData) => {
       // If firebase event is user logging in, set auth state to that user
-      console.log('Got auth data!');
       if (authData) {
         dispatch({
           type: 'LOGIN',
@@ -102,3 +101,11 @@ export function startListeningToAuth(firebaseApp) {
   };
 }
 
+// Sets username on sign up
+export function setUsername(userIdentifiers) {
+  return {
+    type: 'LOGIN',
+    uid: userIdentifiers.uid,
+    username: userIdentifiers.username
+  };
+}

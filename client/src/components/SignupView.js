@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import {bindActionCreators } from 'redux';
 import firebase from 'firebase';
+import { setUsername } from '../actions/actions';
 
 class SignupView extends Component {
   constructor(props) {
@@ -26,15 +29,30 @@ class SignupView extends Component {
         // Firebase method that saves the user's name
         let user = firebase.auth().currentUser;
         user.updateProfile({ displayName: name })
+          .then(() => {
+            // Dispatch action to set username :)
+            this.props.setUsername({
+              username: name,
+              uid: user.uid
+            });
+
+          })
           .catch(() => {
             this.setState({
               error: 'Please enter a legitimate name. Sorry if that was your actual name.'
             });
           });
+        // Route back to homepage
+        this.context.router.push('/');
       })
       .catch((error) => {
         // Change state to display error message for user to view
-        this.setState({error: error.message});
+        this.setState({
+          name: '',
+          email: '',
+          password: '',
+          error: error.message
+        });
     });
   }
 
@@ -50,9 +68,36 @@ class SignupView extends Component {
       <div className="container center-text">
         <form className="form-login">
           <h2>Sign Up</h2>
-          <input id="username" className="form-control" type="text" placeholder="Username"/>
-          <input id="password" className="form-control" type="password" placeholder="Password"/>
-          <button className="btn btn-success btn-block" type="submit" value="Save">Sign Up</button>
+          <input
+            id="name"
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            value={this.state.name}
+            onChange={this.handleInputChange.bind(this)}
+          />
+          <input
+            id="email"
+            className="form-control"
+            type="text"
+            placeholder="Email"
+            value={this.state.email}
+            onChange={this.handleInputChange.bind(this)}
+          />
+          <input
+            id="password"
+            className="form-control"
+            type="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.handleInputChange.bind(this)}
+          />
+          <button
+            className="btn btn-success btn-block"
+            type="submit"
+            value="Save">
+            Sign Up
+          </button>
         </form>
         <div>{this.state.error}</div>
       </div>
@@ -60,4 +105,13 @@ class SignupView extends Component {
   }
 }
 
-export default SignupView;
+// Attach router to NavbarView's context
+SignupView.contextTypes = {
+  router: PropTypes.object.isRequired
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({setUsername}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SignupView);
