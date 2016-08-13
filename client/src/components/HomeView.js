@@ -6,9 +6,12 @@ class HomeView extends Component {
     return (
       <div>
         <div className="jumbotron text-center">
-          <h1 className="card">We like fast</h1>
-          <p>Race to the finish line.<br></br>Process the toughest, largest projects in less time than you ever imagined.</p>
-          <p><button className="btn-success btn-lg"><Link to="menu" className="white">Click here to discover projects</Link></button></p>
+          <div className="jumbler"></div>
+          <div className="test">
+            <h1 className="card white test">We like fast</h1>
+            <p>Race to the finish line.<br></br>Process the toughest, largest projects in less time than you ever imagined.</p>
+          </div>
+          <p><button className="btn-success btn-lg"><Link to="menu" className="white test">Click here to discover projects</Link></button></p>
         </div>
 
         <div className="container">

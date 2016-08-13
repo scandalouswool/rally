@@ -36554,17 +36554,22 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'jumbotron text-center' },
+	          _react2.default.createElement('div', { className: 'jumbler' }),
 	          _react2.default.createElement(
-	            'h1',
-	            { className: 'card' },
-	            'We like fast'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'Race to the finish line.',
-	            _react2.default.createElement('br', null),
-	            'Process the toughest, largest projects in less time than you ever imagined.'
+	            'div',
+	            { className: 'test' },
+	            _react2.default.createElement(
+	              'h1',
+	              { className: 'card white test' },
+	              'We like fast'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Race to the finish line.',
+	              _react2.default.createElement('br', null),
+	              'Process the toughest, largest projects in less time than you ever imagined.'
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'p',
@@ -36574,7 +36579,7 @@
 	              { className: 'btn-success btn-lg' },
 	              _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: 'menu', className: 'white' },
+	                { to: 'menu', className: 'white test' },
 	                'Click here to discover projects'
 	              )
 	            )
