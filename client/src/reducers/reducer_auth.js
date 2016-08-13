@@ -11,14 +11,14 @@ export default (state, action) => {
     case 'LOGOUT':
       return {
         currently: 'GUEST',
-        username: 'guest',
+        username: 'Guest',
         uid: null
       };
 
     default:
       return state || {
         currently: 'GUEST',
-        username: 'guest',
+        username: 'Guest',
         uid: null
       };
   }
