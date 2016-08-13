@@ -46,13 +46,11 @@ const _ = require('lodash');
 */
 const testOptions = {
   title: 'Primes',
-  projectType: 'primes',
 
   dataSet: null,
 
   generateDataSet: () => {
     var dataSet = [];
-
     for (var i = 0; i < 5; i++) {
       dataSet.push( [i * 50000, i * 50000 + 49999]);
     }
