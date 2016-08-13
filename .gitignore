@@ -40,7 +40,7 @@ jspm_packages
 .DS_Store
 
 # Public Files (babel recreates them from files in client/src/)
-client/public/
+client/public/bundle.js
 
 # Environment files
 client/src/environment/
