@@ -37243,7 +37243,7 @@
 	            { className: 'test' },
 	            _react2.default.createElement(
 	              'h1',
-	              { className: 'card white test' },
+	              { className: 'card' },
 	              'We like fast'
 	            ),
 	            _react2.default.createElement(
@@ -37258,11 +37258,11 @@
 	            'p',
 	            null,
 	            _react2.default.createElement(
-	              'button',
-	              { className: 'btn-success btn-lg' },
+	              _reactRouter.Link,
+	              { to: 'menu', className: 'white' },
 	              _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: 'menu', className: 'white test' },
+	                'button',
+	                { className: 'btn-success btn-lg' },
 	                'Click here to discover projects'
 	              )
 	            )
@@ -37402,13 +37402,13 @@
 	      if (this.props.projects) {
 	        return this.props.projects.map(function (project) {
 	          return _react2.default.createElement(
-	            'button',
-	            { className: 'btn-success btn-sm', key: project.projectId },
+	            _reactRouter.Link,
+	            { className: 'white', to: '/project', onClick: function onClick() {
+	                return _this2.props.selectProject(project);
+	              } },
 	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { className: 'white', to: '/project', onClick: function onClick() {
-	                  return _this2.props.selectProject(project);
-	                } },
+	              'button',
+	              { className: 'btn-success btn-sm', key: project.projectId },
 	              project.title
 	            )
 	          );
@@ -37422,11 +37422,11 @@
 	        'div',
 	        { className: 'center-block' },
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'btn-success btn-lg' },
+	          _reactRouter.Link,
+	          { to: 'createProject', className: 'white' },
 	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: 'createProject', className: 'white' },
+	            'button',
+	            { className: 'btn-success btn-lg' },
 	            'Create New Project'
 	          )
 	        ),

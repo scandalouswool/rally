@@ -8,10 +8,10 @@ class HomeView extends Component {
         <div className="jumbotron text-center">
           <div className="jumbler"></div>
           <div className="test">
-            <h1 className="card white test">We like fast</h1>
+            <h1 className="card">We like fast</h1>
             <p>Race to the finish line.<br></br>Process the toughest, largest projects in less time than you ever imagined.</p>
           </div>
-          <p><button className="btn-success btn-lg"><Link to="menu" className="white test">Click here to discover projects</Link></button></p>
+          <p><Link to="menu" className="white"><button className="btn-success btn-lg">Click here to discover projects</button></Link></p>
         </div>
 
         <div className="container">
