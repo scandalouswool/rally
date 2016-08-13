@@ -4,8 +4,8 @@ import { selectProject } from '../actions/actions';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import SelectedProjectView from './SelectedProjectView';
-import ProjectView from '../components/ProjectView';
-import CreateProjectView from '../components/CreateProjectView';
+import ProjectView from './ProjectView';
+import CreateProjectView from './CreateProjectView';
 
 class MenuView extends Component {
 
