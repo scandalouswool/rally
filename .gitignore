@@ -43,4 +43,5 @@ jspm_packages
 client/public/bundle.js
 
 # Environment files
-client/src/environment/
+client/src/environment/client/public/bundle.js
+client/public/
