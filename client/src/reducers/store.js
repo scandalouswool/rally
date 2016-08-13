@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
   createdSocket: CreatedSocket,
   updateWorkers: UpdateWorkers,
   updateJob: UpdateJob,
+  updateResults: UpdateResults,
   auth: Auth
 });
 
