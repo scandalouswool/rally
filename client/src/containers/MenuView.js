@@ -13,6 +13,7 @@ class MenuView extends Component {
   renderList() {
 
     if (this.props.projects) {
+
       return this.props.projects.map( (project) => {
         return (
 
@@ -27,7 +28,6 @@ class MenuView extends Component {
   }
 
   render() {
-    console.log(this.props.createdSocket);
     return (
 
       <div className="center-block">
@@ -48,6 +48,7 @@ function mapStateToProps(state) {
   //Whatever is returned from here will show up 
   //as props inside of MenuView
   return {
+    allProjects: state.allProjects,
     projects: state.projects,
     project: state.selectedProject
   }

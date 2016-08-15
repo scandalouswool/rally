@@ -3,8 +3,6 @@ export default function (state = [], action) {
 		case 'COMPLETED_RESULTS': 
 			console.log('inside completed results', action.payload)
 
-      
-      
       let nextState = action.payload.map( (item) => {
         if (item === null) {
           console.log('Null result found');

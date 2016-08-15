@@ -125,13 +125,13 @@ class ProjectController {
 
   // Sends status of projects to all connected users
   sendUpdateAllProjects(destination) {
-    let siteUpdate = {};
+    let allProjectsUpdate = {};
 
     // Initialize project update information
     for (var key in this.allProjects) {
       let project = this.allProjects[key];
 
-      siteUpdate[key] = {
+      allProjectsUpdate[key] = {
         projectId: project.projectId,
         projectType: project.projectType,
         title: project.title,
@@ -143,16 +143,18 @@ class ProjectController {
       }
     }
 
+    allProjectsUpdate = JSON.stringify(allProjectsUpdate);
+    console.log('Stringified:', allProjectsUpdate);
     // Checks whether destination is a io object or a socket connection
     if (destination.id) {
       console.log('user:', destination.id);
-      destination.emit('updateAllProjects', siteUpdate);
+      destination.emit('updateAllProjects', allProjectsUpdate);
       console.log('Send site update to ', destination.id);
     } else {
-      destination.emit('updateAllProjects', siteUpdate);
+      destination.emit('updateAllProjects', allProjectsUpdate);
       console.log('Sent site update to all users.');
     }
-    console.log(siteUpdate);
+    console.log(allProjectsUpdate);
   }
 
   //TODO: completeProject method

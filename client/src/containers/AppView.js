@@ -11,7 +11,8 @@ import { createdSocket,
          sendCompleteJob,
          updateResults,
          finalResults,
-         createWebWorker
+         createWebWorker,
+         updateAllProjects
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -97,7 +98,21 @@ export default class AppView extends Component {
 
     this.socket.on('updateAllProjects', (allProjectsUpdate) => {
       console.log('Received updated site info:', allProjectsUpdate);
-      this.props.updateProjects(allProjectsUpdate);
+
+      const update = JSON.parse(allProjectsUpdate);
+      const projectList = [];
+
+      for (var key in update) {
+        projectList.push({
+          projectId: update[key].projectId,
+          projectType: update[key].projectType,
+          jobsLength: update[key].jobsLength,
+          title: update[key].title
+        });        
+      }
+      console.log('Inside appview', projectList);
+      this.props.updateAllProjects(update);
+      this.props.updateProjects(projectList);
     });
 
     const socketMethods = {
@@ -135,7 +150,8 @@ function mapDispatchToProps(dispatch) {
       sendCompleteJob, 
       updateResults, 
       finalResults,
-      createWebWorker 
+      createWebWorker,
+      updateAllProjects 
     }, dispatch)
 }
 

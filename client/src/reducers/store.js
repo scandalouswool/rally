@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import AllProjectsUpdate from './reducer_all_projects';
 import ProjectsList from './reducer_projects';
 import SelectedProject from './reducer_selected_project';
 import CreatedSocket from './reducer_socket_methods';
@@ -8,6 +9,7 @@ import UpdateResults from './reducer_results';
 import Auth from './reducer_auth';
 
 const rootReducer = combineReducers({
+  allProjects: AllProjectsUpdate,
   projects: ProjectsList,
   selectedProject: SelectedProject,
   createdSocket: CreatedSocket,
