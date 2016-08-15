@@ -49,13 +49,6 @@ export default class AppView extends Component {
     // Web Socket Handlers
     ************************************************/
 
-    const sendReady = () => {
-      // Hard coded for now - eventually generate from server
-      // and send to client for storage
-      var projectId = 'project0';  
-      this.socket.emit('userReady', projectId);
-    };
-
     // Client must be able to handle the following events:
     // - newJob
     // - updateWorkers
@@ -102,9 +95,12 @@ export default class AppView extends Component {
       this.props.updateProjects(projects);
     });
 
+    this.socket.on('siteUpdate', (siteUpdate) => {
+      console.log('Received udpated site info:', siteUpdate);
+    });
+
     const socketMethods = {
-      socket: this.socket,
-      sendReady: sendReady
+      socket: this.socket
     };
   }
 
