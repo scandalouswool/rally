@@ -68,6 +68,14 @@ export function updateProjects(projects) {
   }
 }
 
+// For handling data from 'updateAllProjects'
+export function updateAllProjects(allProjectsUpdate) {
+  return {
+    type: 'UPDATE_ALL_PROJECTS',
+    payload: allProjectsUpdate
+  }
+}
+
 export function createWebWorker(webWorkers) {
   return {
     type: 'CREATE_WEB_WORKER',
