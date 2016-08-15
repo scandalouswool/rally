@@ -12,6 +12,8 @@ export function createdSocket(socket) {
   }
 }
 
+// General projects/workers update information
+
 // TODO: updateWorkers
 export function updateWorkers(workersList) {
 	return {
