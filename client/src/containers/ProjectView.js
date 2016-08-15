@@ -7,8 +7,9 @@ import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
   componentDidMount() {
-    console.log('Fetching results for this project');
-    this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
+    console.log('Fetching all projects update');
+    this.props.socket.emit('getAllProjects');
+    // this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
   }
 
   connectToProject() {
