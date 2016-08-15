@@ -46,9 +46,6 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(null, mapDispatchToProps)(CreateNQueensView);
 
-
-
-
 (dataSet) => {
 
     var n = dataSet[0];
@@ -78,10 +75,7 @@ export default connect(null, mapDispatchToProps)(CreateNQueensView);
       }
     };
 
-    countQueenSolutions(level,minDiagConflict, majDiagConflict, colConflict);
+    countQueenSolutions(level, minDiagConflict, majDiagConflict, colConflict);
     
     return solutionCount;
   }
-
-
-

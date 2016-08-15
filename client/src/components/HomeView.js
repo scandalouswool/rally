@@ -5,10 +5,10 @@ class HomeView extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron text-center">
+        <div className="jumbotron text-center roundingIt">
           <div className="jumbler"></div>
           <div className="test">
-            <h1 className="card">We like fast</h1>
+            <h1 className="card">We like <b>fast</b></h1>
             <p>Race to the finish line.<br></br>Process the toughest, largest projects in less time than you ever imagined.</p>
           </div>
           <p><Link to="menu" className="white"><button className="btn-success btn-lg">Click here to discover projects</button></Link></p>
