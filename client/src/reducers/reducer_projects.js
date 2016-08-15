@@ -8,14 +8,23 @@ export default function (state = {}, action) {
     case 'ALL_PROJECTS':
       console.log('Receiving the projects list:', action.payload);
 
-      const newState = action.payload.map( (project) => {
-        return {
+      const newState = [];
+
+      for (var key in action.payload) {
+        let project = action.payload[key];
+        
+        newState.push( {
           projectId: project.projectId,
           projectType: project.projectType,
           jobsLength: project.jobsLength,
-          title: project.title
-        }
-      });
+          title: project.title          
+        })
+      }
+
+      // action.payload.map( (project) => {
+      //   return {
+      //   }
+      // });
 
       return newState;
 

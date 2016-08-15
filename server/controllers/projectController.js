@@ -136,6 +136,7 @@ class ProjectController {
         projectType: project.projectType,
         title: project.title,
         availableJobsNum: project.availableJobs.length,
+        jobsLength: project.jobsLength,
         completedJobs: project.completedJobs,
         workers: project.workers,
         finalResult: project.finalResult
@@ -145,10 +146,10 @@ class ProjectController {
     // destination is either a io object or a socket connection
     if (destination.id) {
       console.log('user:', destination.id);
-      destination.emit('siteUpdate', siteUpdate);
+      destination.emit('updateAllProjects', siteUpdate);
       console.log('Send site update to ', destination.id);
     } else {
-      destination.emit('siteUpdate', siteUpdate);
+      destination.emit('updateAllProjects', siteUpdate);
       console.log('Sent site update to all users.');
     }
     console.log(siteUpdate);

@@ -91,12 +91,13 @@ export default class AppView extends Component {
       this.props.finalResults(final); 
     });
 
-    this.socket.on('updateProjects', (projects) => {
-      this.props.updateProjects(projects);
-    });
+    // this.socket.on('updateProjects', (projects) => {
+    //   this.props.updateProjects(projects);
+    // });
 
-    this.socket.on('siteUpdate', (siteUpdate) => {
-      console.log('Received udpated site info:', siteUpdate);
+    this.socket.on('updateAllProjects', (allProjectsUpdate) => {
+      console.log('Received udpated site info:', allProjectsUpdate);
+      this.props.updateProjects(allProjectsUpdate);
     });
 
     const socketMethods = {
