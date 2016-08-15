@@ -124,7 +124,7 @@ class ProjectController {
   }
 
   // Sends status of projects to all connected users
-  broadcastUpdate(destination) {
+  sendUpdateAllProjects(destination) {
     let siteUpdate = {};
 
     // Initialize project update information
@@ -143,7 +143,7 @@ class ProjectController {
       }
     }
 
-    // destination is either a io object or a socket connection
+    // Checks whether destination is a io object or a socket connection
     if (destination.id) {
       console.log('user:', destination.id);
       destination.emit('updateAllProjects', siteUpdate);
