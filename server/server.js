@@ -40,8 +40,8 @@ server.listen(process.env.PORT || 8000, () => {
 io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
-  pc.sendAllProjects(socket);
-  pc.broadcastUpdate(socket);
+  // pc.sendAllProjects(socket);
+  pc.sendUpdateAllProjects(socket);
   
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
@@ -125,7 +125,7 @@ io.on('connect', (socket) => {
 // Default Projects
 pc.createProject(primes, io);
 pc.createProject(nQueens, io);
-pc.broadcastUpdate(io);
+pc.sendUpdateAllProjects(io);
 
 // setInterval( () => {
 //   pc.createProject(nQueens, io);
