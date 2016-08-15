@@ -123,6 +123,37 @@ class ProjectController {
     socket.emit('updateResults', results);
   }
 
+  // Sends status of projects to all connected users
+  broadcastUpdate(destination) {
+    let siteUpdate = {};
+
+    // Initialize project update information
+    for (var key in this.allProjects) {
+      let project = this.allProjects[key];
+
+      siteUpdate[key] = {
+        projectId: project.projectId,
+        projectType: project.projectType,
+        title: project.title,
+        availableJobsNum: project.availableJobs.length,
+        completedJobs: project.completedJobs,
+        workers: project.workers,
+        finalResult: project.finalResult
+      }
+    }
+
+    // destination is either a io object or a socket connection
+    if (destination.id) {
+      console.log('user:', destination.id);
+      destination.emit('siteUpdate', siteUpdate);
+      console.log('Send site update to ', destination.id);
+    } else {
+      destination.emit('siteUpdate', siteUpdate);
+      console.log('Sent site update to all users.');
+    }
+    console.log(siteUpdate);
+  }
+
   //TODO: completeProject method
   completeProject() {
     console.log('Project done');

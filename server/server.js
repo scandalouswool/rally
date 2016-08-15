@@ -41,6 +41,7 @@ io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
   pc.sendAllProjects(socket);
+  pc.broadcastUpdate(socket);
   
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
@@ -94,6 +95,13 @@ io.on('connect', (socket) => {
     pc.createProject(project, io);
   });
 
+  // 'getProjectsUpdate' event handler
+  // Sends back an object containing information
+  // about all projects and workers
+  socket.on('getProjectsUpdate', () => {
+    pc.sendProjectsUpdate(io);
+  });
+
   // 'getAllProjects' event handler
   // Passes a socket to the ProjetController object
   // The server will send back an object containing the project IDs of all existing projects 
@@ -117,6 +125,7 @@ io.on('connect', (socket) => {
 // Default Projects
 pc.createProject(primes, io);
 pc.createProject(nQueens, io);
+pc.broadcastUpdate(io);
 
 // setInterval( () => {
 //   pc.createProject(nQueens, io);
