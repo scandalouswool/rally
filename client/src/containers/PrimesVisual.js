@@ -38,7 +38,7 @@ class PrimesVisualView extends Component {
       .range([0, this.svgHeight]);
 
     let notes = this.graph.selectAll('rect')
-      .data(this.props.results, (d, i) => {
+      .data(this.props.results[this.props.project.projectId], (d, i) => {
         return d;
       });
     
@@ -84,7 +84,7 @@ class PrimesVisualView extends Component {
       <div>
         This is a visualizer
         <div id="visualizer"></div>
-        <div>{this.props.results === null ? 'zero' : this.props.results.length}</div>
+        <div>{this.props.results[this.props.project.projectId] === null ? 'zero' : this.props.results[this.props.project.projectId].length}</div>
       </div>
     )
   }
