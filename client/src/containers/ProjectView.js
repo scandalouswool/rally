@@ -6,13 +6,9 @@ import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
-  componentDidMount() {
-    console.log('Fetching all projects update');
-    this.props.socket.emit('getAllProjectsUpdate');
-  }
 
   connectToProject() {
-    console.log('Joining...');
+    console.log('Joining project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', this.props.selectedProject.projectId);
   }
 
@@ -30,8 +26,6 @@ class ProjectView extends Component {
       let visualization;
       const projectId = this.props.selectedProject.projectId;
 
-      console.log('Ongoing projects:', this.props.projects);
-
       let thisProject; 
       
       this.props.projects.forEach( (item) => {
@@ -47,7 +41,7 @@ class ProjectView extends Component {
       }
 
       console.log('Results so far:', this.props.results[projectId]);
-      console.log('Workers in this project:', thisProject.workers);
+
       return (
         <div>
           {visualization}

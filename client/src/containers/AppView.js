@@ -87,7 +87,6 @@ export default class AppView extends Component {
     });
 
     this.socket.on('updateAllProjects', (allProjectsUpdate) => {
-      console.log('Received updated site info:', allProjectsUpdate);
 
       const projectList = [];
       const resultsList = {};

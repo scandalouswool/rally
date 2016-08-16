@@ -18,13 +18,11 @@ class PrimesVisualView extends Component {
       .attr('width', this.svgWidth)
       .attr('height', this.svgHeight);
     
-    console.log('Drawing primes visualization');
     this.drawPrimesGraph();
   }
 
   // componentWillReceiveProps() {
   componentDidUpdate() {
-    console.log('Updating primes visualization');
     this.drawPrimesGraph();
   }
 

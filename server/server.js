@@ -16,13 +16,7 @@ app.use(express.static(__dirname + '/../client'));
 
 // For accessing the Web Worker script file
 app.get('/webworker', (req, res) => {
-  console.log('Sending', req.url);
   res.sendFile(path.resolve(__dirname + '/../client/src/utils/webWorker.js'));
-});
-
-app.get('/cycle.js', (req, res) => {
-  console.log('Sending', req.url);
-  res.sendFile(path.resolve(__dirname + '/../client/src/utils/cycle.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
@@ -121,8 +115,3 @@ io.on('connect', (socket) => {
 // Default Projects
 pc.createProject(primes, io);
 pc.createProject(nQueens, io);
-pc.sendUpdateAllProjects(io);
-
-// setInterval( () => {
-//   pc.createProject(nQueens, io);
-// }, 2000);

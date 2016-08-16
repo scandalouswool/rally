@@ -5,8 +5,6 @@ import firebase from 'firebase';
 class NavbarView extends Component {
   constructor(props) {
     super(props);
-
-    console.log('Navbar props: ', this.props);
   }
 
   handleLogout(event) {

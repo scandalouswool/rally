@@ -12,9 +12,6 @@ export function createdSocket(socket) {
   }
 }
 
-// General projects/workers update information
-
-// TODO: updateWorkers
 export function updateWorkers(workersList) {
 	return {
 		type: 'WORKERS_UPDATED',
@@ -22,7 +19,6 @@ export function updateWorkers(workersList) {
 	}
 }
 
-// TODO: newJob
 export function newJob(job) {
 	return {
 		type: 'NEW_JOB', 
@@ -44,7 +40,6 @@ export function sendCompleteJob(socket, job) {
 	}
 }
 
-// TODO: updateResults
 export function updateResults(results) {
 	return {
 		type: 'COMPLETED_RESULTS', 
@@ -52,7 +47,6 @@ export function updateResults(results) {
 	}
 }
 
-// TODO: finalResults
 export function finalResults(final) {
 	return {
 		type: 'FINAL_RESULTS', 
@@ -60,7 +54,6 @@ export function finalResults(final) {
 	}
 }
 
-// TODO: updateProjects
 export function updateProjects(projects) {
   return {
     type: 'ALL_PROJECTS',
@@ -68,7 +61,6 @@ export function updateProjects(projects) {
   }
 }
 
-// For handling data from 'updateAllProjects'
 export function updateAllProjects(allProjectsUpdate) {
   return {
     type: 'UPDATE_ALL_PROJECTS',

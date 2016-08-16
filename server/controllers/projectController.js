@@ -145,7 +145,6 @@ class ProjectController {
     } else {
       destination.emit('updateAllProjects', allProjectsUpdate);
     }
-    console.log(allProjectsUpdate);
   }
 
   //TODO: completeProject method
