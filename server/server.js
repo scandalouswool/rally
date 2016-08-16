@@ -17,7 +17,12 @@ app.use(express.static(__dirname + '/../client'));
 // For accessing the Web Worker script file
 app.get('/webworker', (req, res) => {
   console.log('Sending', req.url);
-  res.sendFile(path.resolve(__dirname + '/../client/src/webworker/webWorker.js'));
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/webWorker.js'));
+});
+
+app.get('/cycle.js', (req, res) => {
+  console.log('Sending', req.url);
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/cycle.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
@@ -40,7 +45,8 @@ server.listen(process.env.PORT || 8000, () => {
 io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
-  pc.sendAllProjects(socket);
+  // pc.sendAllProjects(socket);
+  pc.sendUpdateAllProjects(socket);
   
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
@@ -73,6 +79,7 @@ io.on('connect', (socket) => {
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
     pc.userJobDone(completedJob);
+    pc.sendUpdateAllProjects(io);
   });
 
   // 'createProject' event handler
@@ -94,18 +101,15 @@ io.on('connect', (socket) => {
     pc.createProject(project, io);
   });
 
-  // 'getAllProjects' event handler
-  // Passes a socket to the ProjetController object
-  // The server will send back an object containing the project IDs of all existing projects 
-  socket.on('getAllProjects', () => {
-    pc.sendAllProjects(socket);
-  });
+  // // 'getProjectsUpdate' event handler
+  // // Sends back an object containing information
+  // // about all projects and workers
+  // socket.on('getProjectsUpdate', () => {
+  //   pc.sendUpdateAllProjects(socket);
+  // });
 
-  // 'fetchProjectResults' event handler
-  // Send results for this project to the requestor
-  // Eliminate this event after refactoring backend of use socket rooms
-  socket.on('fetchProjectResults', (projectId) => {
-    pc.sendProjectResults(projectId, socket);
+  socket.on('getAllProjectsUpdate', () => {
+    pc.sendUpdateAllProjects(socket);
   });
 
   // 'error' event handler
@@ -117,6 +121,7 @@ io.on('connect', (socket) => {
 // Default Projects
 pc.createProject(primes, io);
 pc.createProject(nQueens, io);
+pc.sendUpdateAllProjects(io);
 
 // setInterval( () => {
 //   pc.createProject(nQueens, io);

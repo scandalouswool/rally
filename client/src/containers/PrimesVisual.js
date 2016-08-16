@@ -49,10 +49,10 @@ class PrimesVisualView extends Component {
         return xScale(i);
       })
       .attr('y', (d) => {
-        return this.svgHeight - yScale(d.length)
+        return this.svgHeight - yScale(d === null ? 0 : d.length)
       })
       .attr('height', (d) => {
-        return yScale(d.length);
+        return yScale(d === null ? 0 : d.length);
       })
       .attr('width', this.svgWidth / 20 - 5)
       .attr('fill', '#3CC76A');
@@ -69,7 +69,7 @@ class PrimesVisualView extends Component {
         return this.svgHeight - yScale(d.length)
       })
       .attr('height', (d) => {
-        return yScale(d.length);
+        return yScale(d === null ? 0 : d.length);
       })
       .attr('width', this.svgWidth / 20 - 5)
       .attr('fill', '#3CC76A');

@@ -53,7 +53,7 @@ class ProjectController {
       this.allProjects[projectId].createWorker(projectId, socket);
       // Create a record of the new Worker in the allWorkers ledger
       this.allWorkers[socket.id] = projectId;
-      console.log(this.allWorkers);
+
     } else {
       console.log('Error in userReady: Project does not exist');
     }
@@ -116,11 +116,56 @@ class ProjectController {
     socket.emit('updateProjects', projectList);
   }
 
-  sendProjectResults(projectId, socket) {
-    let results = this.allProjects[projectId].completedJobs.map( (item) => {
-      return item;
-    });
-    socket.emit('updateResults', results);
+  // Sends status of projects to all connected users
+  sendUpdateAllProjects(destination) {
+    let allProjectsUpdate = [];
+
+    // Initialize project update information
+    for (var key in this.allProjects) {
+      const project = this.allProjects[key];
+      const projectId = key + '';
+
+      const completedJobs = [];
+      project.completedJobs.map( (item) => {
+        completedJobs.push(item);
+      });
+
+      // WorkersList: [ Worker1, Worker2 ]
+      const workersList = [];
+
+      for (var k in project.workers) {
+        workersList.push({
+          workerId: project.workers[k].workerId,
+          projectId: project.workers[k].projectId,
+          jobId: project.workers[k].currentJob === undefined ? undefined : project.workers[k].currentJob.jobId
+        })
+      }
+
+      const finalResult = [];
+      finalResult.push(project.finalResult);
+
+      allProjectsUpdate.push({
+        projectId: project.projectId,
+        projectType: project.projectType,
+        title: project.title,
+        availableJobsNum: project.availableJobs.length,
+        jobsLength: project.jobsLength,
+        completedJobs: completedJobs,
+        workers: workersList,
+        finalResult: project.finalResult
+      });
+    }
+
+
+    let test = JSON.stringify(allProjectsUpdate);
+
+    // Checks whether destination is a io object or a socket connection
+    if (destination.id) {
+      destination.emit('updateAllProjects', allProjectsUpdate);
+    } else {
+      destination.emit('updateAllProjects', allProjectsUpdate);
+    }
+    console.log(allProjectsUpdate);
   }
 
   //TODO: completeProject method

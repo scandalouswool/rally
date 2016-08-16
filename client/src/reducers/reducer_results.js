@@ -2,13 +2,19 @@ export default function (state = [], action) {
 	switch(action.type){
 		case 'COMPLETED_RESULTS': 
 			console.log('inside completed results', action.payload)
-      let nextState = action.payload.map( (item) => {
-        if (item === null) {
-          return 0;
-        } else {
-          return item;
-        }
-      });
+
+      let nextState = action.payload;
+      
+      for (var key in nextState) {
+        nextState[key].map( (item) => {
+          if (item === null) {
+            console.log('Null result found');
+            return [];
+          } else {
+            return item;
+          }
+        });
+      }
 
 		  return nextState;
 		

@@ -7,36 +7,47 @@ import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
   componentDidMount() {
-    console.log('Fetching results for this project');
-    this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
+    console.log('Fetching all projects update');
+    this.props.socket.emit('getAllProjectsUpdate');
   }
 
   connectToProject() {
     console.log('Joining...');
-    this.props.socket.emit('userReady', this.props.project.projectId);
+    this.props.socket.emit('userReady', this.props.selectedProject.projectId);
   }
 
   disconnectFromProject() {
-    console.log(`Disconnecting from project: ${this.props.project['title']}`);
+    console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
-    // TODO: terminate the existing worker
+    this.props.webWorker.terminate();
   }
 
   render() {
 
-    if (this.props.project === null) {
+    if (this.props.selectedProject === null) {
       this.context.router.push('menu');
       return null;
     } else {
       let visualization;
-      console.log('Project is:', this.props.project);
-      console.log('Project type:', this.props.project.projectType);
-      console.log('Project total number of jobs:', this.props.project.jobsLength);
-      if (this.props.project.projectType === 'primes') {
+      const projectId = this.props.selectedProject.projectId;
+
+      console.log('Ongoing projects:', this.props.projects);
+
+      let thisProject; 
+      
+      this.props.projects.forEach( (item) => {
+        if (item.projectId === projectId) {
+          thisProject = item;
+        }
+      });
+
+      if (this.props.selectedProject.projectType === 'primes') {
         visualization = <PrimesVisualView />
       } else {
         visualization = undefined;
       }
+      console.log('Results so far:', this.props.results[projectId]);
+      console.log('Workers in this project:', thisProject.workers);
       return (
         <div>
           {visualization}
@@ -47,18 +58,21 @@ class ProjectView extends Component {
           <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
           <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
           <div>
-            Current number of jobs: {this.props.results.length === 0  ? 'Project is currently not in progress' : this.props.results.length}
+            Number of Workers: {thisProject.workers.length}
           </div>
           <div>
-            Total number of jobs: {this.props.results.length === 0 ? 'Project is currently not in progress': this.props.job.totalJobs}
+            Number of Jobs Completed: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}
+          </div>
+          <div>
+            Total number of jobs: {this.props.results[projectId].length === 0 ? 'Project is currently not in progress': this.props.selectedProject.jobsLength}
           </div>
           <div className="progressbar">
-            Progress: {this.props.results.length === 0 ? '0': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
+            Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
             %
-            <Progress color='#3CC76A' completed={this.props.results.length === 0 ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
+            <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
           </div>
           <div>
-          Final Result: {Array.isArray(this.props.results)? '' : this.props.results}
+          Final Result: {Array.isArray(this.props.results[projectId])? '' : this.props.results[projectId]}
           </div>
         </div>
       );
@@ -73,10 +87,12 @@ ProjectView.contextTypes = {
 
 function mapStateToProps(state) {
   return {
-    project: state.selectedProject,
+    selectedProject: state.selectedProject,
+    projects: state.projects,
     socket: state.createdSocket,
     results: state.updateResults,
-    job: state.updateJob
+    job: state.updateJob,
+    webWorker: state.webWorker
   }
 }
 

@@ -11,7 +11,8 @@ import { createdSocket,
          sendCompleteJob,
          updateResults,
          finalResults,
-         createWebWorker
+         createWebWorker,
+         updateAllProjects
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -49,13 +50,6 @@ export default class AppView extends Component {
     // Web Socket Handlers
     ************************************************/
 
-    const sendReady = () => {
-      // Hard coded for now - eventually generate from server
-      // and send to client for storage
-      var projectId = 'project0';  
-      this.socket.emit('userReady', projectId);
-    };
-
     // Client must be able to handle the following events:
     // - newJob
     // - updateWorkers
@@ -90,21 +84,39 @@ export default class AppView extends Component {
       console.log('Updating job in newJob: ', job);
     });
 
-    this.socket.on('updateResults', (results) => {
-      this.props.updateResults(results); 
-    });
-
     this.socket.on('finalResult', (final) => {
       this.props.finalResults(final); 
     });
 
-    this.socket.on('updateProjects', (projects) => {
-      this.props.updateProjects(projects);
+    this.socket.on('updateAllProjects', (allProjectsUpdate) => {
+      console.log('Received updated site info:', allProjectsUpdate);
+
+      const projectList = [];
+      const resultsList = {};
+
+      allProjectsUpdate.map( (project) => {
+        // Update the status of existing projects
+        console.log('Each project:', project);
+        projectList.push({
+          projectId: project.projectId,
+          projectType: project.projectType,
+          jobsLength: project.jobsLength,
+          title: project.title,
+          availableJobsNum: project.availableJobsNum,
+          workers: project.workers
+        });  
+
+        // Update results of all projects
+        resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
+      });
+      console.log('Project list:', projectList);
+      this.props.updateAllProjects(allProjectsUpdate);
+      this.props.updateProjects(projectList);
+      this.props.updateResults(resultsList);
     });
 
     const socketMethods = {
-      socket: this.socket,
-      sendReady: sendReady
+      socket: this.socket
     };
   }
 
@@ -138,7 +150,8 @@ function mapDispatchToProps(dispatch) {
       sendCompleteJob, 
       updateResults, 
       finalResults,
-      createWebWorker 
+      createWebWorker,
+      updateAllProjects 
     }, dispatch)
 }
 

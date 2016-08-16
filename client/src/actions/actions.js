@@ -12,6 +12,8 @@ export function createdSocket(socket) {
   }
 }
 
+// General projects/workers update information
+
 // TODO: updateWorkers
 export function updateWorkers(workersList) {
 	return {
@@ -63,6 +65,14 @@ export function updateProjects(projects) {
   return {
     type: 'ALL_PROJECTS',
     payload: projects
+  }
+}
+
+// For handling data from 'updateAllProjects'
+export function updateAllProjects(allProjectsUpdate) {
+  return {
+    type: 'UPDATE_ALL_PROJECTS',
+    payload: allProjectsUpdate
   }
 }
 
