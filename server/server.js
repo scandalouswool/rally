@@ -17,7 +17,12 @@ app.use(express.static(__dirname + '/../client'));
 // For accessing the Web Worker script file
 app.get('/webworker', (req, res) => {
   console.log('Sending', req.url);
-  res.sendFile(path.resolve(__dirname + '/../client/src/webworker/webWorker.js'));
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/webWorker.js'));
+});
+
+app.get('/cycle.js', (req, res) => {
+  console.log('Sending', req.url);
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/cycle.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
@@ -74,6 +79,7 @@ io.on('connect', (socket) => {
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
     pc.userJobDone(completedJob);
+    pc.sendUpdateAllProjects(io);
   });
 
   // 'createProject' event handler

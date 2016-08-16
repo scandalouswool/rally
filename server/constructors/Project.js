@@ -208,9 +208,9 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     var completed = this.completedJobs.map( (job) => {
       return job;
     });
-    for (var key in this.workers) {
-      this.workers[key].socket.emit('updateResults', completed);
-    }
+    // for (var key in this.workers) {
+    //   this.workers[key].socket.emit('updateResults', completed);
+    // }
 
     // Completes the project if all jobs have been completed
     if (this.jobsLength === this.completedJobs.length) {
