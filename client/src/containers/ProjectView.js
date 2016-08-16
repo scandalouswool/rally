@@ -9,7 +9,6 @@ class ProjectView extends Component {
   componentDidMount() {
     console.log('Fetching all projects update');
     this.props.socket.emit('getAllProjects');
-    // this.props.socket.emit('fetchProjectResults', this.props.project.projectId);
   }
 
   connectToProject() {
@@ -20,7 +19,7 @@ class ProjectView extends Component {
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.project['title']}`);
     this.props.socket.emit('userDisconnect');
-    // TODO: terminate the existing worker
+    this.props.webWorker.terminate();
   }
 
   render() {
@@ -30,6 +29,8 @@ class ProjectView extends Component {
       return null;
     } else {
       let visualization;
+      const projectId = this.props.project.projectId;
+
       console.log('Project is:', this.props.project);
       console.log('Project type:', this.props.project.projectType);
       console.log('Project total number of jobs:', this.props.project.jobsLength);
@@ -38,6 +39,7 @@ class ProjectView extends Component {
       } else {
         visualization = undefined;
       }
+      console.log('Results so far:', this.props.results[projectId]);
       return (
         <div>
           {visualization}
@@ -48,18 +50,18 @@ class ProjectView extends Component {
           <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
           <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
           <div>
-            Current number of jobs: {this.props.results.length === 0  ? 'Project is currently not in progress' : this.props.results.length}
+            Current number of jobs: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}
           </div>
           <div>
-            Total number of jobs: {this.props.results.length === 0 ? 'Project is currently not in progress': this.props.job.totalJobs}
+            Total number of jobs: {this.props.results[projectId].length === 0 ? 'Project is currently not in progress': this.props.job.totalJobs}
           </div>
           <div className="progressbar">
-            Progress: {this.props.results.length === 0 ? '0': Math.floor(this.props.results.length / this.props.job.totalJobs * 100 || 100)}
+            Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.job.totalJobs * 100 || 100)}
             %
-            <Progress color='#3CC76A' completed={this.props.results.length === 0 ? 0 : this.props.results.length / this.props.job.totalJobs * 100 } />
+            <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.job.totalJobs * 100 } />
           </div>
           <div>
-          Final Result: {Array.isArray(this.props.results)? '' : this.props.results}
+          Final Result: {Array.isArray(this.props.results[projectId])? '' : this.props.results[projectId]}
           </div>
         </div>
       );
@@ -77,7 +79,8 @@ function mapStateToProps(state) {
     project: state.selectedProject,
     socket: state.createdSocket,
     results: state.updateResults,
-    job: state.updateJob
+    job: state.updateJob,
+    webWorker: state.webWorker
   }
 }
 

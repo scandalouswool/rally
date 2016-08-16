@@ -116,34 +116,51 @@ class ProjectController {
     socket.emit('updateProjects', projectList);
   }
 
-  sendProjectResults(projectId, socket) {
-    let results = this.allProjects[projectId].completedJobs.map( (item) => {
-      return item;
-    });
-    socket.emit('updateResults', results);
-  }
+  // sendProjectResults(projectId, socket) {
+  //   let results = this.allProjects[projectId].completedJobs.map( (item) => {
+  //     return item;
+  //   });
+  //   socket.emit('updateResults', results);
+  // }
 
   // Sends status of projects to all connected users
   sendUpdateAllProjects(destination) {
-    let allProjectsUpdate = {};
+    let allProjectsUpdate = [];
 
     // Initialize project update information
     for (var key in this.allProjects) {
-      let project = this.allProjects[key];
+      const project = this.allProjects[key];
+      const projectId = key + '';
 
-      allProjectsUpdate[key] = {
+      const completedJobs = [];
+      project.completedJobs.map( (item) => {
+        completedJobs.push(item);
+      });
+
+      const workers = [];
+      for (var k in this.workers) {
+        workers.push(this.workers[key]);
+      }
+
+      const finalResult = [];
+      finalResult.push(project.finalResult);
+
+      allProjectsUpdate.push({
         projectId: project.projectId,
         projectType: project.projectType,
         title: project.title,
         availableJobsNum: project.availableJobs.length,
         jobsLength: project.jobsLength,
-        completedJobs: project.completedJobs,
-        workers: project.workers,
+        completedJobs: completedJobs,
+        workers: workers,
         finalResult: project.finalResult
-      }
+      });
     }
 
-    allProjectsUpdate = JSON.stringify(allProjectsUpdate);
+    // var update = _.cloneDeep(allProjectsUpdate);
+
+    console.log('Stringifying...');
+    let test = JSON.stringify(allProjectsUpdate);
     console.log('Stringified:', allProjectsUpdate);
     // Checks whether destination is a io object or a socket connection
     if (destination.id) {
