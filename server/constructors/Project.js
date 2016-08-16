@@ -199,26 +199,9 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       // Set worker's current job to null 
       this.workers[job.workerId].currentJob = null;
 
-      // Iterate over all workers in the workers object, and emit to them the updated results array
-      // NOTE: do NOT use 'this' inside the emit function. Doing so will
-      // cause a maximum stack call exceeded error, for some reason.
-      // Unfortunately, this requires us to generate a workersList array
-      // to pass into the socket message. Hacky. Need to refactor.
-      // TODO: refactor to use socket rooms to broadcast messages?
-      var workersList = [];
-      for (var key in this.workers) {
-        workersList.push(this.workers[key].workerId);
-      }
-      var completed = this.completedJobs.map( (job) => {
-        return job;
-      });
-      // for (var key in this.workers) {
-      //   this.workers[key].socket.emit('updateResults', completed);
-      // }
-
       // Completes the project if all jobs have been completed
       if (this.jobsLength === this.completedJobs.length) {
-        this.completeProject();
+        return this.completeProject();
       } else {
         this.assignJob(this.workers[ job.workerId ]);
       }
@@ -246,22 +229,6 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     // Log the time when the project finished
     this.projectEndTime = new Date();
     console.log(`Project completed after ${this.projectEndTime - this.projectBeginTime} miliseconds`);
-
-    // Broadcast to clients that the project has been completed
-    // NOTE: do NOT use 'this' inside the emit function. Doing so will
-    // cause a maximum stack call exceeded error, for some reason.
-    // Unfortunately, this requires us to generate a workersList array
-    // to pass into the socket message. Hacky. Need to refactor.
-    // TODO: refactor to use socket rooms to broadcast messages?
-    var workersList = [];
-    for (var key in this.workers) {
-      workersList.push(this.workers[key].workerId);
-    }
-    var final = _.cloneDeep(this.finalResult);
-
-    for (var key in this.workers) {
-      this.workers[key].socket.emit('finalResult', final);
-    }
   }
 }
 

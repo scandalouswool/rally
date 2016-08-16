@@ -96,26 +96,6 @@ class ProjectController {
     io.emit('updateProjects', projectList);
   }
 
-  sendAllProjects(socket) {
-    // Map the 'allProjects' object into a simplified object that only contains 
-    // project ids and send the result to the passed-in socket
-    // let projectIds = _.map(this.allProjects, (project, key) => {
-    //   return key;
-    // });
-
-    let projectList = [];
-    for (var key in this.allProjects) {
-      projectList.push({
-        projectId: this.allProjects[key].projectId,
-        projectType: this.allProjects[key].projectType,
-        jobsLength: this.allProjects[key].jobsLength,
-        title: this.allProjects[key].title
-      });
-    }
-
-    socket.emit('updateProjects', projectList);
-  }
-
   // Sends status of projects to all connected users
   sendUpdateAllProjects(destination) {
     let allProjectsUpdate = [];
@@ -137,7 +117,7 @@ class ProjectController {
         workersList.push({
           workerId: project.workers[k].workerId,
           projectId: project.workers[k].projectId,
-          jobId: project.workers[k].currentJob === undefined ? undefined : project.workers[k].currentJob.jobId
+          jobId: project.workers[k].currentJob === null ? null : project.workers[k].currentJob.jobId
         })
       }
 

@@ -72,7 +72,7 @@ class ProjectView extends Component {
             <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
           </div>
           <div>
-          Final Result: {Array.isArray(this.props.results[projectId])? '' : this.props.results[projectId]}
+          Final Result: {thisProject.finalResult}
           </div>
         </div>
       );

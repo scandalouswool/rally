@@ -100,7 +100,8 @@ export default class AppView extends Component {
           jobsLength: project.jobsLength,
           title: project.title,
           availableJobsNum: project.availableJobsNum,
-          workers: project.workers
+          workers: project.workers,
+          finalResult: project.finalResult
         });  
 
         // Update results of all projects
