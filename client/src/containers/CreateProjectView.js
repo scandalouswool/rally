@@ -67,7 +67,7 @@ class CreateProjectView extends Component {
           onChange={this.handleInputChange.bind(this)}>
         </textarea>
 
-        <form className="form" id="projectForm" onSubmit={this.submitNewProject.bind(this)}>
+        <form className="form" onSubmit={this.submitNewProject.bind(this)}>
           <button
             className="btn btn-success btn-block"
             type="submit">
