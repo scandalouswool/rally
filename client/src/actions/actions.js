@@ -66,13 +66,6 @@ export function updateProjects(projects) {
   }
 }
 
-export function createProject(projectOptions) {
-  return {
-    type: 'CREATE_PROJECT',
-    payload: projectOptions
-  }
-}
-
 export function createWebWorker(webWorkers) {
   return {
     type: 'CREATE_WEB_WORKER',

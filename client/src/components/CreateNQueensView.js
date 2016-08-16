@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { createProject } from '../actions/actions';
 import { Link } from 'react-router';
 
 class CreateNQueensView extends Component {
@@ -19,7 +17,7 @@ class CreateNQueensView extends Component {
     console.log(this.refs.n.value);
     //console.log(projectOptions);
     // Send projectOptions to the server
-    this.props.createProject(projectOptions);
+    this.props.socket.emit('createProject', projectOptions);
   }
 
   render() {
@@ -37,45 +35,10 @@ class CreateNQueensView extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      createProject 
-    }, dispatch)
+function mapStateToProps(state) {
+  return {
+    socket: state.createdSocket
+  };
 }
 
-export default connect(null, mapDispatchToProps)(CreateNQueensView);
-
-(dataSet) => {
-
-    var n = dataSet[0];
-    var level = dataSet[1]; 
-    var minDiagConflict = parseInt(dataSet[2],2); 
-    var majDiagConflict = parseInt(dataSet[3],2); 
-    var colConflict = parseInt(dataSet[4],2);   
-      
-    var solutionCount = 0;
-
-    var countQueenSolutions = function(currentRow, minDiagConflict, majDiagConflict, colConflict) {
-
-      if (currentRow === n) {
-        solutionCount++;
-        return;
-      }
-
-    var conflicts = minDiagConflict | majDiagConflict | colConflict;
-      for (var queenPosition = 1; queenPosition < 1<<n; queenPosition*=2) {
-        if (!(conflicts & queenPosition)) {
-          var nextMinDiagConflict = (minDiagConflict | queenPosition) << 1;
-          var nextMajDiagConflict = (majDiagConflict | queenPosition) >> 1;
-          var nextColConflict = colConflict | queenPosition;
-          result = countQueenSolutions(currentRow+1, nextMinDiagConflict, nextMajDiagConflict, nextColConflict);
-          if (result) return solutionCount = result;
-        }
-      }
-    };
-
-    countQueenSolutions(level, minDiagConflict, majDiagConflict, colConflict);
-    
-    return solutionCount;
-  }
+export default connect(mapStateToProps)(CreateNQueensView);
