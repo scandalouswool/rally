@@ -84,44 +84,35 @@ export default class AppView extends Component {
       console.log('Updating job in newJob: ', job);
     });
 
-    // this.socket.on('updateResults', (results) => {
-    //   this.props.updateResults(results); 
-    // });
-
     this.socket.on('finalResult', (final) => {
       this.props.finalResults(final); 
     });
 
-    // this.socket.on('updateProjects', (projects) => {
-    //   this.props.updateProjects(projects);
-    // });
-
     this.socket.on('updateAllProjects', (allProjectsUpdate) => {
       console.log('Received updated site info:', allProjectsUpdate);
 
-      const update = allProjectsUpdate;
-      
       const projectList = [];
       const resultsList = {};
 
-      update.map( (project) => {
+      allProjectsUpdate.map( (project) => {
         // Update the status of existing projects
+        console.log('Each project:', project);
         projectList.push({
           projectId: project.projectId,
           projectType: project.projectType,
           jobsLength: project.jobsLength,
           title: project.title,
-          availableJobsNum: project.availableJobsNum
+          availableJobsNum: project.availableJobsNum,
+          workers: project.workers
         });  
 
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-      
-      this.props.updateAllProjects(update);
+      console.log('Project list:', projectList);
+      this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
-
     });
 
     const socketMethods = {
