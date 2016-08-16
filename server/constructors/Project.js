@@ -1,6 +1,5 @@
 const Job = require('./Job.js');
 const Worker = require('./Worker.js');
-const _ = require('lodash');
 
 // Project object takes options as input, which contains the information 
 // necessary to instantiate a new Project.
@@ -16,9 +15,12 @@ class Project {
 
   constructor(options, projectId, io) {
     // Project ID is created by the ProjectController and passed to Project
-    this.projectId = projectId;  
+    this.projectId = projectId;
     this.projectType = options.projectType || null; // Used for custom visualizations
     this.title = options.title;
+
+    // Whether or not project is complete; all jobs have been run
+    this.complete = false;
     
     // Used for timer events
     this.projectBeginTime = null;
@@ -251,18 +253,20 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     // Completes the project
     // Calls reduceResults on the array of results and stores the result
     // in finalResult
-    
-    // this is to check if the code is coming from server or client 
+
+    // this is to check if the code is coming from server or client
     if (this.reduceResults === 'function'){
       this.finalResult = this.reduceResults(this.completedJobs);
-    }else{
-      var func = eval(this.reduceResults); 
-      this.finalResult = func(this.completedJobs); 
+    } else {
+      var func = eval(this.reduceResults);
+      this.finalResult = func(this.completedJobs);
     }
 
     // Log the time when the project finished
     this.projectEndTime = new Date();
     console.log(`Project completed after ${this.projectEndTime - this.projectBeginTime} miliseconds`);
+
+    this.complete = true;
   }
 }
 

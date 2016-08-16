@@ -1,7 +1,6 @@
 const Project = require('../constructors/Project.js');
-const _ = require('lodash');
 
-// ProjectController is responsible for creating and terminating 
+// ProjectController is responsible for creating and terminating
 // projects. It also routes incoming socket messages to the appropriate
 // Project object.
 
@@ -10,11 +9,11 @@ class ProjectController {
   constructor() {
     // Stores all Project objects in existence. It has the following form:
     // { projectId1: Project1,
-    //   projectId2: Project2 } 
+    //   projectId2: Project2 }
     this.allProjects = {};
 
-    // Keeps a record of all Worker instances in existence. 
-    // Socket id is used to log workers because the Worker object 
+    // Keeps a record of all Worker instances in existence.
+    // Socket id is used to log workers because the Worker object
     // uses socket id as the worker id. The ledger stores the project id
     // rather than a reference to the Worker object itself.
 
@@ -42,10 +41,10 @@ class ProjectController {
       console.log('Error: cannot find user:', socketId);
     }
   }
-    
+
   userReady(readyMessage, socket) {
     // Passes the new user's socket connection to the appropriate Project,
-    // which will then create a new Worker for that user and assign it 
+    // which will then create a new Worker for that user and assign it
     // an available job
 
     if (this.allProjects[readyMessage.projectId]) {
@@ -133,12 +132,10 @@ class ProjectController {
         jobsLength: project.jobsLength,
         completedJobs: completedJobs,
         workers: workersList,
-        finalResult: project.finalResult
+        finalResult: project.finalResult,
+        complete: project.complete
       });
     }
-
-
-    let test = JSON.stringify(allProjectsUpdate);
 
     // Checks whether destination is a io object or a socket connection
     if (destination.id) {

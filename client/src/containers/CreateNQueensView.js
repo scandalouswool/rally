@@ -37,8 +37,6 @@ class CreateNQueensView extends Component {
   render() {
     return (
       <div>
-        This is the create n-Queens view.
-
         <form onSubmit={this.generateProjectOptions.bind(this)}>
           <label>Please input n for n-Queens</label>
           <input
