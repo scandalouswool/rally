@@ -25,6 +25,8 @@ class CreatePrimesView extends Component {
     const projectOptions = {
       title: `Primes, ${this.state.min} - ${this.state.max}`,
 
+      projectType: 'primes',
+
       dataSet: null,
 
       generateDataSet: `() => {
