@@ -1,17 +1,12 @@
 export default function (state = null, action) {
-  switch(action.type) {
+  switch (action.type) {
   case 'SOCKET_CREATED':
     return action.payload;
 
   case 'SEND_COMPLETE_JOB':
- 	  console.log('inside socket method reducer', action.payload)
-  	action.payload.socket.emit('userJobDone', action.payload.job)
-  	return state; 
-
-  case 'CREATE_PROJECT':
-    console.log('Sending project to the server');
-    state.emit('createProject', action.payload);
-
+    console.log('inside socket method reducer', action.payload);
+    action.payload.socket.emit('userJobDone', action.payload.job);
+    return state;
   }
   return state;
 }

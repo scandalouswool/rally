@@ -37,7 +37,8 @@ class Project {
         console.log(dataSet)
       }else{
         if (options.dataSet === ""){options.dataSet = null}
-        var dataSet = JSON.parse(options.dataSet) || eval(options.generateDataSet+'()'); 
+        console.log(options.generateDataSet);
+        var dataSet = JSON.parse(options.dataSet) || eval('(' + options.generateDataSet + ')()');
         console.log(dataSet)
       }
       

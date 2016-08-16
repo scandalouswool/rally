@@ -10,7 +10,8 @@ import LoginView from './components/LoginView';
 import SignupView from './components/SignupView';
 import ErrorView from './components/ErrorView';
 import CreateProjectView from './containers/CreateProjectView';
-import CreateNQueensView from './components/CreateNQueensView';
+import CreateNQueensView from './containers/CreateNQueensView';
+import CreatePrimesView from './containers/CreatePrimesView';
 
 export default (
   <Route path='/' component={AppView}>
@@ -19,6 +20,7 @@ export default (
     <Route path='project' component={ProjectView} />
     <Route path='createProject' component={CreateProjectView} />
     <Route path='createNQueens' component={CreateNQueensView} />
+    <Route path='createPrimes' component={CreatePrimesView} />
     <Route path='selectedproject' component={SelectedProjectView} />
     <Route path='login' component={LoginView} />
     <Route path='signup' component={SignupView} />
