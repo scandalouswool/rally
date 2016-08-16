@@ -6,7 +6,7 @@ import CreatedSocket from './reducer_socket_methods';
 import UpdateWorkers from './reducer_workers';
 import UpdateJob from './reducer_update_job';
 import UpdateResults from './reducer_results';
-import WebWorker from './reducer_web_workers';
+import WebWorkersPool from './reducer_web_workers';
 import Auth from './reducer_auth';
 
 const rootReducer = combineReducers({
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   updateJob: UpdateJob,
   updateResults: UpdateResults,
   auth: Auth,
-  webWorker: WebWorker
+  webWorkersPool: WebWorkersPool
 });
 
 export default rootReducer;

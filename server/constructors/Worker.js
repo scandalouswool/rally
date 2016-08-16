@@ -4,7 +4,8 @@ class Worker {
     this.projectId = projectId;
     this.workerId = socket.id;
     this.socket = socket;
-    this.currentJob = null;
+    this.currentJob = [];
+    this.maxJobs = null;
   }
 }
 //export job constructor
