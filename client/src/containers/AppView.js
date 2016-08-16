@@ -31,8 +31,7 @@ export default class AppView extends Component {
 
     //this checks if your computer can run web workers, Worker is a global variable that is native to the browser
     if (typeof(Worker) !== 'undefined') {
-      //initialize a web worker based on webWorker.js in the client folder
-      myWebWorker = new Worker('/webworker');
+      myWebWorker = new Worker('/webWorker');
       this.props.createWebWorker(myWebWorker);
     } else {
       console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
