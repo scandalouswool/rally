@@ -110,11 +110,12 @@ export default class AppView extends Component {
           projectId: project.projectId,
           projectType: project.projectType,
           jobsLength: project.jobsLength,
-          title: project.title
+          title: project.title,
+          availableJobsNum: project.availableJobsNum
         });  
 
         // Update results of all projects
-        resultsList[project.projectId] = project.completedJobs;
+        resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
       
       this.props.updateAllProjects(update);
