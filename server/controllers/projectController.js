@@ -43,16 +43,16 @@ class ProjectController {
     }
   }
     
-  userReady(projectId, socket) {
+  userReady(readyMessage, socket) {
     // Passes the new user's socket connection to the appropriate Project,
     // which will then create a new Worker for that user and assign it 
     // an available job
 
-    if (this.allProjects[projectId]) {
+    if (this.allProjects[readyMessage.projectId]) {
       // Creates a new Worker in the appropriate Project
-      this.allProjects[projectId].createWorker(projectId, socket);
+      this.allProjects[readyMessage.projectId].createWorker(readyMessage, socket);
       // Create a record of the new Worker in the allWorkers ledger
-      this.allWorkers[socket.id] = projectId;
+      this.allWorkers[socket.id] = readyMessage.projectId;
 
     } else {
       console.log('Error in userReady: Project does not exist');

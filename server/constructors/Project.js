@@ -83,20 +83,20 @@ class Project {
   }
 
   assignJob(worker) {
-    console.log('Assigning job to ', worker.workerId);
     // Assigns a new job to the passed-in Worker
     // Will assign the first job from availableJobs array
 
-    if (worker.currentJob === null && this.availableJobs.length) {
-      worker.currentJob = this.availableJobs.shift();
-      worker.currentJob.mapData = this.mapData.toString(); 
-      worker.currentJob.workerId = worker.workerId;
-      worker.currentJob.totalJobs = this.jobsLength;
+    if (worker.currentJob.length < worker.maxJobs && this.availableJobs.length) {
+      console.log('Assigning job to ', worker.workerId);
+
+      let newJob = this.availableJobs.shift();
+      newJob.mapData = this.mapData.toString(); 
+      newJob.workerId = worker.workerId;
+      newJob.jobsLength = this.jobsLength;
+      worker.currentJob.push(newJob);
 
       // Send the newly assigned job to this worker
-      // NOTE: do NOT use 'this' inside the emit function. Doing so will
-      // cause a maximum stack call exceeded error. 
-      worker.socket.emit('newJob', worker.currentJob);
+      worker.socket.emit('newJob', newJob);
 
       // If this is the first job, begin the beginTime timer 
       if (this.projectBeginTime === null) {
@@ -104,19 +104,29 @@ class Project {
       }
 
     } else {
-      console.log('Error assigning job to worker');
+      if (!this.availableJobs.length) {
+        console.log('No more jobs available');
+
+      } else {
+        console.log('Error assigning job to worker');
+
+      }
     }
   }
 
   reassignJob(socketId) {
-    console.log('Reassigning job of ', socketId);
-    // Reassigns the job that was previously assigned to a disconnected user
-    // Locates the worker based on its socketId and find the assigned job.
-    // Then the method puts job into the front of the availableJobs array
-    if (this.workers[socketId] && this.workers[socketId].currentJob) {
-      this.workers[socketId].currentJob.workerId = null;
-      this.availableJobs.unshift( this.workers[socketId].currentJob );
-      this.workers[socketId].currentJob = null;
+    console.log('Reassigning jobs of ', socketId);
+    // Reassigns jobs that were previously assigned to a disconnected user
+    // Locates the worker based on its socketId and find the assigned jobs.
+    // Then the method puts jobs into the front of the availableJobs array
+    if (this.workers[socketId] && this.workers[socketId].currentJob.length) {
+
+      for (var i = 0; i < this.workers[socketId].currentJob.length; i++) {
+        this.workers[socketId].currentJob[i].workerId = null;
+        this.availableJobs.unshift( this.workers[socketId].currentJob.pop() );
+      }
+      
+      this.workers[socketId].currentJob = [];
     } else {
       console.log('Error reassigning job: no worker found with that ID');
     }
@@ -127,14 +137,23 @@ class Project {
 USER-INTERFACE-AFFECTING FUNCTIONS
 ==================================
 */
-  createWorker(projectId, socket) {
+  createWorker(readyMessage, socket) {
+    const projectId = readyMessage.projectId;
+
     console.log('Creating a new worker in ' + projectId + ' for: ', socket.id);
     // Creates a new Worker and uses it in this project
     if (this.projectId === projectId && typeof socket === 'object') {
       var newWorker = new Worker(projectId, socket);
-      
-      // Assigns the worker a job by invoking the project's assingJob method
-      this.assignJob(newWorker);
+      newWorker.maxJobs = readyMessage.maxWorkerJobs;
+      console.log('Created new worker capable of max jobs:', newWorker.maxJobs);
+
+      // Assigns the worker a job by invoking the project's assingJob
+      // method. Assign as many jobs as the worker can take.
+      for (var i = 0; i < newWorker.maxJobs; i++) {
+        if (this.availableJobs.length) {
+          this.assignJob(newWorker);
+        }
+      }
 
       // Places the worker into the workers object, using the worker's
       // socket ID as the key
@@ -199,8 +218,20 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       // Places job's result into completedJobs array based on the job's original index location in availableJobs
       this.completedJobs[job.jobId] = job.result;
 
-      // Set worker's current job to null 
-      this.workers[job.workerId].currentJob = null;
+      // Remove completed job from worker's currentJob list
+      let idx = null;
+      this.workers[job.workerId].currentJob.forEach( (currentJob, i) => {
+        if (job.jobId === currentJob.jobId) {
+          idx = i;
+        }
+      })
+
+      if (idx !== null) {
+        this.workers[job.workerId].currentJob = this.workers[job.workerId].currentJob.slice(0, idx).concat(this.workers[job.workerId].currentJob.slice(idx + 1));
+        console.log('This worker has jobs left:', this.workers[job.workerId].currentJob.length);
+      } else {
+        console.log('Error: job not found');
+      }
 
       // Completes the project if all jobs have been completed
       if (this.jobsLength === this.completedJobs.length) {
