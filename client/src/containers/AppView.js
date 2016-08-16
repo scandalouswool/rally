@@ -19,6 +19,7 @@ export default class AppView extends Component {
   constructor(props) {
     super(props);
     this.socket = io();
+    this.webWorkerPool = null;
   }
 
   componentWillMount() {
@@ -26,24 +27,35 @@ export default class AppView extends Component {
     // Web Worker Handlers
     ************************************************/
 
-    //initialize a variable for a webWorker
-    let myWebWorker = null;
-
-    //this checks if your computer can run web workers, Worker is a global variable that is native to the browser
-    if (typeof(Worker) !== 'undefined') {
-      myWebWorker = new Worker('/webWorker');
-      this.props.createWebWorker(myWebWorker);
-    } else {
+    // Check if user's computer can run web workers
+    if (typeof(Worker) === 'undefined') {
       console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
-    }
 
-    // myWebWorker will send back a Job object with the 
-    // data field populated. Send this object to the server
-    myWebWorker.onmessage = (event) => {
-      console.log('Sending completed job to server');
-      const job = event.data;
-      this.socket.emit('userJobDone', job);
-    };
+    } else {
+
+      // Create a Web Worker pool based on the maximum number of 
+      // concurrent processes that user's CPU can support. Default to 
+      // two workers if navigator.hardwareConcurrency is unavailable
+      const MAX_WEBWORKERS = navigator.hardwareConcurrency || 2;
+      this.webWorkerPool = [];
+
+      for (var i = 0; i < MAX_WEBWORKERS; i++) {
+        let newWorker = {
+          worker: new Worker('/webWorker'),
+          isBusy: false
+        }
+    
+        newWorker.worker.onmessage = (event) => {
+          console.log('Sending completed job to server');
+          const job = event.data;
+          this.socket.emit('userJobDone', job);
+          this.isBusy = false;
+        };
+
+        this.webWorkerPool.push(newWorker);
+      }
+      console.log('Web worker pool initialized:', this.webWorkerPool);
+    }
 
     /************************************************
     // Web Socket Handlers
@@ -66,11 +78,26 @@ export default class AppView extends Component {
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
 
-      if (myWebWorker !== null) {
-        console.log('Web Worker assigned to the new job!');
-        myWebWorker.postMessage(job);
+      if (this.webWorkerPool !== null) {
+        console.log('Assigning new job to an available web worker');
+        let availableWorker = false;
+
+        this.webWorkerPool.forEach( (worker) => {
+          if (!worker.isBusy) {
+            availableWorker = worker;
+          }
+        });
+
+        if (availableWorker) {
+          availableWorker.worker.postMessage(job);
+          availableWorker.isBusy = true;
+        } else {
+          console.log('Error: no web workers available');
+        }
+
       } else {
-        console.log('This browser does not support Web Workers. mapData will run in the main browser process.');
+
+        console.log('This browser does not support Web Workers. Analysis will run in the main browser process, which may cause noticeable delays in browser performance.');
 
         var mapDataFunc = eval('(' + job.mapData + ')');
         job.result = mapDataFunc(job.data);
