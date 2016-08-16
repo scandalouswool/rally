@@ -110,17 +110,10 @@ io.on('connect', (socket) => {
 
   // 'getAllProjects' event handler
   // Passes a socket to the ProjetController object
-  // The server will send back an object containing the project IDs of all existing projects 
-  socket.on('getAllProjects', () => {
-    pc.sendAllProjects(socket);
-  });
 
-  // // 'fetchProjectResults' event handler
-  // // Send results for this project to the requestor
-  // // Eliminate this event after refactoring backend of use socket rooms
-  // socket.on('fetchProjectResults', (projectId) => {
-  //   pc.sendProjectResults(projectId, socket);
-  // });
+  socket.on('getAllProjects', () => {
+    pc.sendUpdateAllProjects(socket);
+  });
 
   // 'error' event handler
   socket.on('error', (error) => {

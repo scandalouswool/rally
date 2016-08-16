@@ -116,13 +116,6 @@ class ProjectController {
     socket.emit('updateProjects', projectList);
   }
 
-  // sendProjectResults(projectId, socket) {
-  //   let results = this.allProjects[projectId].completedJobs.map( (item) => {
-  //     return item;
-  //   });
-  //   socket.emit('updateResults', results);
-  // }
-
   // Sends status of projects to all connected users
   sendUpdateAllProjects(destination) {
     let allProjectsUpdate = [];
@@ -156,8 +149,6 @@ class ProjectController {
         finalResult: project.finalResult
       });
     }
-
-    // var update = _.cloneDeep(allProjectsUpdate);
 
     console.log('Stringifying...');
     let test = JSON.stringify(allProjectsUpdate);
