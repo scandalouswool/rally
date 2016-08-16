@@ -84,8 +84,6 @@ class CreatePrimesView extends Component {
   render() {
     return (
       <div>
-        This is the create primes view.
-
         <form onSubmit={this.generateProjectOptions.bind(this)}>
           <label>Please input a range in which to find primes</label>
           <input

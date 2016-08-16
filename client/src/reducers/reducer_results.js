@@ -1,8 +1,6 @@
 export default function (state = [], action) {
 	switch(action.type){
 		case 'COMPLETED_RESULTS': 
-			console.log('inside completed results', action.payload)
-
       let nextState = action.payload;
       
       for (var key in nextState) {
@@ -18,8 +16,7 @@ export default function (state = [], action) {
 
 		  return nextState;
 		
-    case 'FINAL_RESULTS': 
-			console.log('inside final result reducer', action.payload)
+    case 'FINAL_RESULTS':
 		  return action.payload;
 
     default: 

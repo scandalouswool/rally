@@ -121,7 +121,7 @@ export default class AppView extends Component {
     });
 
     this.socket.on('finalResult', (final) => {
-      this.props.finalResults(final); 
+      this.props.finalResults(final);
     });
 
     this.socket.on('updateAllProjects', (allProjectsUpdate) => {
@@ -138,7 +138,9 @@ export default class AppView extends Component {
           title: project.title,
           availableJobsNum: project.availableJobsNum,
           workers: project.workers,
-          finalResult: project.finalResult
+          finalResult: project.finalResult,
+          complete: project.complete,
+          time: project.time
         });  
 
         // Update results of all projects

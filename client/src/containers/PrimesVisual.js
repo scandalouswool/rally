@@ -80,7 +80,6 @@ class PrimesVisualView extends Component {
   render() {
     return (
       <div>
-        This is a visualizer
         <div id="visualizer"></div>
         <div>{this.props.results[this.props.project.projectId] === null ? 'zero' : this.props.results[this.props.project.projectId].length}</div>
       </div>

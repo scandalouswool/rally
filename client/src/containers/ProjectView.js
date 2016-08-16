@@ -43,16 +43,17 @@ class ProjectView extends Component {
       }
 
       console.log('Results so far:', this.props.results[projectId]);
+      console.log('Project: ', thisProject);
 
       return (
         <div>
-          {visualization}
           <SelectedProjectView />
-          Project View
-          <br />
-          <br />
+
+          {visualization}
+
           <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
           <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+          
           <div>
             Number of Workers: {thisProject.workers.length}
           </div>
@@ -69,6 +70,9 @@ class ProjectView extends Component {
           </div>
           <div>
           Final Result: {thisProject.finalResult}
+          </div>
+          <div>
+          Final Time: {thisProject.time ? thisProject.time : ''}
           </div>
         </div>
       );
