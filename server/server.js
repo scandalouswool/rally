@@ -57,9 +57,9 @@ io.on('connect', (socket) => {
   // and associate it with this socket connection.
   // The socket connection will be passed to the relevant Worker object
   // so that it can emit messages directly.
-  socket.on('userReady', (projectId) => {
-    console.log('User ready for project:', projectId);
-    pc.userReady(projectId, socket);
+  socket.on('userReady', (readyMessage) => {
+    console.log('User ready for project:', readyMessage.projectId);
+    pc.userReady(readyMessage.projectId, socket);
   });
 
   socket.on('userDisconnect', () => {

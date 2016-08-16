@@ -11,7 +11,7 @@ import { createdSocket,
          sendCompleteJob,
          updateResults,
          finalResults,
-         createWebWorker,
+         createWebWorkersPool,
          updateAllProjects
        } from '../actions/actions';
 
@@ -55,6 +55,7 @@ export default class AppView extends Component {
         this.webWorkerPool.push(newWorker);
       }
       console.log('Web worker pool initialized:', this.webWorkerPool);
+      this.props.createWebWorkersPool(this.webWorkerPool);
     }
 
     /************************************************
@@ -158,7 +159,6 @@ export default class AppView extends Component {
 
 function mapStateToProps(state) {
   return {
-    webWorker: createWebWorker,
     auth: state.auth
   };
 }
@@ -173,7 +173,7 @@ function mapDispatchToProps(dispatch) {
       sendCompleteJob, 
       updateResults, 
       finalResults,
-      createWebWorker,
+      createWebWorkersPool,
       updateAllProjects 
     }, dispatch)
 }
