@@ -8,7 +8,7 @@ import SelectedProjectView from './SelectedProjectView';
 class MenuView extends Component {
 
   renderList(status) {
-    // Argument 'status' is a boolean indicating whether projects
+    // 'status' is a boolean indicating whether projects
     // in list are complete (true if complete...)
     if (this.props.projects) {
       return this.props.projects.map((project) => {
@@ -38,16 +38,16 @@ class MenuView extends Component {
         </div>
 
         <div>
-          <h2>Create a new project:</h2>
-          <Link to="createProject" className="white"><button className="btn-success btn-lg">Create Custom Project</button></Link>
-          <Link to="createNQueens" className="white"><button className="btn-success btn-lg">Create n-Queens Project</button></Link>
-          <Link to="createPrimes" className="white"><button className="btn-success btn-lg">Create Prime-Finder Project</button></Link>
+          <h3>Create a new project:</h3>
+          <Link to="createProject" className="white"><button className="btn-success btn-lg">Custom</button></Link>
+          <Link to="createNQueens" className="white"><button className="btn-success btn-lg">n-Queens</button></Link>
+          <Link to="createPrimes" className="white"><button className="btn-success btn-lg">Prime-Finder</button></Link>
         </div>
 
         <div>
-          <h2>View an existing project:</h2>
+          <h3>View an existing project:</h3>
           <div className="container">
-            <h4>In progress</h4>
+            <h4>In-progress</h4>
             <div>
               <ul className="list-group col-sm-4">
                 {this.renderList(false)}
