@@ -68,10 +68,10 @@ export function updateAllProjects(allProjectsUpdate) {
   }
 }
 
-export function createWebWorker(webWorkers) {
+export function createWebWorkersPool(webWorkersPool) {
   return {
     type: 'CREATE_WEB_WORKER',
-    payload: webWorkers
+    payload: webWorkersPool
   }
 }
 

@@ -9,7 +9,10 @@ class ProjectView extends Component {
 
   connectToProject() {
     console.log('Joining project', this.props.selectedProject.projectId);
-    this.props.socket.emit('userReady', this.props.selectedProject.projectId);
+    this.props.socket.emit('userReady', {
+      projectId: this.props.selectedProject.projectId,
+      maxWorkers: this.props.webWorkersPool.length
+    });
   }
 
   disconnectFromProject() {
@@ -18,7 +21,6 @@ class ProjectView extends Component {
   }
 
   render() {
-
     if (this.props.selectedProject === null) {
       this.context.router.push('menu');
       return null;
@@ -86,7 +88,7 @@ function mapStateToProps(state) {
     socket: state.createdSocket,
     results: state.updateResults,
     job: state.updateJob,
-    webWorker: state.webWorker
+    webWorkersPool: state.webWorkersPool
   }
 }
 
