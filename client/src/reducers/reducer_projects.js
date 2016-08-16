@@ -3,30 +3,12 @@
 
 //This is hardcoded
 
-export default function (state = {}, action) {
+export default function (state = [], action) {
   switch(action.type) {
     case 'ALL_PROJECTS':
       console.log('Receiving the projects list:', action.payload);
 
-      const newState = [];
-
-      for (var key in action.payload) {
-        let project = action.payload[key];
-        
-        newState.push( {
-          projectId: project.projectId,
-          projectType: project.projectType,
-          jobsLength: project.jobsLength,
-          title: project.title          
-        })
-      }
-
-      // action.payload.map( (project) => {
-      //   return {
-      //   }
-      // });
-
-      return newState;
+      return action.payload;
 
     default:
       return state;

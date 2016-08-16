@@ -101,17 +101,14 @@ io.on('connect', (socket) => {
     pc.createProject(project, io);
   });
 
-  // 'getProjectsUpdate' event handler
-  // Sends back an object containing information
-  // about all projects and workers
-  socket.on('getProjectsUpdate', () => {
-    pc.sendProjectsUpdate(io);
-  });
+  // // 'getProjectsUpdate' event handler
+  // // Sends back an object containing information
+  // // about all projects and workers
+  // socket.on('getProjectsUpdate', () => {
+  //   pc.sendUpdateAllProjects(socket);
+  // });
 
-  // 'getAllProjects' event handler
-  // Passes a socket to the ProjetController object
-
-  socket.on('getAllProjects', () => {
+  socket.on('getAllProjectsUpdate', () => {
     pc.sendUpdateAllProjects(socket);
   });
 

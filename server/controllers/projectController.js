@@ -53,7 +53,7 @@ class ProjectController {
       this.allProjects[projectId].createWorker(projectId, socket);
       // Create a record of the new Worker in the allWorkers ledger
       this.allWorkers[socket.id] = projectId;
-      console.log(this.allWorkers);
+
     } else {
       console.log('Error in userReady: Project does not exist');
     }
@@ -130,9 +130,15 @@ class ProjectController {
         completedJobs.push(item);
       });
 
-      const workers = [];
-      for (var k in this.workers) {
-        workers.push(this.workers[key]);
+      // WorkersList: [ Worker1, Worker2 ]
+      const workersList = [];
+
+      for (var k in project.workers) {
+        workersList.push({
+          workerId: project.workers[k].workerId,
+          projectId: project.workers[k].projectId,
+          jobId: project.workers[k].currentJob === undefined ? undefined : project.workers[k].currentJob.jobId
+        })
       }
 
       const finalResult = [];
@@ -145,22 +151,19 @@ class ProjectController {
         availableJobsNum: project.availableJobs.length,
         jobsLength: project.jobsLength,
         completedJobs: completedJobs,
-        workers: workers,
+        workers: workersList,
         finalResult: project.finalResult
       });
     }
 
-    console.log('Stringifying...');
+
     let test = JSON.stringify(allProjectsUpdate);
-    console.log('Stringified:', allProjectsUpdate);
+
     // Checks whether destination is a io object or a socket connection
     if (destination.id) {
-      console.log('user:', destination.id);
       destination.emit('updateAllProjects', allProjectsUpdate);
-      console.log('Send site update to ', destination.id);
     } else {
       destination.emit('updateAllProjects', allProjectsUpdate);
-      console.log('Sent site update to all users.');
     }
     console.log(allProjectsUpdate);
   }
