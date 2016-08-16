@@ -42,14 +42,22 @@ export default class AppView extends Component {
       for (var i = 0; i < MAX_WEBWORKERS; i++) {
         let newWorker = {
           worker: new Worker('/webWorker'),
-          isBusy: false
+          isBusy: false,
+          jobId: null
         }
     
         newWorker.worker.onmessage = (event) => {
           console.log('Sending completed job to server');
           const job = event.data;
+
+          this.webWorkerPool.forEach( (worker) => {
+            if (worker.jobId === job.jobId) {
+              worker.isBusy = false;
+              worker.jobId = null;
+            }
+          });
+
           this.socket.emit('userJobDone', job);
-          this.isBusy = false;
         };
 
         this.webWorkerPool.push(newWorker);
@@ -78,6 +86,7 @@ export default class AppView extends Component {
 
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
+      console.log('Web worker pool:', this.webWorkerPool);
 
       if (this.webWorkerPool !== null) {
         console.log('Assigning new job to an available web worker');
@@ -91,6 +100,7 @@ export default class AppView extends Component {
 
         if (availableWorker) {
           availableWorker.worker.postMessage(job);
+          availableWorker.jobId = job.jobId;
           availableWorker.isBusy = true;
         } else {
           console.log('Error: no web workers available');

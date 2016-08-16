@@ -59,7 +59,7 @@ io.on('connect', (socket) => {
   // so that it can emit messages directly.
   socket.on('userReady', (readyMessage) => {
     console.log('User ready for project:', readyMessage.projectId);
-    pc.userReady(readyMessage.projectId, socket);
+    pc.userReady(readyMessage, socket);
   });
 
   socket.on('userDisconnect', () => {
