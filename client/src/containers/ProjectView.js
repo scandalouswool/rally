@@ -6,20 +6,15 @@ import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
-  componentDidMount() {
-    console.log('Fetching all projects update');
-    this.props.socket.emit('getAllProjectsUpdate');
-  }
 
   connectToProject() {
-    console.log('Joining...');
+    console.log('Joining project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', this.props.selectedProject.projectId);
   }
 
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
-    this.props.webWorker.terminate();
   }
 
   render() {
@@ -30,8 +25,6 @@ class ProjectView extends Component {
     } else {
       let visualization;
       const projectId = this.props.selectedProject.projectId;
-
-      console.log('Ongoing projects:', this.props.projects);
 
       let thisProject; 
       
@@ -46,8 +39,9 @@ class ProjectView extends Component {
       } else {
         visualization = undefined;
       }
+
       console.log('Results so far:', this.props.results[projectId]);
-      console.log('Workers in this project:', thisProject.workers);
+
       return (
         <div>
           {visualization}
@@ -72,7 +66,7 @@ class ProjectView extends Component {
             <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
           </div>
           <div>
-          Final Result: {Array.isArray(this.props.results[projectId])? '' : this.props.results[projectId]}
+          Final Result: {thisProject.finalResult}
           </div>
         </div>
       );

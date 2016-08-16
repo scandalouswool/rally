@@ -31,9 +31,8 @@ export default class AppView extends Component {
 
     //this checks if your computer can run web workers, Worker is a global variable that is native to the browser
     if (typeof(Worker) !== 'undefined') {
-      console.log('Initializing new Web Worker');
-      //initialize a web worker based on webWorker.js in the client folder
-      myWebWorker = new Worker('/webworker');
+      myWebWorker = new Worker('/webWorker');
+      this.props.createWebWorker(myWebWorker);
     } else {
       console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
     }
@@ -81,7 +80,6 @@ export default class AppView extends Component {
         
         this.socket.emit('userJobDone', job);
       }
-      console.log('Updating job in newJob: ', job);
     });
 
     this.socket.on('finalResult', (final) => {
@@ -89,27 +87,25 @@ export default class AppView extends Component {
     });
 
     this.socket.on('updateAllProjects', (allProjectsUpdate) => {
-      console.log('Received updated site info:', allProjectsUpdate);
 
       const projectList = [];
       const resultsList = {};
 
       allProjectsUpdate.map( (project) => {
         // Update the status of existing projects
-        console.log('Each project:', project);
         projectList.push({
           projectId: project.projectId,
           projectType: project.projectType,
           jobsLength: project.jobsLength,
           title: project.title,
           availableJobsNum: project.availableJobsNum,
-          workers: project.workers
+          workers: project.workers,
+          finalResult: project.finalResult
         });  
 
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-      console.log('Project list:', projectList);
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
