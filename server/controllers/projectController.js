@@ -78,6 +78,7 @@ class ProjectController {
     // Assign a project ID to the new Project and create a new Project
     const projectId = 'project' + Object.keys(this.allProjects).length;
     const newProject = new Project(options, projectId, io);
+    console.log(newProject);
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
@@ -93,7 +94,7 @@ class ProjectController {
       });
     }
 
-    io.emit('updateProjects', projectList);
+    this.sendUpdateAllProjects(io);
   }
 
   // Sends status of projects to all connected users

@@ -111,7 +111,3 @@ io.on('connect', (socket) => {
     console.log('Socket error:', error);
   });
 });
-
-// Default Projects
-pc.createProject(primes, io);
-pc.createProject(nQueens, io);
