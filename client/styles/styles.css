@@ -26,3 +26,7 @@ body {
 .jumbotron {
   border-radius: 1000px;
 }
+
+.block-label {
+  display: block;
+}
