@@ -24,14 +24,59 @@ class CreatePrimesView extends Component {
     //title, dataSet, generateDataSet, mapData, reduceResults
     const projectOptions = {
       title: `Primes, ${this.state.min} - ${this.state.max}`,
+
       dataSet: null,
-      generateDataSet: `(() => {var dataSet = [];var n = ${this.state.numN}; var min = '10'; var maj = '0'; var col = '1'; for (var i = 0; i < n/2; i++){ dataSet.push([n,1,min,maj,col]); min += '0';if (maj === '0'){maj = '1'}else{ maj += '0'};col += '0';} return dataSet;})`,
-      mapData: '(dataSet) => {var n = dataSet[0]; var level = dataSet[1]; var minDiagConflict = parseInt(dataSet[2],2); var majDiagConflict = parseInt(dataSet[3],2); var colConflict = parseInt(dataSet[4],2); var solutionCount = 0;var countQueenSolutions = function(currentRow, minDiagConflict, majDiagConflict, colConflict) {if (currentRow === n) { solutionCount++; return; }var conflicts = minDiagConflict | majDiagConflict | colConflict; for (var queenPosition = 1; queenPosition < 1<<n; queenPosition*=2) { if (!(conflicts & queenPosition)) { var nextMinDiagConflict = (minDiagConflict | queenPosition) << 1; var nextMajDiagConflict = (majDiagConflict | queenPosition) >> 1; var nextColConflict = colConflict | queenPosition; result = countQueenSolutions(currentRow+1, nextMinDiagConflict, nextMajDiagConflict, nextColConflict); if (result) return solutionCount = result; } } };countQueenSolutions(level,minDiagConflict, majDiagConflict, colConflict); return solutionCount; }',
-      reduceResults: `(results) => { var n = ${this.state.numN}; var total = 0;  if (n % 2 === 0){ for (var i = 0; i < results.length; i++){ total += results[i] * 2 } }else{ for (var i = 0; i < results.length-1; i++){ total += results[i] * 2 } total += results[results.length-1]; } return total; }`
+
+      generateDataSet: `() => {
+        var start = ${this.state.min};
+        var end = ${this.state.max}
+        var numPieces = end / 10000;
+        var dataSet = [];
+
+        for (var i = 0; i < numPieces; i++) {
+          dataSet.push( [start + i * 10000, start + i * 10000 + 9999]);
+        }
+        return dataSet;
+      }`,
+
+      mapData: `(dataSubset) => {
+        const primeTester = (num) => {
+          for (var i = 2; i < num - 1; i++) {
+            if (num % i === 0) {
+              return false;
+            }
+          }
+          return true;
+        };
+
+        var min = dataSubset[0];
+        var max = dataSubset[1];
+        var result = [];
+
+        for (var i = min; i <= max; i++) {
+          if (primeTester(i)) {
+            result.push(i);
+          }
+        }
+
+        return result;
+      }`,
+
+      reduceResults: `(results) => {
+        var flatResults = [];
+
+        results.forEach((inner) => {
+          inner.forEach((val) => {
+            flatResults.push(val);
+          });
+        });
+      }`
     };
 
     // Send projectOptions to the server
     this.props.socket.emit('createProject', projectOptions);
+
+    this.context.router.push('/menu');
   }
 
   render() {

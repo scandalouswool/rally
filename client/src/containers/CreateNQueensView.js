@@ -31,6 +31,7 @@ class CreateNQueensView extends Component {
 
     // Send projectOptions to the server
     this.props.socket.emit('createProject', projectOptions);
+    this.context.router.push('/menu');
   }
 
   render() {
