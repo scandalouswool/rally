@@ -189,35 +189,44 @@ USER-INTERFACE-AFFECTING FUNCTIONS
 
   handleResult(job) {
     console.log('Result received for job id: ', job.jobId);
-    // Places job's result into completedJobs array based on the job's original index location in availableJobs
-    this.completedJobs[job.jobId] = job.result;
 
-    // Set worker's current job to null 
-    this.workers[job.workerId].currentJob = null;
+    // Check whether this is a valid job for this project
+    if (this.workers[job.workerId]) {
 
-    // Iterate over all workers in the workers object, and emit to them the updated results array
-    // NOTE: do NOT use 'this' inside the emit function. Doing so will
-    // cause a maximum stack call exceeded error, for some reason.
-    // Unfortunately, this requires us to generate a workersList array
-    // to pass into the socket message. Hacky. Need to refactor.
-    // TODO: refactor to use socket rooms to broadcast messages?
-    var workersList = [];
-    for (var key in this.workers) {
-      workersList.push(this.workers[key].workerId);
-    }
-    var completed = this.completedJobs.map( (job) => {
-      return job;
-    });
-    // for (var key in this.workers) {
-    //   this.workers[key].socket.emit('updateResults', completed);
-    // }
+      // Places job's result into completedJobs array based on the job's original index location in availableJobs
+      this.completedJobs[job.jobId] = job.result;
 
-    // Completes the project if all jobs have been completed
-    if (this.jobsLength === this.completedJobs.length) {
-      this.completeProject();
+      // Set worker's current job to null 
+      this.workers[job.workerId].currentJob = null;
+
+      // Iterate over all workers in the workers object, and emit to them the updated results array
+      // NOTE: do NOT use 'this' inside the emit function. Doing so will
+      // cause a maximum stack call exceeded error, for some reason.
+      // Unfortunately, this requires us to generate a workersList array
+      // to pass into the socket message. Hacky. Need to refactor.
+      // TODO: refactor to use socket rooms to broadcast messages?
+      var workersList = [];
+      for (var key in this.workers) {
+        workersList.push(this.workers[key].workerId);
+      }
+      var completed = this.completedJobs.map( (job) => {
+        return job;
+      });
+      // for (var key in this.workers) {
+      //   this.workers[key].socket.emit('updateResults', completed);
+      // }
+
+      // Completes the project if all jobs have been completed
+      if (this.jobsLength === this.completedJobs.length) {
+        this.completeProject();
+      } else {
+        this.assignJob(this.workers[ job.workerId ]);
+      }
+    
     } else {
-      this.assignJob(this.workers[ job.workerId ]);
+      console.log('Error: worker not found for this job');
     }
+
   }
 
   completeProject() {
