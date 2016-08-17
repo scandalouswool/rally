@@ -49,6 +49,15 @@ Open the server with Nodemon.
 npm start
 ```
 
+## Testing
+
+1. To add new tests, create a file containing your tests in 'client/src/tests/' 
+   with the suffix '-test' (see existing files for examples)
+2. To execute tests, run 'npm test' from the command line
+3. Note: Karma will launch and close Chrome each time you run the tests; this typically
+   takes about 10 seconds. If you'd like Chrome to stay open, change the 'singleRun' 
+   option to false in karma.conf.js
+
 ## Notes for Development Team
 
 1. Socket event handlers for server:
