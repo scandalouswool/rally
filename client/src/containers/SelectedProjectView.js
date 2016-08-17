@@ -8,12 +8,12 @@ class SelectedProjectView extends Component {
 
   render() {
     if (!this.props.project) {
-      return <h3>Please select or create a project to begin</h3>;
+      return <h2>Please select or create a project to begin</h2>;
     }
 
     return (
       <div>
-        <h3>Currently Selected Project: <span className="customGreen">{this.props.project.title}</span></h3>
+        <h2>Currently Selected Project: <span className="customGreen">{this.props.project.title}</span></h2>
       </div>
     )
   }
