@@ -6,7 +6,7 @@ const Project = require('../constructors/Project.js');
 
 class ProjectController {
 
-  constructor() {
+  constructor(io) {
     // Stores all Project objects in existence. It has the following form:
     // { projectId1: Project1,
     //   projectId2: Project2 }
@@ -21,6 +21,8 @@ class ProjectController {
     // { socketId1: projectId,
     //   socketId2: projectId }
     this.allWorkers = {};
+
+    this.io = io;
   }
 
   /*
@@ -37,6 +39,9 @@ class ProjectController {
 
       this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
+
+      this.sendUpdateAllProjects(this.io);
+
     } else {
       console.log('Error: cannot find user:', socketId);
     }
@@ -61,12 +66,18 @@ class ProjectController {
   userJobDone(job) {
     // The Job object will be returned from the client with the .result
     // field populated.
+    let projectComplete = false;
 
     if (this.allProjects[job.projectId]) {
       // Check first whether the project associated with the job exists
       // then pass the job object to the appropriate project object
       console.log('User ' + job.workerId + ' completed a job: ' + job);
-      this.allProjects[job.projectId].handleResult(job);
+      projectComplete = this.allProjects[job.projectId].handleResult(job);
+
+      if (projectComplete) {
+        this.sendUpdateAllProjects(this.io);
+      }
+
     } else {
       console.log('Error in userJobDone: project does not exist');
     }
@@ -133,7 +144,7 @@ class ProjectController {
         workers: workersList,
         finalResult: project.finalResult,
         complete: project.complete,
-        time: project.time
+        projectTime: project.projectTime
       });
     }
 

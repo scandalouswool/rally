@@ -65,13 +65,7 @@ class CreatePrimesView extends Component {
       }`,
 
       reduceResults: `(results) => {
-        var flatResults = [];
-
-        results.forEach((inner) => {
-          inner.forEach((val) => {
-            flatResults.push(val);
-          });
-        });
+        return results[0].length + ' primes found!';
       }`
     };
 
