@@ -144,7 +144,7 @@ class ProjectController {
         workers: workersList,
         finalResult: project.finalResult,
         complete: project.complete,
-        time: project.projectTime
+        projectTime: project.projectTime
       });
     }
 

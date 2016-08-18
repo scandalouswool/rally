@@ -73,7 +73,7 @@ class ProjectView extends Component {
           Final Result: {thisProject.finalResult}
           </div>
           <div>
-          Final Time: {thisProject.time ? thisProject.time : ''}
+          Final Time: {thisProject.projectTime ? thisProject.projectTime + ' milliseconds' : ''}
           </div>
         </div>
       );

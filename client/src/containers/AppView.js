@@ -131,6 +131,7 @@ export default class AppView extends Component {
 
       allProjectsUpdate.map( (project) => {
         // Update the status of existing projects
+
         projectList.push({
           projectId: project.projectId,
           projectType: project.projectType,
@@ -140,12 +141,13 @@ export default class AppView extends Component {
           workers: project.workers,
           finalResult: project.finalResult,
           complete: project.complete,
-          time: project.projectTime
+          projectTime: project.projectTime
         });  
 
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
+
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
