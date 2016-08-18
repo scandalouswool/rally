@@ -42,8 +42,8 @@ class ProjectView extends Component {
         visualization = undefined;
       }
 
-      console.log('Results so far:', this.props.results[projectId]);
-      console.log('Project: ', thisProject);
+      // console.log('Results so far:', this.props.results[projectId]);
+      // console.log('Project: ', thisProject);
 
       return (
         <div>

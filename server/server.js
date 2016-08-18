@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 const timers = require('node-timers');
 const path = require('path');
 const projectController = require('./controllers/projectController.js');
-const pc = new projectController();
+const pc = new projectController(io);
 const _ = require('lodash');
 
 // Tester module

@@ -62,7 +62,7 @@ export default class AppView extends Component {
 
         this.webWorkerPool.push(newWorker);
       }
-      console.log('Web worker pool initialized:', this.webWorkerPool);
+      // console.log('Web worker pool initialized:', this.webWorkerPool);
       this.props.createWebWorkersPool(this.webWorkerPool);
     }
 
@@ -86,7 +86,7 @@ export default class AppView extends Component {
 
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
-      console.log('Web worker pool:', this.webWorkerPool);
+      // console.log('Web worker pool:', this.webWorkerPool);
 
       if (this.webWorkerPool !== null) {
         console.log('Assigning new job to an available web worker');
@@ -113,8 +113,8 @@ export default class AppView extends Component {
         var mapDataFunc = eval('(' + job.mapData + ')');
         job.result = mapDataFunc(job.data);
 
-        console.log('Job complete. Result is: ', job.result);
-        console.log('Sending result back to server');
+        // console.log('Job complete. Result is: ', job.result);
+        console.log('Job complete. Sending result back to server');
         
         this.socket.emit('userJobDone', job);
       }
