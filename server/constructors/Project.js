@@ -70,9 +70,9 @@ class Project {
     this.workers = {};
 
     // reduceResults will be run at the completion of the project.
-    // finalResult, which stores the result of the reduceResult, will be 
+    // finalResult, which stores the result of the reduceResults, will be 
     // sent to all clients that are currently working on the project.
-    this.reduceResults = options.reduceResults;
+    this.reduceResults = (typeof options.reduceResults === 'function' ? options.reduceResults : eval( options.reduceResults ));
 
     this.finalResult = null;
 
@@ -206,20 +206,6 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     if (_.isEmpty(this.workers)) {
       this.timer.stop();
     }
-
-    // Iterate over all workers in the workers object, and emit to them the workers array
-    // NOTE: do NOT use 'this' inside the emit function. Doing so will
-    // cause a maximum stack call exceeded error, for some reason.
-    // Unfortunately, this requires us to generate a workersList array
-    // to pass into the socket message. Hacky. Need to refactor.
-    // TODO: refactor to use socket rooms to broadcast messages?
-    var workersList = [];
-    for (var key in this.workers) {
-      workersList.push(this.workers[key].workerId);
-    }
-    for (var key in this.workers) {
-      this.workers[key].socket.emit('updateWorkers', workersList);
-    }
   }
 
   handleResult(job) {
@@ -268,13 +254,16 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     // in finalResult
 
     // this is to check if the code is coming from server or client
-    if (this.reduceResults === 'function'){
-      this.finalResult = this.reduceResults(this.completedJobs);
-    } else {
-      var func = eval(this.reduceResults);
-      this.finalResult = func(this.completedJobs);
-    }
+    // if (typeof this.reduceResults === 'function'){
+    //   this.finalResult = this.reduceResults(this.completedJobs);
+    // } else {
+    //   var func = eval(this.reduceResults);
+    //   this.finalResult = func(this.completedJobs);
+    // }
 
+    this.finalResult = this.reduceResults( this.completedJobs );
+    // console.log(this.reduceResults);
+    console.log('The final results:', this.finalResult);
     // Log the time when the project finished
     console.log(`Project completed after ${this.projectTime} miliseconds`);
     this.complete = true;

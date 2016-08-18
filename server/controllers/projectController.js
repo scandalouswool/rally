@@ -39,6 +39,9 @@ class ProjectController {
 
       this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
+
+      this.sendUpdateAllProjects(this.io);
+
     } else {
       console.log('Error: cannot find user:', socketId);
     }
@@ -141,7 +144,7 @@ class ProjectController {
         workers: workersList,
         finalResult: project.finalResult,
         complete: project.complete,
-        time: project.time
+        time: project.projectTime
       });
     }
 

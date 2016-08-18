@@ -8,6 +8,7 @@ import PrimesVisualView from './PrimesVisual';
 class ProjectView extends Component {
 
   connectToProject() {
+
     console.log('Joining project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', {
       projectId: this.props.selectedProject.projectId,
@@ -29,7 +30,7 @@ class ProjectView extends Component {
       const projectId = this.props.selectedProject.projectId;
 
       let thisProject; 
-      
+      console.log('Projects are:', this.props.projects);
       this.props.projects.forEach( (item) => {
         if (item.projectId === projectId) {
           thisProject = item;
@@ -55,7 +56,7 @@ class ProjectView extends Component {
           <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
           
           <div>
-            Number of Workers: {thisProject.workers.length}
+            Number of Workers: {thisProject === undefined ? null : thisProject.workers.length}
           </div>
           <div>
             Number of Jobs Completed: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}

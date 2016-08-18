@@ -72,6 +72,8 @@ class CreatePrimesView extends Component {
             flatResults.push(val);
           });
         });
+    
+        return flatResults.length + ' primes found!';
       }`
     };
 

@@ -140,7 +140,7 @@ export default class AppView extends Component {
           workers: project.workers,
           finalResult: project.finalResult,
           complete: project.complete,
-          time: project.time
+          time: project.projectTime
         });  
 
         // Update results of all projects
