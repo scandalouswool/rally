@@ -75,13 +75,13 @@ io.on('connect', (socket) => {
   // Passes an 'options' object to the ProjectController
   // Options must have the form that's defined in the Project constructor script, specifically:
   // options = {
-  //    dataSet: ARRAY, // Data to be operated on. 
+  //    dataSet: ARRAY, // Data to be operated on.
   //    generateDataSet: FUNCTION, (Optional input. Will use dataSet if both
   //    dataSet and generateDataSet are provided)
-  //    mapData: FUNCTION,  // Function to run on every data item. 
+  //    mapData: FUNCTION,  // Function to run on every data item.
   //    reduceResults: FUNCTION  // Function to run on completed results array
   // }
-  // ProjectController will instantiate a new Project object with the 
+  // ProjectController will instantiate a new Project object with the
   // information stored in the options object.
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
@@ -89,12 +89,14 @@ io.on('connect', (socket) => {
     pc.createProject(project, io);
   });
 
-  // // 'getProjectsUpdate' event handler
-  // // Sends back an object containing information
-  // // about all projects and workers
-  // socket.on('getProjectsUpdate', () => {
-  //   pc.sendUpdateAllProjects(socket);
-  // });
+  socket.on('pendProject', (project) => {
+    pc.pendProject(project, io);
+  });
+
+  socket.on('pendToCreateProject', (project) => {
+    // pc.removePendingProject(...)
+    // pc.createProject(project, io)
+  });
 
   socket.on('getAllProjectsUpdate', () => {
     pc.sendUpdateAllProjects(socket);

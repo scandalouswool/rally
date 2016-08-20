@@ -12,7 +12,8 @@ import { createdSocket,
          updateResults,
          finalResults,
          createWebWorkersPool,
-         updateAllProjects
+         updateAllProjects,
+         updatePendingProjects
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -142,7 +143,7 @@ export default class AppView extends Component {
           finalResult: project.finalResult,
           complete: project.complete,
           projectTime: project.projectTime
-        });  
+        });
 
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
@@ -153,9 +154,10 @@ export default class AppView extends Component {
       this.props.updateResults(resultsList);
     });
 
-    const socketMethods = {
-      socket: this.socket
-    };
+    this.socket.on('updatePendingProjects', (pendingProjects) => {
+      console.log('Got hur!');
+      this.props.updatePendingProjects(pendingProjects);
+    });
   }
 
   render() {
@@ -179,17 +181,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { createdSocket, 
+    { createdSocket,
       updateProjects,
-      updateWorkers, 
-      newJob, 
-      completeJob, 
-      sendCompleteJob, 
-      updateResults, 
+      updateWorkers,
+      newJob,
+      completeJob,
+      sendCompleteJob,
+      updateResults,
       finalResults,
       createWebWorkersPool,
-      updateAllProjects 
-    }, dispatch)
+      updateAllProjects,
+      updatePendingProjects
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppView);
