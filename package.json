@@ -41,6 +41,7 @@
     "karma-webpack": "^1.8.0",
     "lodash": "^4.14.1",
     "mocha": "^3.0.2",
+    "mysql": "^2.11.1",
     "node-timers": "0.0.1",
     "nodemon": "^1.10.0",
     "react": "^15.3.0",
@@ -52,6 +53,7 @@
     "react-router": "^2.6.1",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
+    "sequelize": "^3.24.1",
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "webpack": "^1.13.1"

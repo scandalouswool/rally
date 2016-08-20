@@ -6,11 +6,68 @@ const Project = require('../constructors/Project.js');
 
 class ProjectController {
 
-  constructor(io) {
+  constructor(db, io) {
     // Stores all Project objects in existence. It has the following form:
     // { projectId1: Project1,
     //   projectId2: Project2 }
     this.allProjects = {};
+
+    // Time between database backups
+    this.backUpTime = 10000;
+
+    /***************************************************
+    // Query database for projects, intialize a Project
+    // for each entry, and populate this.allProjects obj
+    ***************************************************/
+    db.Project.findAll({}).then((projects) => {
+      projects.forEach((project) => {
+        let data = project.dataValues;
+        let options = {
+          projectType: data.projectType,
+          title: data.title,
+          complete: data.complete,
+          projectTime: data.projectTime,
+          dataSet: data.dataSet,
+          generateDataSet: data.generateDataSet,
+          completedJobs: JSON.parse(data.completedJobs),
+          mapData: data.mapData,
+          reduceResults: data.reduceResults,
+          finalResult: JSON.parse(data.finalResult)
+        };
+        this.allProjects[data.projectId] = new Project(options, data.projectId, io);
+      });
+
+      /***************************************************
+      // Iterate over projects in this.allProjects object
+      // and save to the database once per minute
+      ***************************************************/
+      setInterval((() => {
+        return () => {
+          // First clear out the database
+          db.Project.destroy({
+            where: {}
+          // Then resave all projects
+          }).then(() => {
+            for (var obj in this.allProjects) {
+              let project = this.allProjects[obj];
+              db.Project.create({
+                projectId: project.projectId,
+                projectType: project.projectType,
+                title: project.title,
+                complete: project.complete,
+                projectTime: project.projectTime,
+                dataSet: project.dataSet,
+                generateDataSet: project.generateDataSet,
+                completedJobs: JSON.stringify(project.completedJobs),
+                mapData: project.mapData,
+                reduceResults: project.reduceResults,
+                finalResult: JSON.stringify(project.finalResult)
+              });
+            }
+          });
+        };
+      })(), this.backUpTime);
+    });
 
     // Keeps a record of all Worker instances in existence.
     // Socket id is used to log workers because the Worker object
@@ -128,7 +185,7 @@ class ProjectController {
           workerId: project.workers[k].workerId,
           projectId: project.workers[k].projectId,
           jobId: project.workers[k].currentJob === null ? null : project.workers[k].currentJob.jobId
-        })
+        });
       }
 
       const finalResult = [];

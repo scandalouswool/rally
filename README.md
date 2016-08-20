@@ -44,6 +44,11 @@ Initiate webpack.
 npm run build: dev
 ```
 
+Launch mysql server and create a database named 'rally' using mysql as the root user:
+mysql start
+mysql -u root -p
+create database rally;
+
 Open the server with Nodemon.
 ```sh
 npm start
