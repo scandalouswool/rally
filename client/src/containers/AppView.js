@@ -154,8 +154,8 @@ export default class AppView extends Component {
       this.props.updateResults(resultsList);
     });
 
+    // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
-      console.log('Got hur!');
       this.props.updatePendingProjects(pendingProjects);
     });
   }

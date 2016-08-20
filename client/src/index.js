@@ -26,4 +26,4 @@ ReactDOM.render(
 
 // Initialize authentication listener
 // (Not sure why this has to be set timeout...change if proves unnecessary)
-setTimeout(store.dispatch(startListeningToAuth(firebaseApp)));
+store.dispatch(startListeningToAuth(firebaseApp));

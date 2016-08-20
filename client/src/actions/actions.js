@@ -75,6 +75,7 @@ export function createWebWorkersPool(webWorkersPool) {
   }
 }
 
+// Updates list of pending projects
 export function updatePendingProjects(pendingProjects) {
   return {
     type: 'UPDATE_PENDING_PROJECTS',

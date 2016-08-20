@@ -29,6 +29,7 @@ class MenuView extends Component {
   }
 
   render() {
+    console.log(this.props.auth);
     return (
 
       <div className="center-block">
@@ -46,6 +47,7 @@ class MenuView extends Component {
 
         <div>
           <h3>View an existing project:</h3>
+
           <div className="container">
             <h4>In-progress</h4>
             <div>
@@ -54,6 +56,7 @@ class MenuView extends Component {
               </ul>
             </div>
           </div>
+
           <div className="container">
             <h4>Archived</h4>
             <div>
@@ -71,7 +74,8 @@ function mapStateToProps(state) {
   return {
     allProjects: state.allProjects,
     projects: state.projects,
-    project: state.selectedProject
+    project: state.selectedProject,
+    auth: state.auth
   };
 }
 
