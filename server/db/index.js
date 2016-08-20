@@ -34,7 +34,7 @@ var Project = sequelize.define('Project', {
     type: Sequelize.BOOLEAN,
     allowNull: false
   },
-  time: {
+  projectTime: {
     type: Sequelize.INTEGER,
     allowNull: false
   },

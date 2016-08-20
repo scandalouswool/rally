@@ -26,7 +26,7 @@ class Project {
 
     // Timer used to track how long it takes to complete project
     this.timer = timers.simple();
-    this.time = options.time || 0; //might need to be this.projectTime
+    this.projectTime = options.projectTime || 0; //might need to be this.projectTime
 
     // Save dataSet and generateDataSet from options
     this.dataSet = options.dataSet;
@@ -69,18 +69,12 @@ class Project {
     this.workers = {};
 
     // reduceResults will be run at the completion of the project.
-<<<<<<< 53c8d802413b6b0333d28d03efa39cdd6105d605
-    // finalResult, which stores the result of the reduceResults, will be 
-    // sent to all clients that are currently working on the project.
-    this.reduceResults = (typeof options.reduceResults === 'function' ? options.reduceResults : eval( options.reduceResults ));
+    //this.reduceResults = (typeof options.reduceResults === 'function' ? options.reduceResults : eval( options.reduceResults ));
 
-    this.finalResult = null;
-=======
     // finalResult, which stores the result of the reduceResult, will be
     // sent to all clients that are currently working on the project.
     this.reduceResults = options.reduceResults;
     this.finalResult = options.finalResult || null;
->>>>>>> Implement database to save state and properties of all projects
 
     // mapData function is run by the client on the data field of each Job
     // that the client receives. The result is saved to job.result and the
@@ -241,11 +235,7 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       // Completes the project if all jobs have been completed
       if (this.jobsLength === this.completedJobs.length) {
         this.timer.stop();
-<<<<<<< 53c8d802413b6b0333d28d03efa39cdd6105d605
-        this.projectTime = this.timer.time();
-=======
-        this.time = this.time + this.timer.time();
->>>>>>> Implement database to save state and properties of all projects
+        this.projectTime = this.projectTime + this.timer.time();
         return this.completeProject();
       } else {
         this.assignJob(this.workers[ job.workerId ]);
@@ -264,14 +254,14 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     // in finalResult
 
     // this is to check if the code is coming from server or client
-    // if (typeof this.reduceResults === 'function'){
-    //   this.finalResult = this.reduceResults(this.completedJobs);
-    // } else {
-    //   var func = eval(this.reduceResults);
-    //   this.finalResult = func(this.completedJobs);
-    // }
+    if (typeof this.reduceResults === 'function'){
+      this.finalResult = this.reduceResults(this.completedJobs);
+    } else {
+      var func = eval(this.reduceResults);
+      this.finalResult = func(this.completedJobs);
+    }
 
-    this.finalResult = this.reduceResults( this.completedJobs );
+    //this.finalResult = this.reduceResults( this.completedJobs );
     // console.log(this.reduceResults);
     console.log('The final results:', this.finalResult);
     // Log the time when the project finished
