@@ -1,9 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import PendingProjectView from '../components/PendingProjectView';
 
-class PendingProjectsView extends Component {
+class PendingMenuView extends Component {
   constructor(props) {
     super(props);
+  }
+
+  // Emits socket events to either reject or accept a project
+  enactDecision(decision, projectId) {
+    console.log(decision, projectId);
   }
 
   getDisplay() {
@@ -23,7 +30,21 @@ class PendingProjectsView extends Component {
       }.bind(this), 5000);
       return (<div>Checking authorization...</div>);
     } else {
-      return (<div>You good!</div>);
+      return (
+        <div>
+          <h2>Pending Projects</h2>
+          {_.map(this.props.pendingProjects, (project, key) => {
+            return (
+              <PendingProjectView
+                project={project}
+                key={key}
+                id={key}
+                enactDecision={this.enactDecision.bind(this)}
+              />
+            );
+          })}
+        </div>
+      );
     }
   }
 
@@ -42,8 +63,8 @@ function mapStateToProps(state) {
 }
 
 // Attach router to PendingProjectView's context
-PendingProjectsView.contextTypes = {
+PendingMenuView.contextTypes = {
   router: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps)(PendingProjectsView);
+export default connect(mapStateToProps)(PendingMenuView);

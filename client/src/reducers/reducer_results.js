@@ -13,7 +13,6 @@ export default function (state = [], action) {
           }
         });
       }
-      console.log('Results:', nextState);
 		  return nextState;
 		
     case 'FINAL_RESULTS':

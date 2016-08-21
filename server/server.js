@@ -36,7 +36,8 @@ io.on('connect', (socket) => {
   console.log('User connected:', socket.id);
   // pc.sendAllProjects(socket);
   pc.sendUpdateAllProjects(socket);
-  
+  pc.sendUpdatePendingProjects(socket);
+
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
   // ProjectController will remove the Worker object associated with this
@@ -45,7 +46,7 @@ io.on('connect', (socket) => {
     console.log('User disconnected:', socket.id);
     pc.userDisconnect(socket.id);
   });
- 
+
   // 'userReady' event handler
   // Pass the socket and projectId to the ProjectController object
   // ProjectController will create a new Worker in the requested project

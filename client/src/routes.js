@@ -12,7 +12,7 @@ import ErrorView from './components/ErrorView';
 import CreateProjectView from './containers/CreateProjectView';
 import CreateNQueensView from './containers/CreateNQueensView';
 import CreatePrimesView from './containers/CreatePrimesView';
-import PendingProjectsView from './containers/PendingProjectsView';
+import PendingMenuView from './containers/PendingMenuView';
 
 export default (
   <Route path="/" component={AppView}>
@@ -23,7 +23,7 @@ export default (
     <Route path="createNQueens" component={CreateNQueensView} />
     <Route path="createPrimes" component={CreatePrimesView} />
     <Route path="selectedproject" component={SelectedProjectView} />
-    <Route path="pendingProjects" component={PendingProjectsView} />
+    <Route path="pendingMenu" component={PendingMenuView} />
     <Route path="login" component={LoginView} />
     <Route path="signup" component={SignupView} />
     <Route path="*" component={ErrorView} />

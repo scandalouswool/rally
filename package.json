@@ -33,6 +33,7 @@
     "express": "^4.14.0",
     "firebase": "^3.2.1",
     "http": "0.0.0",
+    "js-beautify": "^1.6.3",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^1.0.1",
     "karma-cli": "^1.0.1",

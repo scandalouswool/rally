@@ -19,7 +19,7 @@ class ProjectController {
       dataSet: '[0, 1, 2, 3]',
       generateDataSet: '',
       mapData: '(val) => {return 2*val;}',
-      reduceData: '(results) => {let res = 0; for (var i = 0; i < results.length; i++) {res = res + results[i];} return res;'
+      reduceData: '(results) => {let res = 0; for (var i = 0; i < results.length; i++) {res = res + results[i];} return res;}'
     };
 
     // Time between database backups
