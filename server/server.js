@@ -34,17 +34,21 @@ server.listen(process.env.PORT || 8000, () => {
 io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
-  // pc.sendAllProjects(socket);
-  pc.sendUpdateAllProjects(socket);
-  pc.sendUpdatePendingProjects(socket);
-
+  socket.emit('updateAllProjects', pc.getUpdateAllProjects());
+  
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
   // ProjectController will remove the Worker object associated with this
   // socket connection and reassign its work to another object.
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-    pc.userDisconnect(socket.id);
+    if (pc.userDisconnect(socket.id)) {
+      console.log('User removed from projects: ', socket.id);
+      io.emit('updateAllProjects', pc.getUpdateAllProjects());
+
+    } else {
+      console.log('Error: cannot find user:', socket.id);
+    }
+    
   });
 
   // 'userReady' event handler
@@ -56,11 +60,22 @@ io.on('connect', (socket) => {
   socket.on('userReady', (readyMessage) => {
     console.log('User ready for project:', readyMessage.projectId);
     pc.userReady(readyMessage, socket);
+
+    // Send results of selected project to the user
+    socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));
+
+    // Send global update of all projects to users
+    io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 
   socket.on('userDisconnect', () => {
-    console.log('User left the project:', socket.id);
-    pc.userDisconnect(socket.id);
+    if (pc.userDisconnect(socket.id)) {
+      console.log('User left the project:', socket.id);
+      io.emit('updateAllProjects', pc.getUpdateAllProjects());
+
+    } else {
+      console.log('Error: that user not found');
+    }
   });
 
   // 'userJobDone' event handler
@@ -69,7 +84,7 @@ io.on('connect', (socket) => {
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
     pc.userJobDone(completedJob);
-    pc.sendUpdateAllProjects(io);
+    io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 
   // 'createProject' event handler
@@ -87,7 +102,15 @@ io.on('connect', (socket) => {
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
   socket.on('createProject', (project) => {
-    pc.createProject(project, io);
+
+    if (pc.createProject(project)) {
+      console.log('Successfully created a new project');
+      io.emit('updateAllProjects', pc.getUpdateAllProjects());
+
+    } else {
+      console.log('Error creating project');
+    }
+
   });
 
   socket.on('pendProject', (project) => {
@@ -102,7 +125,7 @@ io.on('connect', (socket) => {
   });
 
   socket.on('getAllProjectsUpdate', () => {
-    pc.sendUpdateAllProjects(socket);
+    socket.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 
   // 'error' event handler

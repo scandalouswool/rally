@@ -99,10 +99,11 @@ class ProjectController {
       this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
 
-      this.sendUpdateAllProjects(this.io);
+      return true;
 
     } else {
-      console.log('Error: cannot find user:', socketId);
+      // User not found
+      return false;
     }
   }
 
@@ -116,6 +117,8 @@ class ProjectController {
       this.allProjects[readyMessage.projectId].createWorker(readyMessage, socket);
       // Create a record of the new Worker in the allWorkers ledger
       this.allWorkers[socket.id] = readyMessage.projectId;
+
+
 
     } else {
       console.log('Error in userReady: Project does not exist');
@@ -168,12 +171,8 @@ class ProjectController {
     this.sendUpdatePendingProjects(io);
   }
 
-  sendUpdatePendingProjects(destination) {
-    destination.emit('updatePendingProjects', this.pendingProjects);
-  }
-
-  // Sends status of projects to all connected users
-  sendUpdateAllProjects(destination) {
+  // Returns status of projects to all connected users
+  getUpdateAllProjects() {
     let allProjectsUpdate = [];
 
     // Initialize project update information
@@ -213,7 +212,12 @@ class ProjectController {
       });
     }
 
-    destination.emit('updateAllProjects', allProjectsUpdate);
+    return allProjectsUpdate;
+  }
+
+  //TODO: completeProject method
+  completeProject() {
+    console.log('Project done');
   }
 }
 

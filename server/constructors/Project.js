@@ -169,26 +169,20 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       // socket ID as the key
       this.workers[newWorker.workerId] = newWorker;
 
-      // Iterate over all workers in the workers object, and emit to them the workers array
-      // NOTE: do NOT use 'this' inside the emit function. Doing so will
-      // cause a maximum stack call exceeded error, for some reason.
-      // Unfortunately, this requires us to generate a workersList array
-      // to pass into the socket message. Hacky. Need to refactor.
-      // TODO: refactor to use socket rooms to broadcast messages?
+      // // Iterate over all workers in the workers object, and emit to them the workers array
+      // // NOTE: do NOT use 'this' inside the emit function. Doing so will
+      // // cause a maximum stack call exceeded error, for some reason.
+      // // Unfortunately, this requires us to generate a workersList array
+      // // to pass into the socket message. Hacky. Need to refactor.
+      // // TODO: refactor to use socket rooms to broadcast messages?
 
-      var workersList = [];
-      for (var key in this.workers) {
-        workersList.push(this.workers[key].workerId);
-      }
-      for (var key in this.workers) {
-        this.workers[key].socket.emit('updateWorkers', workersList);
-      }
-
-      // Send the user of this worker the latest results
-      var completed = this.completedJobs.map( (job) => {
-        return job;
-      });
-      newWorker.socket.emit('updateResults', completed);
+      // var workersList = [];
+      // for (var key in this.workers) {
+      //   workersList.push(this.workers[key].workerId);
+      // }
+      // for (var key in this.workers) {
+      //   this.workers[key].socket.emit('updateWorkers', workersList);
+      // }
 
     } else {
       console.log('Error creating worker: invalid input type');
