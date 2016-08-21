@@ -73,8 +73,19 @@ class Project {
 
     // finalResult, which stores the result of the reduceResult, will be
     // sent to all clients that are currently working on the project.
-    this.reduceResults = options.reduceResults;
+    this.reduceResults = (typeof options.reduceResults === 'function') ?
+                          options.reduceResults : 
+                          eval(options.reduceResults);
+
     this.finalResult = options.finalResult || null;
+
+    // // this is to check if the code is coming from server or client
+    // if (typeof this.reduceResults === 'function'){
+    //   this.finalResult = this.reduceResults(this.completedJobs);
+    // } else {
+    //   var func = eval(this.reduceResults);
+    //   this.finalResult = func(this.completedJobs);
+    // }
 
     // mapData function is run by the client on the data field of each Job
     // that the client receives. The result is saved to job.result and the
@@ -98,13 +109,15 @@ class Project {
       newJob.jobsLength = this.jobsLength;
       worker.currentJob.push(newJob);
 
-      // Send the newly assigned job to this worker
-      worker.socket.emit('newJob', newJob);
+      // // Send the newly assigned job to this worker
+      // worker.socket.emit('newJob', newJob);
 
       // Alternate timer
       if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
         this.timer.start();
       }
+
+      return newJob;
 
     } else {
       if (!this.availableJobs.length) {
@@ -115,6 +128,8 @@ class Project {
 
       }
     }
+  
+    return;
   }
 
   reassignJob(socketId) {
@@ -147,23 +162,24 @@ class Project {
 USER-INTERFACE-AFFECTING FUNCTIONS
 ==================================
 */
-  createWorker(readyMessage, socket) {
+  createWorker(readyMessage) {
     const projectId = readyMessage.projectId;
+    const socketId = readyMessage.socketId;
 
-    console.log('Creating a new worker in ' + projectId + ' for: ', socket.id);
+    console.log('Creating a new worker in ' + projectId);
     // Creates a new Worker and uses it in this project
-    if (this.projectId === projectId && typeof socket === 'object') {
-      var newWorker = new Worker(projectId, socket);
+    if (this.projectId === projectId) {
+      var newWorker = new Worker(projectId, socketId);
       newWorker.maxJobs = readyMessage.maxWorkerJobs;
       console.log('Created new worker capable of max jobs:', newWorker.maxJobs);
 
-      // Assigns the worker a job by invoking the project's assingJob
-      // method. Assign as many jobs as the worker can take.
-      for (var i = 0; i < newWorker.maxJobs; i++) {
-        if (this.availableJobs.length) {
-          this.assignJob(newWorker);
-        }
-      }
+      // // Assigns the worker a job by invoking the project's assingJob
+      // // method. Assign as many jobs as the worker can take.
+      // for (var i = 0; i < newWorker.maxJobs; i++) {
+      //   if (this.availableJobs.length) {
+      //     this.assignJob(newWorker);
+      //   }
+      // }
 
       // Places the worker into the workers object, using the worker's
       // socket ID as the key
@@ -183,6 +199,8 @@ USER-INTERFACE-AFFECTING FUNCTIONS
       // for (var key in this.workers) {
       //   this.workers[key].socket.emit('updateWorkers', workersList);
       // }
+
+      return newWorker;
 
     } else {
       console.log('Error creating worker: invalid input type');
@@ -226,19 +244,20 @@ USER-INTERFACE-AFFECTING FUNCTIONS
         console.log('Error: job not found');
       }
 
-      // Completes the project if all jobs have been completed
-      if (this.jobsLength === this.completedJobs.length) {
-        this.timer.stop();
-        this.projectTime = this.projectTime + this.timer.time();
-        return this.completeProject();
-      } else {
-        this.assignJob(this.workers[ job.workerId ]);
-      }
-
+      // // Completes the project if all jobs have been completed
+      // if (this.jobsLength === this.completedJobs.length) {
+      //   this.timer.stop();
+      //   this.projectTime = this.projectTime + this.timer.time();
+      //   return this.completeProject();
+      // } else {
+      //   this.assignJob(this.workers[ job.workerId ]);
+      // }
     } else {
       console.log('Error: worker not found for this job');
     }
-    return false;
+
+    // Returns whether the project has concluded
+    return this.jobsLength === this.completedJobs.length;
   }
 
   completeProject() {
@@ -247,16 +266,12 @@ USER-INTERFACE-AFFECTING FUNCTIONS
     // Calls reduceResults on the array of results and stores the result
     // in finalResult
 
-    // this is to check if the code is coming from server or client
-    if (typeof this.reduceResults === 'function'){
-      this.finalResult = this.reduceResults(this.completedJobs);
-    } else {
-      var func = eval(this.reduceResults);
-      this.finalResult = func(this.completedJobs);
-    }
-
     //this.finalResult = this.reduceResults( this.completedJobs );
     // console.log(this.reduceResults);
+    // console.log('The final completed results', _.flatten(this.completedJobs).length);
+
+    console.log(_.flatten(this.completedJobs).length);
+    this.finalResult = this.reduceResults( this.completedJobs );
     console.log('The final results:', this.finalResult);
     // Log the time when the project finished
     console.log(`Project completed after ${this.projectTime} miliseconds`);

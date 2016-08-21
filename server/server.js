@@ -58,8 +58,14 @@ io.on('connect', (socket) => {
   // The socket connection will be passed to the relevant Worker object
   // so that it can emit messages directly.
   socket.on('userReady', (readyMessage) => {
+    console.log(readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
-    pc.userReady(readyMessage, socket);
+
+    // Passes callback function that will be called on new jobs assigned
+    // to the new user
+    pc.userReady(readyMessage, (newJob) => {
+      socket.emit('newJob', newJob);
+    });
 
     // Send results of selected project to the user
     socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));
@@ -83,7 +89,9 @@ io.on('connect', (socket) => {
   // The completed Job object will have a 'result' property
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
-    pc.userJobDone(completedJob);
+    pc.userJobDone(completedJob, (newJob) => {
+      socket.emit('newJob', newJob);
+    });
     io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 

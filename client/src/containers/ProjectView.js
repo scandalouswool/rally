@@ -12,6 +12,7 @@ class ProjectView extends Component {
     console.log('Joining project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', {
       projectId: this.props.selectedProject.projectId,
+      socketId: this.props.socket.id,
       maxWorkerJobs: this.props.webWorkersPool === null ? 1 : this.props.webWorkersPool.length
     });
   }

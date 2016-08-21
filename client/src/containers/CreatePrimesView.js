@@ -65,7 +65,7 @@ class CreatePrimesView extends Component {
       }`,
 
       reduceResults: `(results) => {
-        return results[0].length + ' primes found!';
+        return _.flatten(results).length + ' primes found!';
       }`
     };
 

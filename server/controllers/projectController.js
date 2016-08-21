@@ -107,37 +107,61 @@ class ProjectController {
     }
   }
 
-  userReady(readyMessage, socket) {
+  userReady(readyMessage, callback) {
     // Passes the new user's socket connection to the appropriate Project,
     // which will then create a new Worker for that user and assign it
     // an available job
+    const project = this.allProjects[readyMessage.projectId];
 
-    if (this.allProjects[readyMessage.projectId]) {
+    if (project) {
       // Creates a new Worker in the appropriate Project
-      this.allProjects[readyMessage.projectId].createWorker(readyMessage, socket);
+      const newWorker = project.createWorker(readyMessage);
+      
       // Create a record of the new Worker in the allWorkers ledger
-      this.allWorkers[socket.id] = readyMessage.projectId;
+      this.allWorkers[newWorker.workerId] = project.projectId;
 
-
+      // Assign the new worker as many jobs as the worker can handle
+      for (var i = 0; i < newWorker.maxJobs; i++) {
+        const newJob = project.assignJob(newWorker)
+        if (newJob) {
+          callback(newJob);
+        }
+      } 
 
     } else {
       console.log('Error in userReady: Project does not exist');
     }
   }
 
-  userJobDone(job) {
+  userJobDone(job, callback) {
     // The Job object will be returned from the client with the .result
     // field populated.
     let projectComplete = false;
+    const project = this.allProjects[job.projectId]; 
+    const worker = project.workers[job.workerId];
 
-    if (this.allProjects[job.projectId]) {
-      // Check first whether the project associated with the job exists
-      // then pass the job object to the appropriate project object
-      console.log('User ' + job.workerId + ' completed a job: ' + job);
-      projectComplete = this.allProjects[job.projectId].handleResult(job);
+    if (project) {
+      // // Check first whether the project associated with the job exists
+      // // then pass the job object to the appropriate project object
+      // console.log('User ' + job.workerId + ' completed a job: ' + job);
+      // projectComplete = this.allProjects[job.projectId].handleResult(job);
 
+      // Refactor above into discrete tasks
+      // 1. Resolve job result
+      // 2. If project is over, trigger completeProject
+      // 3. If projecti s not over, assign jobs
+      projectComplete = project.handleResult(job);
+    
       if (projectComplete) {
-        this.sendUpdateAllProjects(this.io);
+        project.completeProject();
+        this.completeProject();
+      
+      } else {
+        // Assign jobs to the worker
+        const newJob = project.assignJob(worker);
+        if (newJob) {
+          callback(newJob);
+        }
       }
 
     } else {

@@ -88,7 +88,7 @@ export default class AppView extends Component {
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
       // console.log('Web worker pool:', this.webWorkerPool);
-
+      console.log('New job', job);
       if (this.webWorkerPool !== null) {
         console.log('Assigning new job to an available web worker');
         let availableWorker = false;
