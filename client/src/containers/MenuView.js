@@ -29,7 +29,6 @@ class MenuView extends Component {
   }
 
   render() {
-    console.log(this.props.auth);
     return (
 
       <div className="center-block">
