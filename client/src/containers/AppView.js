@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
+import Promise from 'bluebird';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createdSocket,
@@ -21,6 +22,7 @@ export default class AppView extends Component {
     super(props);
     this.socket = io();
     this.webWorkerPool = null;
+    this.ANNworkerPool = null;
   }
 
   componentWillMount() {
@@ -157,6 +159,64 @@ export default class AppView extends Component {
     // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
       this.props.updatePendingProjects(pendingProjects);
+    });
+
+    const socketMethods = {
+      socket: this.socket
+    };
+
+    /*
+      NEUTRAL NETWORK INITIALIZATION
+    */
+    this.initializeANNWebWorkers();
+  }
+
+  componentDidMount() {
+    this.beginEpochCycle();
+  }
+
+  /*
+    NEURAL NETWORK EPOCH LIFECYCLE METHODS
+  */
+  initializeANNWebWorkers() {
+    // TODO: Should this be a promise? These are async ops
+    const MAX_WORKERS = navigator.hardwareConcurrency || 2;
+    this.ANNworkerPool = {};
+
+    for (var i = 0; i < MAX_WORKERS; i++) {
+      const worker = {
+        worker: new Worker('/ANNworker'),
+        workerId: i,
+        isBusy: false
+      }
+
+      this.ANNworkerPool[i] = worker;
+    }
+    console.log('ANNworkers initialized:', this.ANNworkerPool);
+  }
+
+  beginEpochCycle() {
+    // Assign job to each ANN worker
+    const workerPromises = [];
+
+    for (var key in this.ANNworkerPool) {
+      const promise = this.assignANNJob(this.ANNworkerPool[key].worker);
+      workerPromises.push(promise);
+    }
+
+    Promise.all(workerPromises).then( () => {
+      console.log('All workers are done');
+    })
+  }
+
+  assignANNJob(worker) {
+    console.log('Assigning job to', worker);
+    return new Promise( (resolve, reject) => {
+      worker.postMessage('Hello');
+      worker.onmessage = (e) => {
+        resolve(e.data);
+      };
+>>>>>>> Set up promises to handle ANN worker job assignments
     });
   }
 

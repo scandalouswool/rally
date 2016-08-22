@@ -4,19 +4,9 @@ import { bindActionCreators } from 'redux';
 import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisual';
+import Promise from 'bluebird';
 
 class ProjectView extends Component {
-
-  componentDidMount() {
-    if (this.props.selectedProject.projectType === 'ANN') {
-      console.log('Initializing ANN project');
-      this.initializeANNWebWorkers();
-   
-      setTimeout( () => {
-        this.workerPool[1].worker.postMessage('test');
-      }, 2000)
-    }
-  }
 
   connectToProject() {
     console.log('Joining project', this.props.selectedProject.projectId);
@@ -35,25 +25,15 @@ class ProjectView extends Component {
   /*
     NEURAL NETWORK METHODS
   */
-  initializeANNWebWorkers() {
-    // TODO: Should this be a promise? These are async ops
-    const MAX_WORKERS = navigator.hardwareConcurrency || 2;
-    this.workerPool = {};
+  beginEpoch() {
+    console.log('Beginning epoch cycle');
 
-    for (var i = 0; i < MAX_WORKERS; i++) {
-      const worker = {
-        worker: new Worker('/ANNworker'),
-        workerId: i,
-        isBusy: false
-      }
-    
-      worker.worker.onmessage = (e) => {
-        console.log(e.data);
-      }
+  }
 
-      this.workerPool[i] = worker;
-    }
-    console.log(this.workerPool);
+  initializeEpoch() {
+    console.log('Initializing new Epoch');
+
+
   }
 
   render() {
