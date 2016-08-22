@@ -93,16 +93,18 @@ class ProjectController {
   userDisconnect(socketId) {
     // Identifies the project that the disconnected user was contributing to
     // and calls the removeWorker method for that project
+    console.log(this.allWorkers);
     if (this.allWorkers[socketId] !== undefined) {
       console.log('Removing user from global workers list:', socketId);
 
       this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
 
-      return true;
+      return socketId;
 
     } else {
       // User not found
+      console.log('Project controller could not find that user', socketId);
       return false;
     }
   }
@@ -140,8 +142,8 @@ class ProjectController {
     const project = this.allProjects[job.projectId]; 
     const worker = project.workers[job.workerId];
 
-    if (project) {
-      // // Check first whether the project associated with the job exists
+    if (project && worker) {
+      // // Check first whether project and worker associated with job exists
       // // then pass the job object to the appropriate project object
       // console.log('User ' + job.workerId + ' completed a job: ' + job);
       // projectComplete = this.allProjects[job.projectId].handleResult(job);
@@ -165,20 +167,30 @@ class ProjectController {
       }
 
     } else {
-      console.log('Error in userJobDone: project does not exist');
+      if (!project) {
+        console.log('Error in userJobDone: project does not exist');
+      }
+      if (!worker) {
+        console.log('Error in userJobDone: worker does not exist');
+      }
+
     }
   }
 
-  createProject(options, io) {
+  createProject(options) {
     // Check if it was a pending project; if so, remove from the list of pending projects
 
-    // Create a new instance of Project with the passed-in options parameters
+    // Create a new instance of Project with the pass-in options parameters
+    // Assign a project ID to the new Project and create a new Project
+
     const projectId = 'project' + Object.keys(this.allProjects).length;
-    const newProject = new Project(options, projectId, io);
+    const newProject = new Project(options, projectId);
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
     this.sendUpdateAllProjects(io);
+
+    return projectId;
   }
 
   pendProject(options, io) {
