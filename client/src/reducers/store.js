@@ -8,6 +8,7 @@ import UpdateJob from './reducer_update_job';
 import UpdateResults from './reducer_results';
 import WebWorkersPool from './reducer_web_workers';
 import Auth from './reducer_auth';
+import PendingProjects from './reducer_pending_projects';
 
 const rootReducer = combineReducers({
   allProjects: AllProjectsUpdate,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   updateJob: UpdateJob,
   updateResults: UpdateResults,
   auth: Auth,
-  webWorkersPool: WebWorkersPool
+  webWorkersPool: WebWorkersPool,
+  pendingProjects: PendingProjects
 });
 
 export default rootReducer;

@@ -75,6 +75,14 @@ export function createWebWorkersPool(webWorkersPool) {
   }
 }
 
+// Updates list of pending projects
+export function updatePendingProjects(pendingProjects) {
+  return {
+    type: 'UPDATE_PENDING_PROJECTS',
+    payload: pendingProjects
+  };
+}
+
 // Adds firebase listener for changes to client's authentication state
 export function startListeningToAuth(firebaseApp) {
   return (dispatch, getState) => {

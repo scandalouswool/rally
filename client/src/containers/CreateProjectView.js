@@ -25,7 +25,18 @@ class CreateProjectView extends Component {
 
   submitNewProject(event) {
     event.preventDefault();
-    this.props.socket.emit('createProject', this.state);
+
+    // If check whether user is allowed to create a project
+    // and send submitted string to different routes accordingly
+    let user = this.props.auth.username;
+    let whiteList = this.props.auth.whiteList;
+
+    if (whiteList.indexOf(user) !== -1) {
+      this.props.socket.emit('createProject', this.state);
+    } else {
+      this.props.socket.emit('pendProject', this.state);
+    }
+
     this.context.router.push('/menu');
   }
 
@@ -107,7 +118,8 @@ CreateProjectView.contextTypes = {
 
 function mapStateToProps(state) {
   return {
-    socket: state.createdSocket
+    socket: state.createdSocket,
+    auth: state.auth
   };
 }
 

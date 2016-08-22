@@ -12,18 +12,20 @@ import ErrorView from './components/ErrorView';
 import CreateProjectView from './containers/CreateProjectView';
 import CreateNQueensView from './containers/CreateNQueensView';
 import CreatePrimesView from './containers/CreatePrimesView';
+import PendingMenuView from './containers/PendingMenuView';
 
 export default (
-  <Route path='/' component={AppView}>
+  <Route path="/" component={AppView}>
     <IndexRoute component={HomeView} />
-    <Route path='menu' component={MenuView} />
-    <Route path='project' component={ProjectView} />
-    <Route path='createProject' component={CreateProjectView} />
-    <Route path='createNQueens' component={CreateNQueensView} />
-    <Route path='createPrimes' component={CreatePrimesView} />
-    <Route path='selectedproject' component={SelectedProjectView} />
-    <Route path='login' component={LoginView} />
-    <Route path='signup' component={SignupView} />
-    <Route path='*' component={ErrorView} />
+    <Route path="menu" component={MenuView} />
+    <Route path="project" component={ProjectView} />
+    <Route path="createProject" component={CreateProjectView} />
+    <Route path="createNQueens" component={CreateNQueensView} />
+    <Route path="createPrimes" component={CreatePrimesView} />
+    <Route path="selectedproject" component={SelectedProjectView} />
+    <Route path="pendingMenu" component={PendingMenuView} />
+    <Route path="login" component={LoginView} />
+    <Route path="signup" component={SignupView} />
+    <Route path="*" component={ErrorView} />
   </Route>
 );

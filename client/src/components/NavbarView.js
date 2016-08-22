@@ -27,17 +27,19 @@ class NavbarView extends Component {
 
   render() {
     // This is the login or logout button depending on the user's authentication state
-    let text, className, route, clickHandler;
+    let text, className, route, clickHandler, pendingLink;
     if (this.props.auth.uid) {
       text = ' Log Out';
       className = 'glyphicon glyphicon-log-out';
       route = '';
       clickHandler = this.handleLogout.bind(this);
+      pendingLink = (<Link to="pendingmenu"><span className="glyphicon glyphicon-hourglass"></span> Pending Projects</Link>);
     } else {
       text = ' Log In';
       className = 'glyphicon glyphicon-log-in';
       route = 'login';
       clickHandler = this.goToLogin.bind(this);
+      pendingLink = '';
     }
 
     return (
@@ -57,6 +59,7 @@ class NavbarView extends Component {
                 <li><Link to="/"><span className="glyphicon glyphicon-home"></span> Home</Link></li>
                 <li><Link to="menu"><span className="glyphicon glyphicon-tasks"></span> Projects</Link></li>
                 <li><Link to="project"><span className="glyphicon glyphicon-blackboard"></span> Current Project</Link></li>
+                <li>{pendingLink}</li>
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to={route} onClick={clickHandler}><span className={className}></span>{text}</Link></li>

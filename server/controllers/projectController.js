@@ -12,6 +12,8 @@ class ProjectController {
     //   projectId2: Project2 }
     this.allProjects = {};
 
+    this.pendingProjects = {};
+
     // Time between database backups
     this.backUpTime = 10000;
 
@@ -141,26 +143,33 @@ class ProjectController {
   }
 
   createProject(options, io) {
-    // Create a new instance of Project with the pass-in options parameters
-    // Assign a project ID to the new Project and create a new Project
+    // Check if it was a pending project; if so, remove from the list of pending projects
+
+    // Create a new instance of Project with the passed-in options parameters
     const projectId = 'project' + Object.keys(this.allProjects).length;
     const newProject = new Project(options, projectId, io);
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-
-    // Send the updated projects list to all socket connections
-    let projectList = [];
-    for (var key in this.allProjects) {
-      projectList.push({
-        projectId: this.allProjects[key].projectId,
-        projectType: this.allProjects[key].projectType,
-        jobsLength: this.allProjects[key].jobsLength,
-        title: this.allProjects[key].title
-      });
-    }
-
     this.sendUpdateAllProjects(io);
+  }
+
+  pendProject(options, io) {
+    // Add to list of pending projects
+    const id = Object.keys(this.pendingProjects).length;
+    this.pendingProjects[id] = options;
+
+    // Emit updated pending project list to all users
+    this.sendUpdatePendingProjects(io);
+  }
+
+  removePendingProject(projectId, io) {
+    delete this.pendingProjects[projectId];
+    this.sendUpdatePendingProjects(io);
+  }
+
+  sendUpdatePendingProjects(destination) {
+    destination.emit('updatePendingProjects', this.pendingProjects);
   }
 
   // Sends status of projects to all connected users
@@ -170,7 +179,6 @@ class ProjectController {
     // Initialize project update information
     for (var key in this.allProjects) {
       const project = this.allProjects[key];
-      const projectId = key + '';
 
       const completedJobs = [];
       project.completedJobs.map( (item) => {
@@ -205,17 +213,7 @@ class ProjectController {
       });
     }
 
-    // Checks whether destination is a io object or a socket connection
-    if (destination.id) {
-      destination.emit('updateAllProjects', allProjectsUpdate);
-    } else {
-      destination.emit('updateAllProjects', allProjectsUpdate);
-    }
-  }
-
-  //TODO: completeProject method
-  completeProject() {
-    console.log('Project done');
+    destination.emit('updateAllProjects', allProjectsUpdate);
   }
 }
 
