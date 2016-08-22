@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import NavbarView from '../components/NavbarView';
+import Promise from 'bluebird';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createdSocket,
@@ -21,6 +22,8 @@ export default class AppView extends Component {
     super(props);
     this.socket = io();
     this.webWorkerPool = null;
+    this.ANNWorkerPool = null;
+    this.ANNJobPool = [];
   }
 
   componentWillMount() {
@@ -88,7 +91,7 @@ export default class AppView extends Component {
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
       // console.log('Web worker pool:', this.webWorkerPool);
-
+      console.log('New job', job);
       if (this.webWorkerPool !== null) {
         console.log('Assigning new job to an available web worker');
         let availableWorker = false;
@@ -148,15 +151,94 @@ export default class AppView extends Component {
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-
+      console.log('Available projects:', projectList);
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
     });
 
+
     // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
       this.props.updatePendingProjects(pendingProjects);
+    });
+
+    /*
+      NEUTRAL NETWORK HANDLERS
+    */
+
+    this.initializeANNWebWorkers();
+
+    this.socket.on('newANNJob', (newJob) => {
+      console.log('Receiving new ANNJob', newJob);
+      this.ANNJobPool.push(newJob);
+
+      console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
+
+      if (this.ANNJobPool.length === this.ANNWorkerPool.length || 
+          newJob.jobId === newJob.jobsLength - 1) {
+        console.log('Reached full ANN pool. Beginning epoch cycle now');
+        this.beginEpochCycle(this.ANNJobPool);
+        this.ANNJobPool = [];
+      }
+
+    });
+    
+    const socketMethods = {
+      socket: this.socket
+    };
+  }
+
+  componentDidMount() {
+    // this.beginEpochCycle();
+  }
+
+  /*
+    NEURAL NETWORK EPOCH LIFECYCLE METHODS
+  */
+  initializeANNWebWorkers() {
+    // TODO: Should this be a promise? These are async ops
+    const MAX_WORKERS = navigator.hardwareConcurrency || 2;
+    this.ANNWorkerPool = [];
+
+    for (var i = 0; i < MAX_WORKERS; i++) {
+      const worker = {
+        worker: new Worker('/ANNworker'),
+        workerId: i,
+        isBusy: false
+      }
+
+      this.ANNWorkerPool.push(worker);
+    }
+    console.log('ANNWorkers initialized:', this.ANNWorkerPool);
+  }
+
+  beginEpochCycle() {
+    console.log('Beginning Epoch Cycle');
+    // Assign job to each ANN worker
+    const workerPromises = [];
+
+    for (var key in this.ANNWorkerPool) {
+      const promise = this.assignANNJob(this.ANNWorkerPool[key].worker);
+      workerPromises.push(promise);
+    }
+
+    Promise.all(workerPromises).then( (results) => {
+      console.log('All workers are done');
+      console.log(results);
+    })
+  }
+
+  assignANNJob(worker) {
+    console.log('Assigning job to', worker);
+    return new Promise( (resolve, reject) => {
+      worker.postMessage('Hello');
+      worker.isBusy = true;
+
+      worker.onmessage = (e) => {
+        worker.isBusy = false;
+        resolve(e.data);
+      };
     });
   }
 
@@ -175,7 +257,8 @@ export default class AppView extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
+    projects: state.projects
   };
 }
 

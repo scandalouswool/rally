@@ -1,4 +1,5 @@
 const Project = require('../constructors/Project.js');
+const ANNProject = require('../constructors/ANNProject.js');
 
 // ProjectController is responsible for creating and terminating
 // projects. It also routes incoming socket messages to the appropriate
@@ -93,65 +94,104 @@ class ProjectController {
   userDisconnect(socketId) {
     // Identifies the project that the disconnected user was contributing to
     // and calls the removeWorker method for that project
+
     if (this.allWorkers[socketId] !== undefined) {
       console.log('Removing user from global workers list:', socketId);
 
       this.allProjects[this.allWorkers[socketId]].removeWorker(socketId);
       delete this.allWorkers[socketId];
 
-      this.sendUpdateAllProjects(this.io);
+      return socketId;
 
     } else {
-      console.log('Error: cannot find user:', socketId);
+      // User not found
+      console.log('Project controller could not find that user', socketId);
+      return false;
     }
   }
 
-  userReady(readyMessage, socket) {
+  userReady(readyMessage, callback) {
     // Passes the new user's socket connection to the appropriate Project,
     // which will then create a new Worker for that user and assign it
     // an available job
+    const project = this.allProjects[readyMessage.projectId];
 
-    if (this.allProjects[readyMessage.projectId]) {
+    if (project) {
       // Creates a new Worker in the appropriate Project
-      this.allProjects[readyMessage.projectId].createWorker(readyMessage, socket);
+      const newWorker = project.createWorker(readyMessage);
+      
       // Create a record of the new Worker in the allWorkers ledger
-      this.allWorkers[socket.id] = readyMessage.projectId;
+      this.allWorkers[newWorker.workerId] = project.projectId;
+
+      // Assign the new worker as many jobs as the worker can handle
+      for (var i = 0; i < newWorker.maxJobs; i++) {
+        const newJob = project.assignJob(newWorker)
+        if (newJob) {
+          callback(newJob);
+        }
+      } 
 
     } else {
       console.log('Error in userReady: Project does not exist');
     }
   }
 
-  userJobDone(job) {
+  userJobDone(job, callback) {
     // The Job object will be returned from the client with the .result
     // field populated.
     let projectComplete = false;
+    const project = this.allProjects[job.projectId]; 
+    const worker = project.workers[job.workerId];
 
-    if (this.allProjects[job.projectId]) {
-      // Check first whether the project associated with the job exists
-      // then pass the job object to the appropriate project object
-      console.log('User ' + job.workerId + ' completed a job: ' + job);
-      projectComplete = this.allProjects[job.projectId].handleResult(job);
+    if (project && worker) {
+      // // Check first whether project and worker associated with job exists
+      // // then pass the job object to the appropriate project object
+      // console.log('User ' + job.workerId + ' completed a job: ' + job);
+      // projectComplete = this.allProjects[job.projectId].handleResult(job);
 
+      projectComplete = project.handleResult(job);
+    
       if (projectComplete) {
-        this.sendUpdateAllProjects(this.io);
+        project.completeProject();
+        this.completeProject();
+      
+      } else {
+        // Assign jobs to the worker
+        const newJob = project.assignJob(worker);
+        if (newJob) {
+          callback(newJob);
+        }
       }
 
     } else {
-      console.log('Error in userJobDone: project does not exist');
+      if (!project) {
+        console.log('Error in userJobDone: project does not exist');
+      }
+      if (!worker) {
+        console.log('Error in userJobDone: worker does not exist');
+      }
     }
   }
 
-  createProject(options, io) {
+  createProject(options) {
     // Check if it was a pending project; if so, remove from the list of pending projects
 
-    // Create a new instance of Project with the passed-in options parameters
+    // Create a new instance of Project with the pass-in options parameters
+    // Assign a project ID to the new Project and create a new Project
+
     const projectId = 'project' + Object.keys(this.allProjects).length;
-    const newProject = new Project(options, projectId, io);
+    let newProject;
+    console.log('projectId', projectId);
+    if (options.projectType === 'ANN') {
+      newProject = new ANNProject(options, projectId);
+    } else {
+      newProject = new Project(options, projectId);
+    }
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-    this.sendUpdateAllProjects(io);
+
+    return projectId;
   }
 
   pendProject(options, io) {
@@ -168,12 +208,8 @@ class ProjectController {
     this.sendUpdatePendingProjects(io);
   }
 
-  sendUpdatePendingProjects(destination) {
-    destination.emit('updatePendingProjects', this.pendingProjects);
-  }
-
-  // Sends status of projects to all connected users
-  sendUpdateAllProjects(destination) {
+  // Returns status of projects to all connected users
+  getUpdateAllProjects() {
     let allProjectsUpdate = [];
 
     // Initialize project update information
@@ -213,7 +249,12 @@ class ProjectController {
       });
     }
 
-    destination.emit('updateAllProjects', allProjectsUpdate);
+    return allProjectsUpdate;
+  }
+
+  //TODO: completeProject method
+  completeProject() {
+    console.log('Project done');
   }
 }
 

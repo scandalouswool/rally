@@ -15,6 +15,7 @@ const _ = require('lodash');
 
     options = {
       title: STRING,
+      projectType: STRING,
       dataSet: ARRAY,
       generateDataSet: FUNCTION,
       mapData: FUNCTION,
@@ -53,7 +54,7 @@ const testOptions = {
   generateDataSet: () => {
     var dataSet = [];
 
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 5; i++) {
       dataSet.push( [i * 50000, i * 50000 + 49999]);
     }
     return dataSet;
