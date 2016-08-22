@@ -14,6 +14,20 @@ class ProjectController {
     this.allProjects = {};
 
     this.pendingProjects = {};
+    this.pendingProjects['0'] = {
+      title: 'My Project',
+      dataSet: '[0, 1, 2, 3]',
+      generateDataSet: '',
+      mapData: '(val) => {return val;}',
+      reduceResults: '(results) => {return results;}'
+    };
+    // this.pendingProjects['1'] = {
+    //   title: 'Mararar prarject 2',
+    //   dataSet: '[0, 1, 2, 3]',
+    //   generateDataSet: '',
+    //   mapData: '(val) => {return val;}',
+    //   reduceResults: '(results) => {return results;}'
+    // };
 
     // Time between database backups
     this.backUpTime = 10000;

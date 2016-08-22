@@ -50,7 +50,10 @@ io.on('connect', (socket) => {
   }
 
   socket.emit('updateAllProjects', pc.getUpdateAllProjects());
-  
+
+  // Fix this!!
+  pc.sendUpdatePendingProjects(io);
+
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
   // ProjectController will remove the Worker object associated with this

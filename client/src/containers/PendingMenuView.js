@@ -37,7 +37,9 @@ class PendingMenuView extends Component {
     } else {
       return (
         <div>
-          <h2>Pending Projects</h2>
+          <div className="header-padding">
+            <h2>Pending Projects</h2>
+          </div>
           {_.map(this.props.pendingProjects, (project, key) => {
             return (
               <PendingProjectView
