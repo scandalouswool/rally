@@ -94,7 +94,7 @@ class ProjectController {
   userDisconnect(socketId) {
     // Identifies the project that the disconnected user was contributing to
     // and calls the removeWorker method for that project
-    console.log(this.allWorkers);
+
     if (this.allWorkers[socketId] !== undefined) {
       console.log('Removing user from global workers list:', socketId);
 
@@ -191,8 +191,6 @@ class ProjectController {
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
 
-    console.log('Init: ', newProject);
-
     return projectId;
   }
 
@@ -250,7 +248,7 @@ class ProjectController {
         projectTime: project.projectTime
       });
     }
-    console.log('Sending projects update:', allProjectsUpdate);
+
     return allProjectsUpdate;
   }
 

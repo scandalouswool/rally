@@ -78,8 +78,6 @@ io.on('connect', (socket) => {
 
     pc.userReady(readyMessage, jobCallback);
 
-    socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));
-
     io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 

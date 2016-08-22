@@ -48,7 +48,7 @@ class ANNProject extends Project {
 
         trainingSets.push(newJob);
       }
-      console.log(trainingSets);
+
       return trainingSets;
     })();
 

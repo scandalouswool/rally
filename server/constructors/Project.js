@@ -84,9 +84,7 @@ class Project {
       console.log('Assigning job to ', worker.workerId);
 
       let newJob = this.availableJobs.shift();
-      newJob.mapData = () => {
-        return this.mapData.toString();
-      }
+      newJob.mapData = this.mapData ? this.mapData.toString() : null;
       newJob.workerId = worker.workerId;
       newJob.jobsLength = this.jobsLength;
       worker.currentJob.push(newJob);
