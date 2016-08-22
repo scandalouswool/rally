@@ -68,7 +68,14 @@ io.on('connect', (socket) => {
     console.log('User ready for project:', readyMessage.projectId);
 
     pc.userReady(readyMessage, (newJob) => {
-      socket.emit('newJob', newJob);
+      console.log(newJob.jobType);
+      if (newJob.jobType === 'ANN') {
+        console.log('Sending ANN job');
+        socket.emit('newANNJob', newJob);        
+      } else {
+        socket.emit('newJob', newJob);
+      }
+
     });
 
     socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));

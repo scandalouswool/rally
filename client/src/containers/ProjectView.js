@@ -9,7 +9,6 @@ import Promise from 'bluebird';
 class ProjectView extends Component {
 
   connectToProject() {
-    console.log('Joining non-ANN project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', {
       projectId: this.props.selectedProject.projectId,
       projectType: this.props.selectedProject.projectType,

@@ -166,6 +166,10 @@ export default class AppView extends Component {
       NEUTRAL NETWORK SOCKET HANDLERS
     */
 
+    this.socket.on('newANNJob', (newJob) => {
+      console.log('Receiving new ANNJob', newJob);
+    })
+
     this.initializeANNWebWorkers();
     
     const socketMethods = {

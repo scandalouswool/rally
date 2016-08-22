@@ -1,4 +1,5 @@
 const Project = require('./Project.js');
+const Job = require('./Job.js');
 const Synaptic = require('synaptic');
 
 const Architect = Synaptic.Architect;
@@ -32,29 +33,26 @@ class ANNProject extends Project {
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
     this.trainerOptions = options.trainerOptions;
-  }
 
-  assignJob(worker) {
-    console.log('Assigning training sets for ANN project');
-    const trainingSet = [];
+    this.availableJobs = ( () => {
+      console.log('Using custom job creation method for ANN');
+      const dataSet = this.dataSet || this.generateDataSet();
+      const length = dataSet.length / 5;
+      const trainingSets = [];
 
-    for (var i = 0; i < this.jobsLength / 5; i++) {
-      if (this.availableJobs.length > 0) {
-        let newJob = this.availableJobs.shift();
-        newJob.workerId = worker.workerId;
-        newJob.jobsLength = this.jobsLength;
-        worker.currentJob.push(newJob);
-      
-        trainingSet.push(newJob);
+      // By default, create five trainingSets from dataSet
+      for (var i = 0; i < 5; i++) {
+        const newJob = new Job(dataSet.slice(i * length, (i + 1) * length), i, this.projectId);
+
+        newJob.jobType = 'ANN';
+
+        trainingSets.push(newJob);
       }
-    }
+      console.log(trainingSets);
+      return trainingSets;
+    })();
 
-    // Alternate timer
-    if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
-      this.timer.start();
-    }
-    console.log(trainingSet.length);
-    return trainingSet;
+    this.jobsLength = this.availableJobs.length;
   }
 }
 
