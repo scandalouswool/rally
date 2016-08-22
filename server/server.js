@@ -141,3 +141,7 @@ io.on('connect', (socket) => {
     console.log('Socket error:', error);
   });
 });
+
+// Projects for Testing Purposes
+const irisOptions = require('./projects/iris.js');
+pc.createProject(irisOptions, 'iris01');

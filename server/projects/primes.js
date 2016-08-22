@@ -15,6 +15,7 @@ const _ = require('lodash');
 
     options = {
       title: STRING,
+      projectType: STRING,
       dataSet: ARRAY,
       generateDataSet: FUNCTION,
       mapData: FUNCTION,

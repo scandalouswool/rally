@@ -148,10 +148,6 @@ class ProjectController {
       // console.log('User ' + job.workerId + ' completed a job: ' + job);
       // projectComplete = this.allProjects[job.projectId].handleResult(job);
 
-      // Refactor above into discrete tasks
-      // 1. Resolve job result
-      // 2. If project is over, trigger completeProject
-      // 3. If projecti s not over, assign jobs
       projectComplete = project.handleResult(job);
     
       if (projectComplete) {
@@ -173,7 +169,6 @@ class ProjectController {
       if (!worker) {
         console.log('Error in userJobDone: worker does not exist');
       }
-
     }
   }
 
