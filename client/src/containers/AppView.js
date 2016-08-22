@@ -22,7 +22,8 @@ export default class AppView extends Component {
     super(props);
     this.socket = io();
     this.webWorkerPool = null;
-    this.ANNworkerPool = null;
+    this.ANNWorkerPool = null;
+    this.ANNJobPool = [];
   }
 
   componentWillMount() {
@@ -163,14 +164,25 @@ export default class AppView extends Component {
     });
 
     /*
-      NEUTRAL NETWORK SOCKET HANDLERS
+      NEUTRAL NETWORK HANDLERS
     */
+
+    this.initializeANNWebWorkers();
 
     this.socket.on('newANNJob', (newJob) => {
       console.log('Receiving new ANNJob', newJob);
-    })
+      this.ANNJobPool.push(newJob);
 
-    this.initializeANNWebWorkers();
+      console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
+
+      if (this.ANNJobPool.length === this.ANNWorkerPool.length || 
+          newJob.jobId === newJob.jobsLength - 1) {
+        console.log('Reached full ANN pool. Beginning epoch cycle now');
+        this.beginEpochCycle(this.ANNJobPool);
+        this.ANNJobPool = [];
+      }
+
+    });
     
     const socketMethods = {
       socket: this.socket
@@ -178,7 +190,7 @@ export default class AppView extends Component {
   }
 
   componentDidMount() {
-    this.beginEpochCycle();
+    // this.beginEpochCycle();
   }
 
   /*
@@ -187,7 +199,7 @@ export default class AppView extends Component {
   initializeANNWebWorkers() {
     // TODO: Should this be a promise? These are async ops
     const MAX_WORKERS = navigator.hardwareConcurrency || 2;
-    this.ANNworkerPool = {};
+    this.ANNWorkerPool = [];
 
     for (var i = 0; i < MAX_WORKERS; i++) {
       const worker = {
@@ -196,17 +208,18 @@ export default class AppView extends Component {
         isBusy: false
       }
 
-      this.ANNworkerPool[i] = worker;
+      this.ANNWorkerPool.push(worker);
     }
-    console.log('ANNworkers initialized:', this.ANNworkerPool);
+    console.log('ANNWorkers initialized:', this.ANNWorkerPool);
   }
 
   beginEpochCycle() {
+    console.log('Beginning Epoch Cycle');
     // Assign job to each ANN worker
     const workerPromises = [];
 
-    for (var key in this.ANNworkerPool) {
-      const promise = this.assignANNJob(this.ANNworkerPool[key].worker);
+    for (var key in this.ANNWorkerPool) {
+      const promise = this.assignANNJob(this.ANNWorkerPool[key].worker);
       workerPromises.push(promise);
     }
 
@@ -220,7 +233,10 @@ export default class AppView extends Component {
     console.log('Assigning job to', worker);
     return new Promise( (resolve, reject) => {
       worker.postMessage('Hello');
+      worker.isBusy = true;
+
       worker.onmessage = (e) => {
+        worker.isBusy = false;
         resolve(e.data);
       };
     });
@@ -241,7 +257,8 @@ export default class AppView extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
+    projects: state.projects
   };
 }
 

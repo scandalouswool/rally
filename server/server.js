@@ -40,6 +40,15 @@ server.listen(process.env.PORT || 8000, () => {
 io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
+  const jobCallback = (newJob) => {
+    if (newJob.jobType === 'ANN') {
+      console.log('Sending ANN job');
+      socket.emit('newANNJob', newJob);        
+    } else {
+      socket.emit('newJob', newJob);
+    }
+  }
+
   socket.emit('updateAllProjects', pc.getUpdateAllProjects());
   
   // 'disconnect' event handler
@@ -67,16 +76,7 @@ io.on('connect', (socket) => {
     console.log(readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
 
-    pc.userReady(readyMessage, (newJob) => {
-      console.log(newJob.jobType);
-      if (newJob.jobType === 'ANN') {
-        console.log('Sending ANN job');
-        socket.emit('newANNJob', newJob);        
-      } else {
-        socket.emit('newJob', newJob);
-      }
-
-    });
+    pc.userReady(readyMessage, jobCallback);
 
     socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));
 
@@ -98,9 +98,7 @@ io.on('connect', (socket) => {
   // The completed Job object will have a 'result' property
   socket.on('userJobDone', (completedJob) => {
     console.log('User finished a job');
-    pc.userJobDone(completedJob, (newJob) => {
-      socket.emit('newJob', newJob);
-    });
+    pc.userJobDone(completedJob, jobCallback);
     io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 
