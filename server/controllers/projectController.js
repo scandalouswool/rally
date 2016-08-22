@@ -1,4 +1,5 @@
 const Project = require('../constructors/Project.js');
+const ANNProject = require('../constructors/ANNProject.js');
 
 // ProjectController is responsible for creating and terminating
 // projects. It also routes incoming socket messages to the appropriate
@@ -179,11 +180,18 @@ class ProjectController {
     // Assign a project ID to the new Project and create a new Project
 
     const projectId = 'project' + Object.keys(this.allProjects).length;
-    const newProject = new Project(options, projectId);
+    let newProject;
+    console.log('projectId', projectId);
+    if (options.projectType === 'ANN') {
+      newProject = new ANNProject(options, projectId);
+    } else {
+      newProject = new Project(options, projectId);
+    }
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-    this.sendUpdateAllProjects(io);
+
+    console.log('Init: ', newProject);
 
     return projectId;
   }
@@ -242,7 +250,7 @@ class ProjectController {
         projectTime: project.projectTime
       });
     }
-
+    console.log('Sending projects update:', allProjectsUpdate);
     return allProjectsUpdate;
   }
 

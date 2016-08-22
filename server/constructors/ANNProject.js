@@ -26,27 +26,45 @@ class ANNProject extends Project {
     }
 
   */
-  constructor(options) {
-    super(options);
-    
+  constructor(options, projectId) {
+    super(options, projectId);
     // ANNProject class only supports Perceptron network architecture
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
     this.trainerOptions = options.trainerOptions;
   }
 
-  train() {
-    this.perceptron.trainer.train(this.trainerOptions);
+  assignJob(worker) {
+    console.log('Assigning training sets for ANN project');
+    const trainingSet = [];
+
+    for (var i = 0; i < this.jobsLength / 5; i++) {
+      if (this.availableJobs.length > 0) {
+        let newJob = this.availableJobs.shift();
+        newJob.workerId = worker.workerId;
+        newJob.jobsLength = this.jobsLength;
+        worker.currentJob.push(newJob);
+      
+        trainingSet.push(newJob);
+      }
+    }
+
+    // Alternate timer
+    if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
+      this.timer.start();
+    }
+    console.log(trainingSet.length);
+    return trainingSet;
   }
 }
 
+module.exports = ANNProject;
 
-// Tests
-// const irisOptions = require('../projects/iris.js');
 
-// const neuralProject = new ANNProject(irisOptions);
-// const trainer = new Trainer(neuralProject.perceptron);
-// console.log(neuralProject.trainerOptions);
-// const result = trainer.train(neuralProject.dataSet, neuralProject.trainerOptions);
-// console.log(result);
+
+
+
+
+
+
 

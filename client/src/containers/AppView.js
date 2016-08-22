@@ -150,25 +150,27 @@ export default class AppView extends Component {
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-
+      console.log('Available projects:', projectList);
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
     });
+
 
     // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
       this.props.updatePendingProjects(pendingProjects);
     });
 
+    /*
+      NEUTRAL NETWORK SOCKET HANDLERS
+    */
+
+    this.initializeANNWebWorkers();
+    
     const socketMethods = {
       socket: this.socket
     };
-
-    /*
-      NEUTRAL NETWORK INITIALIZATION
-    */
-    this.initializeANNWebWorkers();
   }
 
   componentDidMount() {
@@ -204,8 +206,9 @@ export default class AppView extends Component {
       workerPromises.push(promise);
     }
 
-    Promise.all(workerPromises).then( () => {
+    Promise.all(workerPromises).then( (results) => {
       console.log('All workers are done');
+      console.log(results);
     })
   }
 
@@ -216,7 +219,6 @@ export default class AppView extends Component {
       worker.onmessage = (e) => {
         resolve(e.data);
       };
->>>>>>> Set up promises to handle ANN worker job assignments
     });
   }
 

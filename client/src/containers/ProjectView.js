@@ -9,31 +9,18 @@ import Promise from 'bluebird';
 class ProjectView extends Component {
 
   connectToProject() {
-    console.log('Joining project', this.props.selectedProject.projectId);
+    console.log('Joining non-ANN project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', {
       projectId: this.props.selectedProject.projectId,
+      projectType: this.props.selectedProject.projectType,
       socketId: '/#' + this.props.socket.id,
       maxWorkerJobs: this.props.webWorkersPool === null ? 1 : this.props.webWorkersPool.length
-    });
+    }); 
   }
 
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
-  }
-
-  /*
-    NEURAL NETWORK METHODS
-  */
-  beginEpoch() {
-    console.log('Beginning epoch cycle');
-
-  }
-
-  initializeEpoch() {
-    console.log('Initializing new Epoch');
-
-
   }
 
   render() {
@@ -45,19 +32,21 @@ class ProjectView extends Component {
       const projectId = this.props.selectedProject.projectId;
 
       let thisProject; 
-      console.log('Projects are:', this.props.projects);
+
       this.props.projects.forEach( (item) => {
         if (item.projectId === projectId) {
           thisProject = item;
         }
       });
 
+      // Display Custom Visualization
       if (this.props.selectedProject.projectType === 'primes') {
         visualization = <PrimesVisualView />
       } else {
         visualization = undefined;
       }
 
+      // Display Project Data
       if (this.props.selectedProject.projectType !== 'ANN') {
         return (
           <div>
@@ -93,7 +82,20 @@ class ProjectView extends Component {
       } else if (this.props.selectedProject.projectType === 'ANN') {
         return(
           <div>
-            This is a Neural Network Project
+            <SelectedProjectView />
+
+            {visualization}
+
+            <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
+            <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+            
+
+            <div>
+              This is a Neural Network Project
+              <div>
+              Total Number of Training Data Available: {thisProject.availableJobsNum}
+              </div>
+            </div>
           </div>
         );
       }
