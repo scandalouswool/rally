@@ -7,8 +7,18 @@ import PrimesVisualView from './PrimesVisual';
 
 class ProjectView extends Component {
 
-  connectToProject() {
+  componentDidMount() {
+    if (this.props.selectedProject.projectType === 'ANN') {
+      console.log('Initializing ANN project');
+      this.initializeANNWebWorkers();
+   
+      setTimeout( () => {
+        this.workerPool[1].worker.postMessage('test');
+      }, 2000)
+    }
+  }
 
+  connectToProject() {
     console.log('Joining project', this.props.selectedProject.projectId);
     this.props.socket.emit('userReady', {
       projectId: this.props.selectedProject.projectId,
@@ -20,6 +30,30 @@ class ProjectView extends Component {
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
+  }
+
+  /*
+    NEURAL NETWORK METHODS
+  */
+  initializeANNWebWorkers() {
+    // TODO: Should this be a promise? These are async ops
+    const MAX_WORKERS = navigator.hardwareConcurrency || 2;
+    this.workerPool = {};
+
+    for (var i = 0; i < MAX_WORKERS; i++) {
+      const worker = {
+        worker: new Worker('/ANNworker'),
+        workerId: i,
+        isBusy: false
+      }
+    
+      worker.worker.onmessage = (e) => {
+        console.log(e.data);
+      }
+
+      this.workerPool[i] = worker;
+    }
+    console.log(this.workerPool);
   }
 
   render() {
@@ -44,40 +78,46 @@ class ProjectView extends Component {
         visualization = undefined;
       }
 
-      // console.log('Results so far:', this.props.results[projectId]);
-      // console.log('Project: ', thisProject);
+      if (this.props.selectedProject.projectType !== 'ANN') {
+        return (
+          <div>
+            <SelectedProjectView />
 
-      return (
-        <div>
-          <SelectedProjectView />
+            {visualization}
 
-          {visualization}
+            <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
+            <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+            
+            <div>
+              Number of Workers: {thisProject === undefined ? null : thisProject.workers.length}
+            </div>
+            <div>
+              Number of Jobs Completed: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}
+            </div>
+            <div>
+              Total number of jobs: {this.props.results[projectId].length === 0 ? 'Project is currently not in progress': this.props.selectedProject.jobsLength}
+            </div>
+            <div className="progressbar">
+              Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
+              %
+              <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
+            </div>
+            <div>
+            Final Result: {thisProject.finalResult}
+            </div>
+            <div>
+            Final Time: {thisProject.projectTime ? thisProject.projectTime + ' milliseconds' : ''}
+            </div>
+          </div>
+        );
+      } else if (this.props.selectedProject.projectType === 'ANN') {
+        return(
+          <div>
+            This is a Neural Network Project
+          </div>
+        );
+      }
 
-          <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
-          <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
-          
-          <div>
-            Number of Workers: {thisProject === undefined ? null : thisProject.workers.length}
-          </div>
-          <div>
-            Number of Jobs Completed: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}
-          </div>
-          <div>
-            Total number of jobs: {this.props.results[projectId].length === 0 ? 'Project is currently not in progress': this.props.selectedProject.jobsLength}
-          </div>
-          <div className="progressbar">
-            Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
-            %
-            <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
-          </div>
-          <div>
-          Final Result: {thisProject.finalResult}
-          </div>
-          <div>
-          Final Time: {thisProject.projectTime ? thisProject.projectTime + ' milliseconds' : ''}
-          </div>
-        </div>
-      );
     }
   }
 }

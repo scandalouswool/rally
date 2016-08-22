@@ -9,9 +9,15 @@ const pc = new projectController(db, io);
 
 app.use(express.static(__dirname + '/../client'));
 
-// For accessing the Web Worker script file
+// For accessing the Web Worker related files
 app.get('/webworker', (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../client/src/utils/webWorker.js'));
+});
+app.get('/ANNworker', (req, res) => {
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/ANNworker.js'));
+});
+app.get('/synaptic', (req, res) => {
+  res.sendFile(path.resolve(__dirname + '/../client/src/utils/synaptic.js'));
 });
 
 //this is for when the user chooses to enter our site with a specific path
@@ -61,16 +67,12 @@ io.on('connect', (socket) => {
     console.log(readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
 
-    // Passes callback function that will be called on new jobs assigned
-    // to the new user
     pc.userReady(readyMessage, (newJob) => {
       socket.emit('newJob', newJob);
     });
 
-    // Send results of selected project to the user
     socket.emit('updateResults', pc.getUpdateResults(readyMessage.projectId));
 
-    // Send global update of all projects to users
     io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
 
@@ -142,6 +144,6 @@ io.on('connect', (socket) => {
   });
 });
 
-// Projects for Testing Purposes
+// TESTS
 const irisOptions = require('./projects/iris.js');
-pc.createProject(irisOptions, 'iris01');
+pc.createProject(irisOptions, 'testANN01');
