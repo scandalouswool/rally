@@ -170,7 +170,7 @@ export default class AppView extends Component {
     this.initializeANNWebWorkers();
 
     this.socket.on('newANNJob', (newJob) => {
-      console.log('Receiving new ANNJob', newJob);
+      // console.log('Receiving new ANNJob', newJob);
       this.ANNJobPool.push(newJob);
 
       console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
@@ -179,7 +179,6 @@ export default class AppView extends Component {
           newJob.jobId === newJob.jobsLength - 1) {
         console.log('Reached full ANN pool. Beginning epoch cycle now');
         this.beginEpochCycle(this.ANNJobPool);
-        this.ANNJobPool = [];
       }
 
     });
@@ -213,13 +212,13 @@ export default class AppView extends Component {
     console.log('ANNWorkers initialized:', this.ANNWorkerPool);
   }
 
-  beginEpochCycle() {
+  beginEpochCycle(ANNJobPool) {
     console.log('Beginning Epoch Cycle');
     // Assign job to each ANN worker
     const workerPromises = [];
 
     for (var key in this.ANNWorkerPool) {
-      const promise = this.assignANNJob(this.ANNWorkerPool[key].worker);
+      const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
       workerPromises.push(promise);
     }
 
@@ -229,10 +228,11 @@ export default class AppView extends Component {
     })
   }
 
-  assignANNJob(worker) {
+  assignANNJob(worker, newJob) {
     console.log('Assigning job to', worker);
+
     return new Promise( (resolve, reject) => {
-      worker.postMessage('Hello');
+      worker.postMessage(newJob);
       worker.isBusy = true;
 
       worker.onmessage = (e) => {
