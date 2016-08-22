@@ -64,7 +64,38 @@ var Project = sequelize.define('Project', {
   }
 });
 
+/************************************************
+// Define pending project schema
+************************************************/
+var PendingProject = sequelize.define('PendingProject', {
+  projectId: {
+    type: Sequelize.STRING(255),
+    allowNull: false
+  },
+  title: {
+    type: Sequelize.STRING(255),
+    allowNull: false
+  },
+  dataSet: {
+    type: Sequelize.TEXT('long'),
+    allowNull: true
+  },
+  generateDataSet: {
+    type: Sequelize.TEXT('long'),
+    allowNull: true
+  },
+  mapData: {
+    type: Sequelize.TEXT('long'),
+    allowNull: false
+  },
+  reduceResults: {
+    type: Sequelize.TEXT('long'),
+    allowNull: false
+  }
+});
+
 Project.sync();
+PendingProject.sync();
 sequelize.authenticate()
   .then((err) => {
     if (err) {
@@ -75,3 +106,5 @@ sequelize.authenticate()
 });
 
 exports.Project = Project;
+exports.PendingProject;
+
