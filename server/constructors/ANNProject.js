@@ -32,6 +32,8 @@ class ANNProject extends Project {
     // ANNProject class only supports Perceptron network architecture
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
+    this.network = this.perceptron.trainer.network.toJSON();
+
     this.trainerOptions = options.trainerOptions;
 
     this.availableJobs = ( () => {
@@ -45,6 +47,8 @@ class ANNProject extends Project {
         const newJob = new Job(dataSet.slice(i * length, (i + 1) * length), i, this.projectId);
 
         newJob.jobType = 'ANN';
+        newJob.ANNNetwork = this.network;
+        newJob.trainerOptions = this.trainerOptions;
 
         trainingSets.push(newJob);
       }
