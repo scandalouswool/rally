@@ -94,9 +94,11 @@ io.on('connect', (socket) => {
     pc.pendProject(project, io);
   });
 
-  socket.on('pendToCreateProject', (project) => {
-    // pc.removePendingProject(...)
-    // pc.createProject(project, io)
+  socket.on('pendToCreateProject', (pendingDecision) => {
+    if (pendingDecision.decision) {
+      pc.createProject(pendingDecision.project, io);
+    }
+    pc.removePendingProject(pendingDecision.projectId, io);
   });
 
   socket.on('getAllProjectsUpdate', () => {

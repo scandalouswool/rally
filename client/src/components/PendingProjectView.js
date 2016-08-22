@@ -36,7 +36,7 @@ class PendingProjectView extends Component {
         </div>
         <div>
           <h5>Reduce Function:</h5>
-          <pre>{beautify(proj.reduceData, {indent_size: 2})}</pre>
+          <pre>{beautify(proj.reduceResults, {indent_size: 2})}</pre>
         </div>
       </div>
     );

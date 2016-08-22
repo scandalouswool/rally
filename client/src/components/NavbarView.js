@@ -33,7 +33,7 @@ class NavbarView extends Component {
       className = 'glyphicon glyphicon-log-out';
       route = '';
       clickHandler = this.handleLogout.bind(this);
-      pendingLink = (<Link to="pendingprojects"><span className="glyphicon glyphicon-hourglass"></span> Pending Projects</Link>)
+      pendingLink = (<Link to="pendingmenu"><span className="glyphicon glyphicon-hourglass"></span> Pending Projects</Link>);
     } else {
       text = ' Log In';
       className = 'glyphicon glyphicon-log-in';

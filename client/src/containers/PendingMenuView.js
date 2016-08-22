@@ -9,8 +9,13 @@ class PendingMenuView extends Component {
   }
 
   // Emits socket events to either reject or accept a project
-  enactDecision(decision, projectId) {
-    console.log(decision, projectId);
+  enactDecision(decision, projectId, project) {
+    let pendingDecision = {
+      decision: decision,
+      projectId: projectId,
+      project: this.props.pendingProjects[projectId]
+    };
+    this.props.socket.emit('pendToCreateProject', pendingDecision);
   }
 
   getDisplay() {
@@ -58,7 +63,8 @@ class PendingMenuView extends Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-    pendingProjects: state.pendingProjects
+    pendingProjects: state.pendingProjects,
+    socket: state.createdSocket
   };
 }
 

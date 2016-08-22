@@ -13,14 +13,6 @@ class ProjectController {
     this.allProjects = {};
 
     this.pendingProjects = {};
-    // Temporary hard-coded data:
-    this.pendingProjects[0] = {
-      title: 'Test Project',
-      dataSet: '[0, 1, 2, 3]',
-      generateDataSet: '',
-      mapData: '(val) => {return 2*val;}',
-      reduceData: '(results) => {let res = 0; for (var i = 0; i < results.length; i++) {res = res + results[i];} return res;}'
-    };
 
     // Time between database backups
     this.backUpTime = 10000;
@@ -171,13 +163,12 @@ class ProjectController {
     this.sendUpdatePendingProjects(io);
   }
 
-  removePendingProject(/*...*/) {
-    // remove from list
-    this.sendUpdatePendingProjects(/*...*/);
+  removePendingProject(projectId, io) {
+    delete this.pendingProjects[projectId];
+    this.sendUpdatePendingProjects(io);
   }
 
   sendUpdatePendingProjects(destination) {
-    // Basically just emit the list of pending projects
     destination.emit('updatePendingProjects', this.pendingProjects);
   }
 
