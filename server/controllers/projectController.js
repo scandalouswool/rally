@@ -208,6 +208,10 @@ class ProjectController {
     this.sendUpdatePendingProjects(io);
   }
 
+  sendUpdatePendingProjects(destination) {
+    destination.emit('updatePendingProjects', this.pendingProjects);
+  }
+
   // Returns status of projects to all connected users
   getUpdateAllProjects() {
     let allProjectsUpdate = [];

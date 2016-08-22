@@ -21,9 +21,9 @@ const irisOptions = {
     cost: Trainer.cost.CROSS_ENTROPY    
   },
 
-  generateDataSet: null,
-  mapData: null,
-  reduceResults: null
+  generateDataSet: '',
+  mapData: '',
+  reduceResults: ''
 }
 
 module.exports = irisOptions;

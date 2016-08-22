@@ -150,10 +150,3 @@ io.on('connect', (socket) => {
 // TESTS
 const irisOptions = require('./projects/iris.js');
 pc.createProject(irisOptions);
-
-
-
-
-
-
-
