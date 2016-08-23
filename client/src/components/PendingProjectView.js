@@ -19,6 +19,7 @@ class PendingProjectView extends Component {
     let display = this.state.hidden ? 'hidden' : '';
     let displayGenerate = proj.generateDataSet ? '' : 'hidden';
     let displayData = proj.dataSet ? '' : 'hidden';
+    let buttonDisplay = this.props.auth ? '' : 'hidden';
 
     return (
       <div>
@@ -27,12 +28,12 @@ class PendingProjectView extends Component {
             <div className="col-sm-4 title-padding"><h4>{proj.title}</h4></div>
             <div className="col-sm-8 text-right">
               <button
-                className="btn btn-default btn-padding btn-success"
+                className={`btn btn-default btn-padding btn-success ${buttonDisplay}`}
                 onClick={() => {this.props.enactDecision(true, this.props.id);}}>
                 Accept
               </button>
               <button
-                className="btn btn-default btn-padding btn-danger"
+                className={`btn btn-default btn-padding btn-danger ${buttonDisplay}`}
                 onClick={() => {this.props.enactDecision(false, this.props.id);}}>
                 Reject
               </button>
