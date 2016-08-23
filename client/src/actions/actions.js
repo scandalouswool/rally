@@ -75,6 +75,13 @@ export function createWebWorkersPool(webWorkersPool) {
   }
 }
 
+export function resetWebWorkersPool(webWorkersPool) {
+  return {
+    type: 'RESET_WEB_WORKER',
+    payload: webWorkersPool
+  }
+}
+
 // Updates list of pending projects
 export function updatePendingProjects(pendingProjects) {
   return {

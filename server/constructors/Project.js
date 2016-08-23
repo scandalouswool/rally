@@ -41,9 +41,12 @@ class Project {
     // availableJobs takes in a dataSet array and converts all items to Jobs
     this.availableJobs = (() => {
       let dataSet;
-      if (this.dataSet) {
+
+      if (this.dataSet !== 'null') {
+        console.log('Parsing dataSet');
         dataSet = JSON.parse(this.dataSet);
       } else {
+        console.log('Evaluating code');
         dataSet = eval(this.generateDataSet)();
       }
 

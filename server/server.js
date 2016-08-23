@@ -176,4 +176,4 @@ io.on('connect', (socket) => {
 // TESTS
 const irisOptions = require('./projects/iris.js');
 pc.createProject(irisOptions);
-console.log(pc.allProjects['project0'].availableJobs.length);
+// pc.createProject();

@@ -5,6 +5,10 @@ import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisual';
 import Promise from 'bluebird';
+import {
+        createWebWorkersPool,
+        resetWebWorkersPool
+       } from '../actions/actions';
 
 class ProjectView extends Component {
 
@@ -20,6 +24,15 @@ class ProjectView extends Component {
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
+    console.log(this.props);
+    this.props.resetWebWorkersPool({
+      webWorkersPool: this.props.webWorkersPool,
+      socket: this.props.socket
+    });
+    this.props.createWebWorkersPool({
+      webWorkersPool: this.props.webWorkersPool,
+      socket: this.props.socket
+    });
   }
 
   render() {
@@ -119,4 +132,12 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(ProjectView);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      createWebWorkersPool,
+      resetWebWorkersPool
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectView);
