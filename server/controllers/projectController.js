@@ -1,5 +1,11 @@
 const Project = require('../constructors/Project.js');
 const ANNProject = require('../constructors/ANNProject.js');
+const Synaptic = require('synaptic');
+
+const Architect = Synaptic.Architect;
+const Layer = Synaptic.Layer;
+const Network = Synaptic.Network;
+const Trainer = Synaptic.Trainer;
 
 // ProjectController is responsible for creating and terminating
 // projects. It also routes incoming socket messages to the appropriate
@@ -185,6 +191,19 @@ class ProjectController {
         console.log('Error in userJobDone: worker does not exist');
       }
     }
+  }
+
+  /*
+    NEURAL NETWORK HANDLERS
+  */
+  updateANN(updatedNetwork) {
+    // console.log(updatedNetwork);
+    const project = this.allProjects[updatedNetwork.projectId];
+    console.log('Updated network info:', updatedNetwork);
+    const trainedNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
+    // console.log('Inside new network:', trainedNetwork);
+    // console.log(trainedNetwork.layers.input.list);
+    project.testNetwork(trainedNetwork);
   }
 
   createProject(options) {

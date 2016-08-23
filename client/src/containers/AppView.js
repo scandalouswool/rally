@@ -173,7 +173,7 @@ export default class AppView extends Component {
       // console.log('Receiving new ANNJob', newJob);
       this.ANNJobPool.push(newJob);
 
-      console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
+      // console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
 
       if (this.ANNJobPool.length === this.ANNWorkerPool.length || 
           newJob.jobId === newJob.jobsLength - 1) {
@@ -216,21 +216,27 @@ export default class AppView extends Component {
     console.log('Beginning Epoch Cycle');
     // Assign job to each ANN worker
     const workerPromises = [];
+    const projectId = ANNJobPool[0].projectId;
 
     for (var key in this.ANNWorkerPool) {
       const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
       workerPromises.push(promise);
     }
 
-    Promise.all(workerPromises).then( (results) => {
-      console.log('All workers are done');
-      console.log(results);
-    })
+    Promise.all(workerPromises)
+      .then( (partialNetworks) => {
+        console.log('All workers are done. Synchronizing.');
+        return this.syncEpochResults(partialNetworks);
+      })
+      .then( (updatedNetwork) => {
+        console.log('Network with reconciled weight:', updatedNetwork);
+        updatedNetwork.projectId = projectId;
+        this.socket.emit('ANNUpdatedNetwork', updatedNetwork);
+      });
   }
 
   assignANNJob(worker, newJob) {
     console.log('Assigning job to', worker);
-
     return new Promise( (resolve, reject) => {
       worker.postMessage(newJob);
       worker.isBusy = true;
@@ -240,6 +246,26 @@ export default class AppView extends Component {
         resolve(e.data);
       };
     });
+  }
+
+  syncEpochResults(partialNetworks) {
+    console.log('Inside sync', partialNetworks);
+    // Testing whether this shit works
+    partialNetworks.forEach( (network, i) => {
+      console.log(`Network ${i}: ${network.trainedNetwork.connections[0].weight}`);
+    });
+
+    for (var i = 1; i < partialNetworks.length; i++) {
+      for (var j = 0; j < partialNetworks[0].trainedNetwork.connections.length; j++) {
+        partialNetworks[0].trainedNetwork.connections[j].weight =
+         partialNetworks[0].trainedNetwork.connections[j].weight + 
+         partialNetworks[i].trainedNetwork.connections[j].weight;
+      }
+    }
+    console.log('After op:', partialNetworks[0].trainedNetwork.connections[0].weight);
+
+    console.log('Reconciled the weights of partial networks');
+    return partialNetworks[0];
   }
 
   render() {

@@ -13,11 +13,11 @@ const irisOptions = {
   hiddenLayer: [7],
   outputLayer: 3,
   trainerOptions: {
-    rate: .02,
+    rate: .002,
     iterations: 30000,
     error: .01,
     shuffle: true,
-    log: 100,
+    log: 10,
     cost: Trainer.cost.CROSS_ENTROPY    
   },
 

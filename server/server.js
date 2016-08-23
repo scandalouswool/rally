@@ -153,6 +153,15 @@ io.on('connect', (socket) => {
   socket.on('error', (error) => {
     console.log('Socket error:', error);
   });
+
+  /*
+    NEURAL NETWORK EVENT HANDLERS
+  */
+  socket.on('ANNUpdatedNetwork', (updatedNetwork) => {
+    console.log('Received Updated Network');
+    pc.updateANN(updatedNetwork);
+  });
+
 });
 
 // TESTS
