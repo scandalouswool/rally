@@ -50,9 +50,7 @@ io.on('connect', (socket) => {
   }
 
   socket.emit('updateAllProjects', pc.getUpdateAllProjects());
-
-  // Fix this!!
-  pc.sendUpdatePendingProjects(io);
+  socket.emit('updatePendingProjects', pc.getPendingProjects());
 
   // 'disconnect' event handler
   // Pass the socket.id for this user to the ProjectController object
@@ -66,7 +64,6 @@ io.on('connect', (socket) => {
     } else {
       console.log('Error: cannot find user:', socket.id);
     }
-    
   });
 
   // 'userReady' event handler
@@ -130,14 +127,22 @@ io.on('connect', (socket) => {
   });
 
   socket.on('pendProject', (project) => {
-    pc.pendProject(project, io);
+    if (pc.pendProject(project)) {
+      io.emit('updatePendingProjects', pc.getPendingProjects());
+    } else {
+      console.log('Error pending project');
+    }
   });
 
   socket.on('pendToCreateProject', (pendingDecision) => {
     if (pendingDecision.decision) {
-      pc.createProject(pendingDecision.project, io);
+      if (pc.createProject(pendingDecision.project)) {
+        io.emit('updateAllProjects', pc.getUpdateAllProjects());
+      }
     }
-    pc.removePendingProject(pendingDecision.projectId, io);
+    if (pc.removePendingProject(pendingDecision.projectId)) {
+      io.emit('updatePendingProjects', pc.getPendingProjects());
+    }
   });
 
   socket.on('getAllProjectsUpdate', () => {
