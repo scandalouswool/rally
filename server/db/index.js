@@ -32,11 +32,11 @@ var Project = sequelize.define('Project', {
   },
   complete: {
     type: Sequelize.BOOLEAN,
-    allowNull: false
+    allowNull: true
   },
   projectTime: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   },
   dataSet: {
     type: Sequelize.TEXT('long'),
@@ -48,7 +48,7 @@ var Project = sequelize.define('Project', {
   },
   completedJobs: {
     type: Sequelize.TEXT('long'),
-    allowNull: false
+    allowNull: true
   },
   mapData: {
     type: Sequelize.TEXT('long'),
@@ -106,5 +106,4 @@ sequelize.authenticate()
 });
 
 exports.Project = Project;
-exports.PendingProject;
-
+exports.PendingProject = PendingProject;

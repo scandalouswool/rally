@@ -21,19 +21,13 @@ class ProjectController {
 
     this.pendingProjects = {};
     this.pendingProjects['0'] = {
+      projectId: '0',
       title: 'My Project',
       dataSet: '[0, 1, 2, 3]',
       generateDataSet: '',
       mapData: '(val) => {return val;}',
       reduceResults: '(results) => {return results;}'
     };
-    // this.pendingProjects['1'] = {
-    //   title: 'Mararar prarject 2',
-    //   dataSet: '[0, 1, 2, 3]',
-    //   generateDataSet: '',
-    //   mapData: '(val) => {return val;}',
-    //   reduceResults: '(results) => {return results;}'
-    // };
 
     // Time between database backups
     this.backUpTime = 10000;
@@ -85,6 +79,51 @@ class ProjectController {
                 mapData: project.mapData,
                 reduceResults: project.reduceResults,
                 finalResult: JSON.stringify(project.finalResult)
+              });
+            }
+          });
+        };
+      })(), this.backUpTime);
+    });
+
+    /***************************************************
+    // Query database for pending projects and populate
+    // the this.pendingProjects object
+    ***************************************************/
+    db.PendingProject.findAll({}).then((pendingProjects) => {
+      pendingProjects.forEach((pending) => {
+        let data = pending.dataValues;
+        let options = {
+          projectId: data.projectId,
+          title: data.title,
+          dataSet: data.dataSet,
+          generateDataSet: data.generateDataSet,
+          mapData: data.mapData,
+          reduceResults: data.reduceResults
+        };
+        this.pendingProjects[data.projectId] = options;
+      });
+
+      // **************************************************
+      // // Iterate over projects in this.allProjects object
+      // // and save to the database once per minute
+      // **************************************************
+      setInterval((() => {
+        return () => {
+          // First clear out the database
+          db.PendingProject.destroy({
+            where: {}
+          // Then resave all projects
+          }).then(() => {
+            for (var obj in this.pendingProjects) {
+              let pending = this.pendingProjects[obj];
+              db.PendingProject.create({
+                projectId: pending.projectId,
+                title: pending.title,
+                dataSet: pending.dataSet,
+                generateDataSet: pending.generateDataSet,
+                mapData: pending.mapData,
+                reduceResults: pending.reduceResults
               });
             }
           });
@@ -247,11 +286,8 @@ class ProjectController {
   */
 
   createProject(options) {
-    // Check if it was a pending project; if so, remove from the list of pending projects
-
     // Create a new instance of Project with the pass-in options parameters
     // Assign a project ID to the new Project and create a new Project
-
     const projectId = 'project' + Object.keys(this.allProjects).length;
     let newProject;
     console.log('projectId', projectId);
