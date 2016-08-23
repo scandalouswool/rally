@@ -49,6 +49,7 @@ class NavbarView extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span> 
+                <span className="icon-bar"></span> 
               </button>
               <img className="logo navbar-brand" src="../../assets/logo.png"></img>
             </div>

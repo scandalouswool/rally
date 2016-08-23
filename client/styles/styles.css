@@ -1,5 +1,6 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Cabin', sans-serif;
+  font-size: 16px;
 }
 
 .customGreen {
@@ -70,9 +71,13 @@ body {
   text-align: center;
   background-size: 100% 100%;
   background-image: url(../assets/landing.png);
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .front {
   font-size: 17px;
+}
+
+.createProject {
+  padding: 10px;
 }

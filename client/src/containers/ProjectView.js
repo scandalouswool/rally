@@ -66,8 +66,8 @@ class ProjectView extends Component {
 
             {visualization}
 
-            <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
-            <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+            <button className="btn-success btn-lg createProject" onClick={this.connectToProject.bind(this)}>Join Project</button>
+            <button className="btn-danger btn-lg createProject" onClick={this.disconnectFromProject.bind(this)}>Leave Project</button>
             
             <div>
               Number of Workers: {thisProject === undefined ? null : thisProject.workers.length}
@@ -98,8 +98,8 @@ class ProjectView extends Component {
 
             {visualization}
 
-            <button className="btn-success btn-lg" onClick={this.connectToProject.bind(this)}>Join</button>
-            <button className="btn-danger btn-lg" onClick={this.disconnectFromProject.bind(this)}>Leave</button>
+            <button className="btn-success btn-lg createProject" onClick={this.connectToProject.bind(this)}>Join Project</button>
+            <button className="btn-danger btn-lg createProject" onClick={this.disconnectFromProject.bind(this)}>Leave ProjectView</button>
             
 
             <div>
