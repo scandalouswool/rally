@@ -42,12 +42,13 @@ class Project {
     this.availableJobs = (() => {
       let dataSet;
 
-      if (this.dataSet !== 'null') {
-        console.log('Parsing dataSet');
-        dataSet = JSON.parse(this.dataSet);
-      } else {
+      console.log('The data set: ', this.dataSet);
+      if (!this.dataSet) {
         console.log('Evaluating code');
         dataSet = eval(this.generateDataSet)();
+      } else {
+        console.log('Parsing dataSet');
+        dataSet = JSON.parse(this.dataSet);
       }
 
       return dataSet.map( (item, index) => {
