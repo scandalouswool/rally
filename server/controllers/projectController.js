@@ -200,7 +200,7 @@ class ProjectController {
     // console.log(updatedNetwork);
     const updatedNetwork = doneJob.result;
     const project = this.allProjects[doneJob.projectId];
-    console.log('Updated network info:', updatedNetwork);
+    // console.log('Updated network info:', updatedNetwork);
     const trainedNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
     // console.log('Inside new network:', trainedNetwork);
     // console.log(trainedNetwork.layers.input.list);
@@ -220,12 +220,13 @@ class ProjectController {
     return trainingComplete;
   }
 
-  restartANN(projectId, jobCallback) {
+  restartANN(projectId, ANNJobCallback) {
     console.log('Resetting ANN project');
     const project = this.allProjects[projectId];
     project.resetTrainingSet();
 
-    console.log('Reinitialized jobs:', project.availableJobs);
+    console.log('Reinitialized jobs:', project.availableJobs.length);
+    console.log('Available workers:', project.workers);
 
     for (var key in project.workers) {
 
@@ -236,7 +237,7 @@ class ProjectController {
         project.workers[key].currentJob = [];
         // console.log('Assigning to:', project.workers);
         // console.log(project.workers[key]);
-        jobCallback( project.assignJob(project.workers[key]) );
+        ANNJobCallback(key, project.assignJob(project.workers[key]) );
       }
     }
   }

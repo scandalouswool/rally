@@ -91,7 +91,7 @@ export default class AppView extends Component {
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
       // console.log('Web worker pool:', this.webWorkerPool);
-      console.log('New job', job);
+      // console.log('New job', job);
       if (this.webWorkerPool !== null) {
         console.log('Assigning new job to an available web worker');
         let availableWorker = false;
@@ -209,7 +209,7 @@ export default class AppView extends Component {
   }
 
   beginEpochCycle(ANNJobPool) {
-    console.log('Beginning Epoch Cycle:', ANNJobPool.length);
+    console.log('Beginning New Epoch Cycle');
     // Assign job to each ANN worker
     const workerPromises = [];
     const projectId = ANNJobPool[0].projectId;
@@ -228,16 +228,15 @@ export default class AppView extends Component {
         return this.syncEpochResults(partialNetworks);
       })
       .then( (updatedNetwork) => {
-        console.log('Network with reconciled weight:', updatedNetwork);
+        // console.log('Network with reconciled weight:', updatedNetwork);
         
-        console.log('finished job template:', doneJob);
         doneJob.result = updatedNetwork;
         this.socket.emit('ANNUpdatedNetwork', doneJob);
       });
   }
 
   assignANNJob(worker, newJob) {
-    console.log('Assigning job to', worker);
+    // console.log('Assigning job to', worker);
     return new Promise( (resolve, reject) => {
       worker.postMessage(newJob);
       worker.isBusy = true;
@@ -250,12 +249,6 @@ export default class AppView extends Component {
   }
 
   syncEpochResults(partialNetworks) {
-    console.log('Inside sync', partialNetworks);
-    // Testing whether this shit works
-    partialNetworks.forEach( (network, i) => {
-      console.log(`Network ${i}: ${network.trainedNetwork.connections[0].weight}`);
-    });
-
     for (var i = 1; i < partialNetworks.length; i++) {
       for (var j = 0; j < partialNetworks[0].trainedNetwork.connections.length; j++) {
         partialNetworks[0].trainedNetwork.connections[j].weight =
@@ -263,7 +256,7 @@ export default class AppView extends Component {
          partialNetworks[i].trainedNetwork.connections[j].weight;
       }
     }
-    console.log('After op:', partialNetworks[0].trainedNetwork.connections[0].weight);
+    // console.log('After op:', partialNetworks[0].trainedNetwork.connections[0].weight);
 
     console.log('Reconciled the weights of partial networks');
     return partialNetworks[0];

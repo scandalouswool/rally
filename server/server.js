@@ -158,13 +158,16 @@ io.on('connect', (socket) => {
     NEURAL NETWORK EVENT HANDLERS
   */
   socket.on('ANNUpdatedNetwork', (doneJob) => {
-    console.log('Received Updated Network', doneJob);
+    console.log('Received Updated Network');
     const projectComplete = pc.updateANN(doneJob);
+    const ANNJobCallback = (name, newJob) => {
+      socket.to(name).emit('newANNJob', newJob);
+    }
 
     if (!projectComplete) {
       setTimeout( () => {
-        pc.restartANN(doneJob.projectId, jobCallback);
-      }, 2000);
+        pc.restartANN(doneJob.projectId, ANNJobCallback);
+      }, 4000);
     }
   });
 

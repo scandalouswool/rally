@@ -15,7 +15,7 @@ const irisOptions = {
   trainerOptions: {
     rate: .0002,
     iterations: 5000,
-    error: .001,
+    error: .00001,
     shuffle: true,
     log: 1000,
     cost: Trainer.cost.CROSS_ENTROPY    

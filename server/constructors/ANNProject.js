@@ -38,9 +38,7 @@ class ANNProject extends Project {
 
     this.trainerOptions = options.trainerOptions;
 
-    this.epochCycle = 'pending';
-
-    // this.dataSet = options.dataSet ? JSON.parse(options.dataSet) : this.generateDataSet()
+    this.epochCycleReady = true;
 
     this.numWorkers = 4; // Default value
 
@@ -49,14 +47,12 @@ class ANNProject extends Project {
       let dataSet = JSON.parse(this.dataSet) || this.generateDataSet();
       const length = numWorkers || this.numWorkers;
       const numJobsPerSet = Math.floor(dataSet.length / length);
-      console.log('Length:', length);
       const trainingSets = [];
 
       // Shuffle dataSet
       console.log('Shuffling dataSet');
       dataSet = _.shuffle(dataSet);
 
-      // By default, create five trainingSets from dataSet
       for (var i = 0; i < length; i++) {
         let newJob;
         if (i === length - 1) {
@@ -122,9 +118,8 @@ class ANNProject extends Project {
 
   testNetwork(trainedNetwork) {
     const trainer = new Trainer(trainedNetwork);
-    console.log('New trainer:', trainer);
-    console.log('Test set:', this.testSet);
-    console.log('Trainer options:', this.trainerOptions);
+    // console.log('Test set:', this.testSet);
+    // console.log('Trainer options:', this.trainerOptions);
     const result = trainer.test(this.testSet, this.trainerOptions)
     console.log(result);
 
@@ -133,7 +128,7 @@ class ANNProject extends Project {
 
   updateNetwork(trainedNetwork) {
     this.network = Network.fromJSON( trainedNetwork.toJSON() );
-    console.log('Updated network:', this.network);
+    // console.log('Updated network:', this.network);
   }
 
   resetTrainingSet() {
@@ -144,10 +139,8 @@ class ANNProject extends Project {
       numWorkers += this.workers[key].maxJobs;
     }
     console.log(`Max of ${numWorkers} workers`);
-    console.log('Old available jobs:', this.availableJobs);
-    this.availableJobs = this.createJobsFunc();
+    this.availableJobs = this.createJobsFunc(numWorkers);
     console.log('New jobs created:', this.availableJobs.length);
-
   }
 }
 
