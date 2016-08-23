@@ -36,9 +36,11 @@ class ANNProject extends Project {
 
     this.trainerOptions = options.trainerOptions;
 
+    // this.dataSet = options.dataSet ? JSON.parse(options.dataSet) : this.generateDataSet()
+
     this.availableJobs = ( () => {
       console.log('Using custom job creation method for ANN');
-      const dataSet = this.dataSet || this.generateDataSet();
+      const dataSet = JSON.parse(this.dataSet) || this.generateDataSet();
       const length = dataSet.length / 5;
       const trainingSets = [];
 
@@ -56,7 +58,29 @@ class ANNProject extends Project {
       return trainingSets;
     })();
 
+    this.testSet = ( () => {
+      // TODO: implement a better way to get testSet
+      return JSON.parse(this.dataSet).slice(-10);
+    })();
+
     this.jobsLength = this.availableJobs.length;
+  }
+
+  testNetwork(trainedNetwork) {
+    // console.log('ANNProject running tests on trained network', trainedNetwork);
+    // console.log(this.testSet);
+    // this.testSet.forEach( (set) => {
+    //   console.log(trainedNetwork.activate(set.input));
+    // });
+
+    const trainer = new Trainer(trainedNetwork);
+    console.log('New trainer:', trainer);
+    console.log('Test set:', this.testSet);
+    console.log('Trainer options:', this.trainerOptions);
+    const result = trainer.test(this.testSet, this.trainerOptions)
+    console.log(result);
+
+    return;
   }
 }
 

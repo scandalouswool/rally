@@ -2,6 +2,7 @@ importScripts('/synaptic');
 
 onmessage = (e) => {
   console.log('ANN Worker received a job', e.data);
+  // console.log(JSON.parse(e.data.data));
 
   const synaptic = self.WorkerGlobalScope.synaptic;
   const Layer = synaptic.Layer;

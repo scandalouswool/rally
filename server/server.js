@@ -63,7 +63,6 @@ io.on('connect', (socket) => {
     } else {
       console.log('Error: cannot find user:', socket.id);
     }
-    
   });
 
   // 'userReady' event handler
@@ -145,6 +144,15 @@ io.on('connect', (socket) => {
   socket.on('error', (error) => {
     console.log('Socket error:', error);
   });
+
+  /*
+    NEURAL NETWORK EVENT HANDLERS
+  */
+  socket.on('ANNUpdatedNetwork', (updatedNetwork) => {
+    console.log('Received Updated Network');
+    pc.updateANN(updatedNetwork);
+  });
+
 });
 
 // TESTS
