@@ -276,6 +276,7 @@ class ProjectController {
         project.workers[key].currentJob = [];
         // console.log('Assigning to:', project.workers);
         // console.log(project.workers[key]);
+        console.log('sending job to:', key);
         ANNJobCallback(key, project.assignJob(project.workers[key]) );
       }
     }
