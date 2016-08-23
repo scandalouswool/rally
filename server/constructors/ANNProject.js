@@ -1,6 +1,8 @@
 const Project = require('./Project.js');
 const Job = require('./Job.js');
 const Synaptic = require('synaptic');
+const Promise = require('bluebird');
+const _ = require('lodash');
 
 const Architect = Synaptic.Architect;
 const Layer = Synaptic.Layer;
@@ -32,27 +34,113 @@ class ANNProject extends Project {
     // ANNProject class only supports Perceptron network architecture
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
+    this.network = this.perceptron.trainer.network.toJSON();
+
     this.trainerOptions = options.trainerOptions;
 
-    this.availableJobs = ( () => {
+    this.epochCycleReady = true;
+
+    this.numWorkers = 4; // Default value
+
+    this.createJobsFunc = ( (numWorkers) => {
       console.log('Using custom job creation method for ANN');
-      const dataSet = this.dataSet || this.generateDataSet();
-      const length = dataSet.length / 5;
+      let dataSet = JSON.parse(this.dataSet) || this.generateDataSet();
+      const length = numWorkers || this.numWorkers;
+      const numJobsPerSet = Math.floor(dataSet.length / length);
       const trainingSets = [];
 
-      // By default, create five trainingSets from dataSet
-      for (var i = 0; i < 5; i++) {
-        const newJob = new Job(dataSet.slice(i * length, (i + 1) * length), i, this.projectId);
+      // Shuffle dataSet
+      console.log('Shuffling dataSet');
+      dataSet = _.shuffle(dataSet);
+
+      for (var i = 0; i < length; i++) {
+        let newJob;
+        if (i === length - 1) {
+          newJob = new Job(dataSet.slice(i * numJobsPerSet), i, this.projectId);
+        } else {
+          newJob = new Job(dataSet.slice(i * numJobsPerSet, (i + 1) * numJobsPerSet), i, this.projectId);
+        }
 
         newJob.jobType = 'ANN';
+        newJob.ANNNetwork = this.network;
+        newJob.trainerOptions = this.trainerOptions;
 
         trainingSets.push(newJob);
       }
 
       return trainingSets;
+    });
+
+    this.availableJobs = this.createJobsFunc();
+
+    this.testSet = ( () => {
+      // TODO: implement a better way to get testSet
+      return JSON.parse(this.dataSet).slice(-10);
     })();
 
     this.jobsLength = this.availableJobs.length;
+  }
+
+  assignJob(worker) {
+    console.log('Assigning job for ANN Project');
+
+    if (worker.currentJob.length < worker.maxJobs && this.availableJobs.length) {
+      console.log('Assigning job to ', worker.workerId);
+
+      let newJob = this.availableJobs.shift();
+      newJob.mapData = this.mapData ? this.mapData.toString() : null;
+      newJob.workerId = worker.workerId;
+      newJob.jobsLength = this.jobsLength;
+
+      if (newJob) {
+        worker.currentJob.push(newJob);
+      }
+
+      // Alternate timer
+      if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
+        this.timer.start();
+      }
+      // console.log('New ANNJob:', newJob);
+      return newJob;
+
+    } else {
+      if (!this.availableJobs.length) {
+        console.log('No more jobs available');
+
+      } else {
+        console.log('Error assigning job to worker');
+        console.log('This worker is already at max jobs');
+      }
+    }
+
+    return;
+  }
+
+  testNetwork(trainedNetwork) {
+    const trainer = new Trainer(trainedNetwork);
+    // console.log('Test set:', this.testSet);
+    // console.log('Trainer options:', this.trainerOptions);
+    const result = trainer.test(this.testSet, this.trainerOptions)
+    console.log(result);
+
+    return result.error;
+  }
+
+  updateNetwork(trainedNetwork) {
+    this.network = Network.fromJSON( trainedNetwork.toJSON() );
+    // console.log('Updated network:', this.network);
+  }
+
+  resetTrainingSet() {
+    // Calculate the max number of workers
+    let numWorkers = 0;
+
+    for (var key in this.workers) {
+      numWorkers += this.workers[key].maxJobs;
+    }
+    console.log(`Max of ${numWorkers} workers`);
+    this.availableJobs = this.createJobsFunc(numWorkers);
+    console.log('New jobs created:', this.availableJobs.length);
   }
 }
 

@@ -1,29 +1,25 @@
 importScripts('/synaptic');
 
 onmessage = (e) => {
-  console.log('ANN Worker received a job');
-  // Testing promises-based worker handling system
-  setTimeout( () => {
-    postMessage('done');
-  }, Math.floor(Math.random() * 3000));
+  console.log('ANN Worker received a job', e.data);
+  // console.log(JSON.parse(e.data.data));
 
-  // console.log('Web Worker beginning work');
-  // const synaptic = self.WorkerGlobalScope.synaptic;
-  // const Layer = synaptic.Layer;
-  // const Network = synaptic.Network;
-  // const Trainer = synaptic.Trainer;
+  const synaptic = self.WorkerGlobalScope.synaptic;
+  const Layer = synaptic.Layer;
+  const Network = synaptic.Network;
+  const Trainer = synaptic.Trainer;
 
-  // const network = Network.fromJSON(e.data.network);
-  // const trainingSet = e.data.trainingSet;
-  // const trainingOptions = e.data.trainingOptions;
+  const network = Network.fromJSON(e.data.ANNNetwork);
+  const trainingSet = e.data.data;
+  const trainerOptions = e.data.trainerOptions;
 
-  // const trainer = new Trainer(network);
+  const trainer = new Trainer(network);
   
-  // const trainingResult = trainer.train(trainingSet, trainingOptions);
+  const trainingResult = trainer.train(trainingSet, trainerOptions);
 
-  // const trainedNetwork = network.toJSON();
+  const trainedNetwork = network.toJSON();
 
-  // console.log('Worker sending back data now');
+  console.log('Worker sending back data now');
   postMessage({
     trainingResult: trainingResult,
     trainedNetwork: trainedNetwork,
