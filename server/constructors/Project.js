@@ -25,8 +25,8 @@ class Project {
     this.complete = options.complete || false;
 
     // Timer used to track how long it takes to complete project
+    this.projectTime = options.projectTime || 0; //options.projectTime || 0;
     this.timer = timers.simple();
-    this.projectTime = options.projectTime || 0;
 
     // Convert dataSet and generateDataSet to string in case they're not already
     this.dataSet = (typeof options.dataSet === 'string') ?
@@ -105,8 +105,9 @@ class Project {
       newJob.jobsLength = this.jobsLength;
       worker.currentJob.push(newJob);
 
-      // Alternate timer
+      // Start timer if first user is joining
       if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
+        this.timer.reset();
         this.timer.start();
       }
 
@@ -115,10 +116,8 @@ class Project {
     } else {
       if (!this.availableJobs.length) {
         console.log('No more jobs available');
-
       } else {
         console.log('Error assigning job to worker');
-
       }
     }
 
@@ -173,16 +172,18 @@ USER-INTERFACE-AFFECTING FUNCTIONS
   }
 
   removeWorker(socketId) {
+    if (_.size(this.workers) === 1) {
+      this.timer.stop();
+      this.projectTime = this.projectTime + this.timer.time();
+      this.timer.reset();
+    }
+
     console.log(`Removing worker ${socketId} in project ${this.projectId}`);
+
     // Removes the worker associated with the passed in socketId
     // First reassign the disconnected worker's job
     this.reassignJob(socketId);
-
-    // Then delete the worker from the worker object
     delete this.workers[socketId];
-    if (_.isEmpty(this.workers)) {
-      this.timer.stop();
-    }
   }
 
   handleResult(job) {
@@ -219,16 +220,18 @@ USER-INTERFACE-AFFECTING FUNCTIONS
 
   completeProject() {
     console.log('Project ' + this.projectId + ' has completed');
-    // Completes the project
-    // Calls reduceResults on the array of results and stores the result
-    // in finalResult
+
+    let finalTime = this.projectTime + this.timer.time();
+    this.projectTime = finalTime;
+    this.timer.stop();
 
     this.finalResult = eval(this.reduceResults)(this.completedJobs);
-    console.log('The final results:', this.finalResult);
-    // Log the time when the project finished
-    console.log(`Project completed after ${this.projectTime} miliseconds`);
     this.complete = true;
+
+    console.log('The final results:', this.finalResult);
+    console.log(`Project completed after ${this.projectTime} miliseconds`);
     console.log(this.completedJobs.length + ' jobs completed!');
+
     return true;
   }
 }
