@@ -6,7 +6,7 @@ class PendingProjectView extends Component {
     super(props);
 
     this.state = {
-      hidden: false
+      hidden: true
     };
   }
 
