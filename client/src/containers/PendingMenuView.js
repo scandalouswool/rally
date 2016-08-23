@@ -26,33 +26,24 @@ class PendingMenuView extends Component {
       return whiteList.indexOf(user) !== -1;
     };
 
-    if (!auth()) {
-      // If after five seconds the user isn't authenticated, route to homepage
-      setTimeout(function() {
-        if (!auth()) {
-          this.context.router.push('/');
-        }
-      }.bind(this), 5000);
-      return (<div>Checking authorization...</div>);
-    } else {
-      return (
-        <div>
-          <div className="header-padding">
-            <h2>Pending Projects</h2>
-          </div>
-          {_.map(this.props.pendingProjects, (project, key) => {
-            return (
-              <PendingProjectView
-                project={project}
-                key={key}
-                id={key}
-                enactDecision={this.enactDecision.bind(this)}
-              />
-            );
-          })}
+    return (
+      <div>
+        <div className="header-padding">
+          <h2>Pending Projects</h2>
         </div>
-      );
-    }
+        {_.map(this.props.pendingProjects, (project, key) => {
+          return (
+            <PendingProjectView
+              project={project}
+              key={key}
+              id={key}
+              enactDecision={this.enactDecision.bind(this)}
+              auth={auth()}
+            />
+          );
+        })}
+      </div>
+    );
   }
 
   render() {

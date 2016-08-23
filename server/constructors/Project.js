@@ -26,7 +26,7 @@ class Project {
 
     // Timer used to track how long it takes to complete project
     this.timer = timers.simple();
-    this.projectTime = options.projectTime || 0; //might need to be this.projectTime
+    this.projectTime = options.projectTime || 0;
 
     // Convert dataSet and generateDataSet to string in case they're not already
     this.dataSet = (typeof options.dataSet === 'string') ?

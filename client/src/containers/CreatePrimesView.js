@@ -27,7 +27,7 @@ class CreatePrimesView extends Component {
 
       projectType: 'primes',
 
-      dataSet: null,
+      dataSet: '',
 
       generateDataSet: `() => {
         var start = ${this.state.min};
