@@ -14,6 +14,20 @@ class ProjectController {
     this.allProjects = {};
 
     this.pendingProjects = {};
+    this.pendingProjects['0'] = {
+      title: 'My Project',
+      dataSet: '[0, 1, 2, 3]',
+      generateDataSet: '',
+      mapData: '(val) => {return val;}',
+      reduceResults: '(results) => {return results;}'
+    };
+    // this.pendingProjects['1'] = {
+    //   title: 'Mararar prarject 2',
+    //   dataSet: '[0, 1, 2, 3]',
+    //   generateDataSet: '',
+    //   mapData: '(val) => {return val;}',
+    //   reduceResults: '(results) => {return results;}'
+    // };
 
     // Time between database backups
     this.backUpTime = 10000;
@@ -194,22 +208,20 @@ class ProjectController {
     return projectId;
   }
 
-  pendProject(options, io) {
+  pendProject(options) {
     // Add to list of pending projects
     const id = Object.keys(this.pendingProjects).length;
     this.pendingProjects[id] = options;
-
-    // Emit updated pending project list to all users
-    this.sendUpdatePendingProjects(io);
+    return true;
   }
 
-  removePendingProject(projectId, io) {
+  removePendingProject(projectId) {
     delete this.pendingProjects[projectId];
-    this.sendUpdatePendingProjects(io);
+    return true;
   }
 
-  sendUpdatePendingProjects(destination) {
-    destination.emit('updatePendingProjects', this.pendingProjects);
+  getPendingProjects() {
+    return this.pendingProjects;
   }
 
   // Returns status of projects to all connected users

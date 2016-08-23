@@ -30,3 +30,34 @@ body {
 .block-label {
   display: block;
 }
+
+.hidden {
+  display: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.pendingProject {
+  border-style: solid;
+  border-color: #464646;
+  border-radius: 5px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+.btn-padding {
+  margin-top: 8px;
+  margin-left: 15px;
+  margin-bottom: 8px;
+}
+
+.title-padding {
+  margin-top: 4px;
+  margin-botton: 2px;
+}
+
+.header-padding {
+  margin-bottom: 20px
+}
