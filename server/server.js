@@ -157,9 +157,15 @@ io.on('connect', (socket) => {
   /*
     NEURAL NETWORK EVENT HANDLERS
   */
-  socket.on('ANNUpdatedNetwork', (updatedNetwork) => {
-    console.log('Received Updated Network');
-    pc.updateANN(updatedNetwork);
+  socket.on('ANNUpdatedNetwork', (doneJob) => {
+    console.log('Received Updated Network', doneJob);
+    const projectComplete = pc.updateANN(doneJob);
+
+    if (!projectComplete) {
+      setTimeout( () => {
+        pc.restartANN(doneJob.projectId, jobCallback);
+      }, 2000);
+    }
   });
 
 });
@@ -167,3 +173,4 @@ io.on('connect', (socket) => {
 // TESTS
 const irisOptions = require('./projects/iris.js');
 pc.createProject(irisOptions);
+console.log(pc.allProjects['project0'].availableJobs.length);

@@ -188,10 +188,6 @@ export default class AppView extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.beginEpochCycle();
-  }
-
   /*
     NEURAL NETWORK EPOCH LIFECYCLE METHODS
   */
@@ -213,14 +209,17 @@ export default class AppView extends Component {
   }
 
   beginEpochCycle(ANNJobPool) {
-    console.log('Beginning Epoch Cycle');
+    console.log('Beginning Epoch Cycle:', ANNJobPool.length);
     // Assign job to each ANN worker
     const workerPromises = [];
     const projectId = ANNJobPool[0].projectId;
+    const doneJob = ANNJobPool[0];
 
     for (var key in this.ANNWorkerPool) {
-      const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
-      workerPromises.push(promise);
+      if (ANNJobPool.pop()) {
+        const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
+        workerPromises.push(promise);
+      }
     }
 
     Promise.all(workerPromises)
@@ -230,8 +229,10 @@ export default class AppView extends Component {
       })
       .then( (updatedNetwork) => {
         console.log('Network with reconciled weight:', updatedNetwork);
-        updatedNetwork.projectId = projectId;
-        this.socket.emit('ANNUpdatedNetwork', updatedNetwork);
+        
+        console.log('finished job template:', doneJob);
+        doneJob.result = updatedNetwork;
+        this.socket.emit('ANNUpdatedNetwork', doneJob);
       });
   }
 

@@ -196,15 +196,54 @@ class ProjectController {
   /*
     NEURAL NETWORK HANDLERS
   */
-  updateANN(updatedNetwork) {
+  updateANN(doneJob) {
     // console.log(updatedNetwork);
-    const project = this.allProjects[updatedNetwork.projectId];
+    const updatedNetwork = doneJob.result;
+    const project = this.allProjects[doneJob.projectId];
     console.log('Updated network info:', updatedNetwork);
     const trainedNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
     // console.log('Inside new network:', trainedNetwork);
     // console.log(trainedNetwork.layers.input.list);
-    project.testNetwork(trainedNetwork);
+    const error = project.testNetwork(trainedNetwork);
+    let trainingComplete;
+
+    if (error < project.trainerOptions.error) {
+      console.log('Desired error rate reached. Training complete.');
+      console.log('Final error rate:', error);
+      trainingComplete = true;
+    } else {
+      console.log('Error rate too high - continuing training.');
+      project.updateNetwork(trainedNetwork);
+      trainingComplete = false;
+    }
+
+    return trainingComplete;
   }
+
+  restartANN(projectId, jobCallback) {
+    console.log('Resetting ANN project');
+    const project = this.allProjects[projectId];
+    project.resetTrainingSet();
+
+    console.log('Reinitialized jobs:', project.availableJobs);
+
+    for (var key in project.workers) {
+
+      const worker = project.workers[key];
+      worker.currentJob = [];
+
+      for (var i = 0; i < worker.maxJobs; i++) {
+        project.workers[key].currentJob = [];
+        // console.log('Assigning to:', project.workers);
+        // console.log(project.workers[key]);
+        jobCallback( project.assignJob(project.workers[key]) );
+      }
+    }
+  }
+
+  /*
+    PROJECT MANAGEMENT METHODS
+  */
 
   createProject(options) {
     // Check if it was a pending project; if so, remove from the list of pending projects
