@@ -170,7 +170,7 @@ export default class AppView extends Component {
     this.initializeANNWebWorkers();
 
     this.socket.on('newANNJob', (newJob) => {
-      // console.log('Receiving new ANNJob', newJob);
+      console.log('Receiving new ANNJob', newJob);
       this.ANNJobPool.push(newJob);
 
       // console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);

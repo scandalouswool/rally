@@ -161,7 +161,7 @@ io.on('connect', (socket) => {
     console.log('Received Updated Network');
     const projectComplete = pc.updateANN(doneJob);
     const ANNJobCallback = (name, newJob) => {
-      socket.to(name).emit('newANNJob', newJob);
+      io.to(name).emit('newANNJob', newJob);
     }
 
     if (!projectComplete) {
