@@ -317,6 +317,7 @@ class ProjectController {
   }
 
   getPendingProjects() {
+    console.log('Pending projects:', this.pendingProjects);
     return this.pendingProjects;
   }
 
