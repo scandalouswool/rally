@@ -1,6 +1,7 @@
 body {
   font-family: 'Cabin', sans-serif;
   font-size: 16px;
+  color: #54585E;
 }
 
 .customGreen {
@@ -80,4 +81,20 @@ body {
 
 .createProject {
   padding: 10px;
+}
+
+h1.border {
+  font-size: 75px;
+}
+
+p.border{
+  font-size: 25px;
+}
+
+h3 {
+  padding-bottom: 20px;
+}
+
+.selected {
+  text-align: center;
 }
