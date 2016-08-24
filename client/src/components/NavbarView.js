@@ -42,23 +42,25 @@ class NavbarView extends Component {
 
     return (
       <div>
-        <nav className="navbar navbar-inverse">
+        <nav className="navbar navbar-default">
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
+                <span className="icon-bar"></span> 
+                <span className="icon-bar"></span> 
               </button>
-              <img className="logo" src="../../assets/logo.png"></img>
+              <img className="logo navbar-brand" src="../../assets/logo.png"></img>
             </div>
             <div className="collapse navbar-collapse" id="myNavbar">
               <ul className="nav navbar-nav">
-                <li><Link to="/"><span className="glyphicon glyphicon-home"></span> Home</Link></li>
+                <li><Link to="/"><span className="glyphicon glyphicon-home active"></span> Home</Link></li>
                 <li><Link to="menu"><span className="glyphicon glyphicon-tasks"></span> Projects</Link></li>
                 <li><Link to="project"><span className="glyphicon glyphicon-blackboard"></span> Current Project</Link></li>
                 <li><Link to="pendingmenu"><span className="glyphicon glyphicon-hourglass"></span> Pending Projects</Link></li>
               </ul>
+
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to={route} onClick={clickHandler}><span className={className}></span>{text}</Link></li>
               </ul>
