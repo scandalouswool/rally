@@ -26,7 +26,7 @@ class CreateProjectView extends Component {
   submitNewProject(event) {
     event.preventDefault();
 
-    // If check whether user is allowed to create a project
+    // Check if user is allowed to create a project
     // and send submitted string to different routes accordingly
     let user = this.props.auth.username;
     let whiteList = this.props.auth.whiteList;

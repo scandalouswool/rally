@@ -40,6 +40,7 @@ class MenuView extends Component {
         <div>
           <h3>Create a new project:</h3>
           <Link to="createProject" className="createProject white"><button className="btn-success btn-lg">Custom</button></Link>
+          <Link to="createANNProject" className="createProject white"><button className="btn-success btn-lg">Custom Machine Learning Project</button></Link>
           <Link to="createNQueens" className="createProject white"><button className="btn-success btn-lg">n-Queens</button></Link>
           <Link to="createPrimes" className="createProject white"><button className="btn-success btn-lg">Prime-Finder</button></Link>
         </div>
