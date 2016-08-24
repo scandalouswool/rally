@@ -2,6 +2,7 @@ const chai = require('chai');
 const Job = require('../constructors/Job.js');
 const should = chai.should();
 const expect = chai.expect;
+
 const Worker = require('../constructors/Worker.js');
 
 const testJob = new Job([1, 2, 3], 3, 'project01');
@@ -15,6 +16,7 @@ describe('Jobs', () => {
     should.exist(testJob.jobId);
     expect(testJob.jobId).to.equal(3);
   });
+
   it('should have a projectId', () => {
     should.exist(testJob.projectId);
     expect(testJob.projectId).to.equal('project01');
@@ -68,11 +70,6 @@ const testProjectOptions = {
     });
   }
 }
-
-
-
-
-
 
 
 
