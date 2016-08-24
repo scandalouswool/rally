@@ -59,7 +59,7 @@ describe('Workers', () => {
 const testProjectOptions = {
   title: 'test',
   projectType: 'testProject',
-  dataSet: null,
+  dataSet: '',
   generateDataSet: () => { 
     return [1, 2, 3, 4] 
   },
@@ -110,10 +110,5 @@ describe('Socket Tests', () => {
   };
 
   const client1 = io(socketURL);
-
-  client1.on('connect', () => {
-    client1.emit('createProject', primesOptions);
-  });
-
   expect(client1).to.exist;
 });
