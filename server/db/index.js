@@ -1,18 +1,13 @@
 let Sequelize = require('sequelize');
-let sequelize = new Sequelize('rally', 'root', null, {
-  dialect: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 1000
-  },
-  define: {
-    timestamps: false
-  },
-  logging: false
-});
+
+var sequelize = new Sequelize('legacy', null, null, {
+   protocol: 'postgres',
+   dialect: 'postgres',
+   host: 'localhost',
+   define: {
+     timestamps: false,
+   }
+ });
 
 /************************************************
 // Define project schema
