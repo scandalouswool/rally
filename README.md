@@ -18,13 +18,21 @@
 ## Requirements
 
 - Node 4.4.7
-- PostgreSQL or MySQL
+- PostgreSQL
 
 ### Installing Dependencies
 
 Install all npm dependencies.
 ```sh
 npm install
+```
+
+Download/launch Postgres app and create a database named 'rally'
+http://postgresapp.com/
+
+open psql
+```sh
+CREATE DATABASE rally;
 ```
 
 Create client/src/environment/ folder with a file called environment.js. Add the following code to environment.js, replacing empty strings with firebase config variables:
@@ -44,14 +52,14 @@ Initiate webpack.
 npm run build: dev
 ```
 
-Launch mysql server and create a database named 'rally' using mysql as the root user:
-mysql start
-mysql -u root -p
-create database rally;
-
-Open the server with Nodemon.
+Initiate nodemon.
 ```sh
 npm start
+```
+
+OPTIONAL: Run Webpack and Nodemon at once:
+```sh
+npm run build:start
 ```
 
 ## Testing
