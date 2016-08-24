@@ -1,8 +1,12 @@
 const chai = require('chai');
+const chaiHTTP = require('chai-http');
 const Job = require('../constructors/Job.js');
+const server = require('../server.js');
 const should = chai.should();
 const expect = chai.expect;
+const primesOptions = require('../projects/primes.js');
 const Project = require('../constructors/Project.js');
+const io = require('socket.io-client');
 const Worker = require('../constructors/Worker.js');
 
 const testJob = new Job([1, 2, 3], 3, 'project01');
@@ -67,7 +71,7 @@ const testProjectOptions = {
       return acc + next;
     });
   }
-}
+};
 
 const testProject = new Project(testProjectOptions);
 const sampleJob = {
@@ -79,7 +83,7 @@ const sampleJob = {
  data: 1,
  result: null,
  mapData: null 
-}
+};
 
 describe('Project', () => {
   it('should have a populated availableJobs', () => {
@@ -96,21 +100,20 @@ describe('Project', () => {
     expect(testProject.completedJobs).to.deep.equal([]);
     expect(testProject.finalResult).to.not.exist;
   });
-
 });
 
+describe('Socket Tests', () => {
+  const socketURL = 'http://localhost:8000';
+  const options ={
+    transports: ['websocket'],
+    'force new connection': true
+  };
 
+  const client1 = io(socketURL);
 
+  client1.on('connect', () => {
+    client1.emit('createProject', primesOptions);
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
+  expect(client1).to.exist;
+});
