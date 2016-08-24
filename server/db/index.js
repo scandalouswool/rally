@@ -1,18 +1,19 @@
 let Sequelize = require('sequelize');
-let sequelize = new Sequelize('rally', 'root', null, {
-  dialect: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 1000
-  },
-  define: {
-    timestamps: false
-  },
-  logging: false
-});
+
+if (process.env.DATABASE_URL) {
+  var sequelize = new Sequelize(process.env.DATABASE_URL, {
+    protocol: 'postgres',
+    dialect: 'postgres',
+    host: process.env.DATABASE_URL.split(':')[2]
+  });
+} else {
+  //Change the arguments to sequelize as neccessary ('Database', 'username', 'password')
+  var sequelize = new Sequelize('rally', null, null, {
+    protocol: 'postgres', // or mysql
+    dialect: 'postgres', // or mysql
+    host: 'localhost'
+  });
+}
 
 /************************************************
 // Define project schema
