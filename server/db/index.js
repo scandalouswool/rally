@@ -53,13 +53,30 @@ var Project = sequelize.define('Project', {
   },
   mapData: {
     type: Sequelize.TEXT('long'),
-    allowNull: false
+    allowNull: true
   },
   reduceResults: {
     type: Sequelize.TEXT('long'),
-    allowNull: false
+    allowNull: true
   },
   finalResult: {
+    type: Sequelize.TEXT('long'),
+    allowNull: true
+  },
+  // These are exclusively ANN options
+  inputLayer: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  hiddenLayer: {
+    type: Sequelize.TEXT('long'),
+    allowNull: true
+  },
+  outputLayer: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  trainerOptions: {
     type: Sequelize.TEXT('long'),
     allowNull: true
   }

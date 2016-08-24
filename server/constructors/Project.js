@@ -42,7 +42,6 @@ class Project {
     this.availableJobs = (() => {
       let dataSet;
 
-      console.log('The data set: ', this.dataSet);
       if (!this.dataSet) {
         console.log('Evaluating code');
         dataSet = eval(this.generateDataSet)();
