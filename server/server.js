@@ -115,7 +115,7 @@ io.on('connect', (socket) => {
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
   socket.on('createProject', (project) => {
-
+    console.log('RECEIVED NEW PROJECT: ', project);
     if (pc.createProject(project)) {
       console.log('Successfully created a new project');
       io.emit('updateAllProjects', pc.getUpdateAllProjects());
@@ -127,6 +127,7 @@ io.on('connect', (socket) => {
   });
 
   socket.on('pendProject', (project) => {
+    console.log('RECEIVED PENDING PROJECT', project);
     if (pc.pendProject(project)) {
       io.emit('updatePendingProjects', pc.getPendingProjects());
     } else {

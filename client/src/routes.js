@@ -9,6 +9,7 @@ import SelectedProjectView from './containers/SelectedProjectView';
 import LoginView from './components/LoginView';
 import SignupView from './components/SignupView';
 import ErrorView from './components/ErrorView';
+import CreateANNProjectView from './containers/CreateANNProjectView';
 import CreateProjectView from './containers/CreateProjectView';
 import CreateNQueensView from './containers/CreateNQueensView';
 import CreatePrimesView from './containers/CreatePrimesView';
@@ -20,6 +21,7 @@ export default (
     <Route path="menu" component={MenuView} />
     <Route path="project" component={ProjectView} />
     <Route path="createProject" component={CreateProjectView} />
+    <Route path="createANNProject" component={CreateANNProjectView} />
     <Route path="createNQueens" component={CreateNQueensView} />
     <Route path="createPrimes" component={CreatePrimesView} />
     <Route path="selectedproject" component={SelectedProjectView} />
