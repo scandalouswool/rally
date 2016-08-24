@@ -73,10 +73,7 @@ class ANNProject extends Project {
 
     this.availableJobs = this.createJobsFunc();
 
-    this.testSet = ( () => {
-      // TODO: implement a better way to get testSet
-      return JSON.parse(this.dataSet).slice(-10);
-    })();
+    this.testSet = options.testSet;
 
     this.jobsLength = this.availableJobs.length;
   }
