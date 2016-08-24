@@ -45,10 +45,10 @@ describe('Workers', () => {
     expect(testWorker).to.be.a('object');
   });
   it('should have a project ID', () => {
-    should.exist(testJob.projectId);
+    should.exist(testWorker.projectId);
   });
   it('should have a worker ID', () => {
-    expect(testJob.socketId).to.equal('socket01');
+    expect(testWorker.workerId).to.equal('socket01');
   });
 });
 
@@ -56,12 +56,11 @@ const testProjectOptions = {
   title: 'test',
   projectType: 'testProject',
   dataSet: null,
-  generateDataSet: () => {
-    return [1, 2, 3, 4]
+  generateDataSet: () => { 
+    return [1, 2, 3, 4] 
   },
   mapData: (data) => {
       return data * 2;
-    });
   },
   reduceResults: (results) => {
     return results.reduce( (acc, next) => {
