@@ -10,6 +10,11 @@ const io = require('socket.io-client');
 const Worker = require('../constructors/Worker.js');
 
 const testJob = new Job([1, 2, 3], 3, 'project01');
+const Job = require('../constructors/Job.js');
+const should = chai.should();
+const expect = chai.expect;
+
+const testJob = new Job([1, 2, 3], 3, 'project02');
 
 describe('Jobs', () => {
   it('should be an object', () => {
@@ -22,12 +27,7 @@ describe('Jobs', () => {
   });
   it('should have a projectId', () => {
     should.exist(testJob.projectId);
-    expect(testJob.projectId).to.equal('project01');
-  });
-  it('should have a data field', () => {
-    should.exist(testJob.data);
-    expect(testJob.data).to.deep.equal([1, 2, 3]);
-  });
+    expect(testJob.projectId).to.equal('project02');
   it('should not have a result value', () => {
     should.not.exist(testJob.result);
   });
