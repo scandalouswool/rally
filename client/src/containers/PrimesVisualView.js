@@ -9,15 +9,16 @@ class PrimesVisualView extends Component {
   constructor(props) {
     super(props);
     this.graph = null;
-    this.svgWidth = 600;
-    this.svgHeight = 400;
+    this.svgWidth = 900;
+    this.svgHeight = 500;
   }
 
   componentDidMount() {
     this.graph = d3.select('#visualizer').append('svg')
       .attr('width', this.svgWidth)
-      .attr('height', this.svgHeight);
-    
+      .attr('height', this.svgHeight)
+      .attr('class', 'svg-block');
+
     this.drawPrimesGraph();
   }
 
@@ -79,11 +80,8 @@ class PrimesVisualView extends Component {
 
   render() {
     return (
-      <div>
-        <div id="visualizer"></div>
-        <div>{this.props.results[this.props.project.projectId] === null ? 'zero' : this.props.results[this.props.project.projectId].length}</div>
-      </div>
-    )
+      <div id="visualizer"></div>
+    );
   }
 }
 
