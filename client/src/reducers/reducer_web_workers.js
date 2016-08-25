@@ -4,7 +4,7 @@ export default function (state = [], action) {
       // Create a Web Worker pool based on the maximum number of 
       // concurrent processes that user's CPU can support. Default to 
       // two workers if navigator.hardwareConcurrency is unavailable
-      const MAX_WEBWORKERS = navigator.hardwareConcurrency || 2;
+      const MAX_WEBWORKERS = 2;
       const webWorkerPool = [];
       const socket = action.payload.socket;
 

@@ -37,23 +37,31 @@ class ProjectController {
     // for each entry, and populate this.allProjects obj
     ***************************************************/
     db.Project.findAll({}).then((projects) => {
-      // projects.forEach((project) => {
-      //   let data = project.dataValues;
-      //   let options = {
-      //     projectType: data.projectType,
-      //     title: data.title,
-      //     complete: data.complete,
-      //     projectTime: data.projectTime,
-      //     dataSet: data.dataSet,
-      //     generateDataSet: data.generateDataSet,
-      //     completedJobs: JSON.parse(data.completedJobs),
-      //     mapData: data.mapData,
-      //     reduceResults: data.reduceResults,
-      //     finalResult: JSON.parse(data.finalResult)
-      //   };
+      projects.forEach((project) => {
+        let data = project.dataValues;
+        let options = {
+          projectType: data.projectType,
+          title: data.title,
+          complete: data.complete,
+          projectTime: data.projectTime,
+          dataSet: data.dataSet,
+          generateDataSet: data.generateDataSet,
+          completedJobs: JSON.parse(data.completedJobs),
+          mapData: data.mapData,
+          reduceResults: data.reduceResults,
+          finalResult: JSON.parse(data.finalResult),
+          inputLayer: data.inputLayer,
+          hiddenLayer: JSON.parse(data.hiddenLayer),
+          outputLayer: data.outputLayer,
+          trainerOptions: JSON.parse(data.trainerOptions)
+        };
 
-      //   this.allProjects[data.projectId] = new Project(options, data.projectId, io);
-      // });
+        if (data.projectType === 'ANN') {
+          this.allProjects[data.projectId] = new ANNProject(options, data.projectId, io);
+        } else {
+          this.allProjects[data.projectId] = new Project(options, data.projectId, io);
+        }
+      });
 
       /***************************************************
       // Iterate over projects in this.allProjects object
