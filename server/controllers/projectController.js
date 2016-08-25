@@ -50,10 +50,10 @@ class ProjectController {
           mapData: data.mapData,
           reduceResults: data.reduceResults,
           finalResult: JSON.parse(data.finalResult),
-          inputLayer: data.inputLayer,
-          hiddenLayer: JSON.parse(data.hiddenLayer),
-          outputLayer: data.outputLayer,
-          trainerOptions: JSON.parse(data.trainerOptions)
+          inputLayer: data.inputLayer ? data.inputLayer : 0,
+          hiddenLayer: data.hiddenLayer ? JSON.parse(data.hiddenLayer) : '',
+          outputLayer: data.outputLayer ? data.outputLayer : 0,
+          trainerOptions: data.trainerOptions ? JSON.parse(data.trainerOptions) : ''
         };
 
         if (data.projectType === 'ANN') {
@@ -76,21 +76,23 @@ class ProjectController {
           }).then(() => {
             for (var obj in this.allProjects) {
               let project = this.allProjects[obj];
-              if (project.type !== 'ANN') {
-                db.Project.create({
-                  projectId: project.projectId,
-                  projectType: project.projectType,
-                  title: project.title,
-                  complete: project.complete,
-                  projectTime: project.projectTime,
-                  dataSet: project.dataSet,
-                  generateDataSet: project.generateDataSet,
-                  completedJobs: JSON.stringify(project.completedJobs),
-                  mapData: project.mapData,
-                  reduceResults: project.reduceResults,
-                  finalResult: JSON.stringify(project.finalResult)
-                });
-              }
+              db.Project.create({
+                projectId: project.projectId,
+                projectType: project.projectType,
+                title: project.title,
+                complete: project.complete,
+                projectTime: project.projectTime,
+                dataSet: project.dataSet,
+                generateDataSet: project.generateDataSet,
+                completedJobs: JSON.stringify(project.completedJobs),
+                mapData: project.mapData,
+                reduceResults: project.reduceResults,
+                finalResult: JSON.stringify(project.finalResult),
+                inputLayer: project.inputLayer ? project.inputLayer : 0,
+                hiddenLayer: project.hiddenLayer ? JSON.stringify(project.hiddenLayer) : '',
+                outputLayer: project.outputLayer ? project.outputLayer : 0,
+                trainerOptions: project.trainerOptions ? JSON.stringify(project.trainerOptions) : ''
+              });
             }
           });
         };

@@ -38,14 +38,15 @@ class ProjectView extends Component {
   }
 
   render() {
+    // Check that a project is currently selected
     if (this.props.selectedProject === null) {
       this.context.router.push('menu');
       return null;
-    } else {
-      let visualization;
-      const projectId = this.props.selectedProject.projectId;
 
-      let thisProject;
+    // This the actual project view
+    } else {
+      let visualization, thisProject;
+      const projectId = this.props.selectedProject.projectId;
 
       this.props.projects.forEach( (item) => {
         if (item.projectId === projectId) {
@@ -69,36 +70,25 @@ class ProjectView extends Component {
           <div className="container">
 
             <div className="row">
-              <SelectedProjectView />
+              <div className="col-sm-8">
+                <SelectedProjectView />
+              </div>
+              <div className="col-sm-4">
+                <button
+                  className="btn-success btn-lg createProject btn-padding btn-size"
+                  onClick={this.connectToProject.bind(this)}>
+                  Join
+                </button>
+                <button
+                  className="btn-danger btn-lg createProject btn-padding btn-size"
+                  onClick={this.disconnectFromProject.bind(this)}>
+                  Abandon
+                </button>
+              </div>
             </div>
 
             <div className="row">
-              <div className="col-sm-4 text-left">
-                <div className="row">
-                  <div className="col-sm-12 text-center">
-                    <button
-                      className="btn-success btn-lg createProject btn-padding btn-size"
-                      onClick={this.connectToProject.bind(this)}>
-                      Join
-                    </button>
-                    <button
-                      className="btn-danger btn-lg createProject btn-padding btn-size"
-                      onClick={this.disconnectFromProject.bind(this)}>
-                      Abandon
-                    </button>
-                  </div>
-                </div>
-                <div className="row text-center">
-                  <div className="col-sm-offset-4 scroll-block text-center background-color vert-align">
-                    {_.map((_.range(0, thisProject.workers.length)), (i) => {
-                        return (<div className="userBlock text-center">{`User ${i + 1}`}</div>);
-                      })
-                    }
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-sm-8 viz-block">
+              <div className="col-sm-12 viz-block">
                 {visualization}
               </div>
             </div>
@@ -143,6 +133,13 @@ class ProjectView extends Component {
     }
   }
 }
+
+/*<div className="col-sm-offset-4 scroll-block text-center background-color vert-align">
+  {_.map((_.range(0, thisProject.workers.length)), (i) => {
+      return (<div className="userBlock text-center">{`User ${i + 1}`}</div>);
+    })
+  }
+</div>*/
 
 // Attach router to context
 ProjectView.contextTypes = {

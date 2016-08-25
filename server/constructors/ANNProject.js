@@ -31,7 +31,11 @@ class ANNProject extends Project {
   constructor(options, projectId) {
     super(options, projectId);
     // ANNProject class only supports Perceptron network architecture
-    this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
+
+    this.inputLayer = options.inputLayer;
+    this.hiddenLayer = options.hiddenLayer;
+    this.outputLayer = options.outputLayer;
+    this.perceptron = new Architect.Perceptron(this.inputLayer, ...this.hiddenLayer, this.outputLayer);
 
     this.projectType = 'ANN';
 
