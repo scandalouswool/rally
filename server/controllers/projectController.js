@@ -351,7 +351,7 @@ class ProjectController {
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-
+    console.log(newProject);
     return projectId;
   }
 
