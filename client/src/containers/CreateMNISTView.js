@@ -5,6 +5,8 @@ class CreateMNISTView extends Component {
   constructor(props) {
     super(props);
 
+    
+
   }
 
   handleInputChange(event) {
@@ -18,50 +20,7 @@ class CreateMNISTView extends Component {
 
     //title, dataSet, generateDataSet, mapData, reduceResults
     const projectOptions = {
-      title: `Primes, ${this.state.min} - ${this.state.max}`,
-
-      projectType: 'primes',
-
-      dataSet: '',
-
-      generateDataSet: `() => {
-        var start = ${this.state.min};
-        var end = ${this.state.max}
-        var numPieces = end / 10000;
-        var dataSet = [];
-
-        for (var i = 0; i < numPieces; i++) {
-          dataSet.push( [start + i * 10000, start + i * 10000 + 9999]);
-        }
-        return dataSet;
-      }`,
-
-      mapData: `(dataSubset) => {
-        const primeTester = (num) => {
-          for (var i = 2; i < num - 1; i++) {
-            if (num % i === 0) {
-              return false;
-            }
-          }
-          return true;
-        };
-
-        var min = dataSubset[0];
-        var max = dataSubset[1];
-        var result = [];
-
-        for (var i = min; i <= max; i++) {
-          if (primeTester(i)) {
-            result.push(i);
-          }
-        }
-
-        return result;
-      }`,
-
-      reduceResults: `(results) => {
-        return _.flatten(results).length + ' primes found!';
-      }`
+      
     };
 
     // Send projectOptions to the server

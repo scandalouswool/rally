@@ -23,8 +23,7 @@ class ANNProject extends Project {
         iterations: NUMBER,
         error: NUMBER,
         shuffle: BOOLEAN,
-        log: NUMBER,
-        cost: STRING
+        log: NUMBER
       }
     }
 
@@ -34,9 +33,13 @@ class ANNProject extends Project {
     // ANNProject class only supports Perceptron network architecture
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
+    this.projectType = 'ANN';
+
     this.network = this.perceptron.trainer.network.toJSON();
 
     this.trainerOptions = options.trainerOptions;
+
+    this.trainerOptions.cost = Trainer.cost.CROSS_ENTROPY;
 
     this.epochCycleReady = true;
 
@@ -61,13 +64,13 @@ class ANNProject extends Project {
           newJob = new Job(dataSet.slice(i * numJobsPerSet, (i + 1) * numJobsPerSet), i, this.projectId);
         }
 
-        newJob.jobType = 'ANN';
+        newJob.projectType = 'ANN';
         newJob.ANNNetwork = this.network;
         newJob.trainerOptions = this.trainerOptions;
 
         trainingSets.push(newJob);
       }
-
+      console.log('NUMBER OF TRAINING SETS:', trainingSets.length);
       return trainingSets;
     });
 

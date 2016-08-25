@@ -4,14 +4,16 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL, {
     protocol: 'postgres',
     dialect: 'postgres',
-    host: process.env.DATABASE_URL.split(':')[2]
+    host: process.env.DATABASE_URL.split(':')[2],
+    logging: false
   });
 } else {
   //Change the arguments to sequelize as neccessary ('Database', 'username', 'password')
   var sequelize = new Sequelize('rally', null, null, {
     protocol: 'postgres', // or mysql
     dialect: 'postgres', // or mysql
-    host: 'localhost'
+    host: 'localhost',
+    logging: false
   });
 }
 

@@ -41,7 +41,8 @@ io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
   const jobCallback = (newJob) => {
-    if (newJob.jobType === 'ANN') {
+    console.log('Sending new Job', newJob);
+    if (newJob.projectType === 'ANN') {
       console.log('Sending ANN job');
       socket.emit('newANNJob', newJob);        
     } else {
@@ -73,7 +74,7 @@ io.on('connect', (socket) => {
   // The socket connection will be passed to the relevant Worker object
   // so that it can emit messages directly.
   socket.on('userReady', (readyMessage) => {
-    console.log(readyMessage);
+    console.log('USER READY MESSAGE:', readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
 
     pc.userReady(readyMessage, jobCallback);
@@ -177,4 +178,3 @@ io.on('connect', (socket) => {
 // TESTS
 const irisOptions = require('./projects/iris.js');
 pc.createProject(irisOptions);
-// pc.createProject();

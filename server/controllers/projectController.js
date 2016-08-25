@@ -37,22 +37,23 @@ class ProjectController {
     // for each entry, and populate this.allProjects obj
     ***************************************************/
     db.Project.findAll({}).then((projects) => {
-      projects.forEach((project) => {
-        let data = project.dataValues;
-        let options = {
-          projectType: data.projectType,
-          title: data.title,
-          complete: data.complete,
-          projectTime: data.projectTime,
-          dataSet: data.dataSet,
-          generateDataSet: data.generateDataSet,
-          completedJobs: JSON.parse(data.completedJobs),
-          mapData: data.mapData,
-          reduceResults: data.reduceResults,
-          finalResult: JSON.parse(data.finalResult)
-        };
-        this.allProjects[data.projectId] = new Project(options, data.projectId, io);
-      });
+      // projects.forEach((project) => {
+      //   let data = project.dataValues;
+      //   let options = {
+      //     projectType: data.projectType,
+      //     title: data.title,
+      //     complete: data.complete,
+      //     projectTime: data.projectTime,
+      //     dataSet: data.dataSet,
+      //     generateDataSet: data.generateDataSet,
+      //     completedJobs: JSON.parse(data.completedJobs),
+      //     mapData: data.mapData,
+      //     reduceResults: data.reduceResults,
+      //     finalResult: JSON.parse(data.finalResult)
+      //   };
+
+      //   this.allProjects[data.projectId] = new Project(options, data.projectId, io);
+      // });
 
       /***************************************************
       // Iterate over projects in this.allProjects object
@@ -176,7 +177,7 @@ class ProjectController {
     // which will then create a new Worker for that user and assign it
     // an available job
     const project = this.allProjects[readyMessage.projectId];
-
+    console.log('USER READY FOR:', project.projectType);
     if (project) {
       // Creates a new Worker in the appropriate Project
       const newWorker = project.createWorker(readyMessage);
@@ -187,6 +188,7 @@ class ProjectController {
       // Assign the new worker as many jobs as the worker can handle
       for (var i = 0; i < newWorker.maxJobs; i++) {
         const newJob = project.assignJob(newWorker)
+        console.log('New job for worker:', newJob);
         if (newJob) {
           callback(newJob);
         }
@@ -293,7 +295,7 @@ class ProjectController {
     // Assign a project ID to the new Project and create a new Project
     const projectId = 'project' + Object.keys(this.allProjects).length;
     let newProject;
-    console.log('projectId', projectId);
+
     if (options.projectType === 'ANN') {
       newProject = new ANNProject(options, projectId);
     } else {
