@@ -67,19 +67,21 @@ class ProjectController {
           }).then(() => {
             for (var obj in this.allProjects) {
               let project = this.allProjects[obj];
-              db.Project.create({
-                projectId: project.projectId,
-                projectType: project.projectType,
-                title: project.title,
-                complete: project.complete,
-                projectTime: project.projectTime,
-                dataSet: project.dataSet,
-                generateDataSet: project.generateDataSet,
-                completedJobs: JSON.stringify(project.completedJobs),
-                mapData: project.mapData,
-                reduceResults: project.reduceResults,
-                finalResult: JSON.stringify(project.finalResult)
-              });
+              if (project.type !== 'ANN') {
+                db.Project.create({
+                  projectId: project.projectId,
+                  projectType: project.projectType,
+                  title: project.title,
+                  complete: project.complete,
+                  projectTime: project.projectTime,
+                  dataSet: project.dataSet,
+                  generateDataSet: project.generateDataSet,
+                  completedJobs: JSON.stringify(project.completedJobs),
+                  mapData: project.mapData,
+                  reduceResults: project.reduceResults,
+                  finalResult: JSON.stringify(project.finalResult)
+                });
+              }
             }
           });
         };

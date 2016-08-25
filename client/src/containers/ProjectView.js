@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisual';
+import _ from 'lodash';
 import Promise from 'bluebird';
 import {
         createWebWorkersPool,
@@ -43,7 +44,7 @@ class ProjectView extends Component {
       let visualization;
       const projectId = this.props.selectedProject.projectId;
 
-      let thisProject; 
+      let thisProject;
 
       this.props.projects.forEach( (item) => {
         if (item.projectId === projectId) {
@@ -53,42 +54,66 @@ class ProjectView extends Component {
 
       // Display Custom Visualization
       if (this.props.selectedProject.projectType === 'primes') {
-        visualization = <PrimesVisualView />
+        visualization = <PrimesVisualView />;
       } else {
-        visualization = undefined;
+        visualization = <div className="viz-placeholder"></div>;
       }
 
       // Display Project Data
       if (this.props.selectedProject.projectType !== 'ANN') {
         return (
-          <div>
-            <SelectedProjectView />
 
-            {visualization}
+          <div className="container">
 
-            <button className="btn-success btn-lg createProject" onClick={this.connectToProject.bind(this)}>Join Project</button>
-            <button className="btn-danger btn-lg createProject" onClick={this.disconnectFromProject.bind(this)}>Leave Project</button>
-            
-            <div>
-              Number of Workers: {thisProject === undefined ? null : thisProject.workers.length}
+            <div className="row">
+              <SelectedProjectView />
             </div>
-            <div>
-              Number of Jobs Completed: {this.props.results[projectId].length === 0  ? 'Project is currently not in progress' : this.props.results[projectId].length}
+
+            <div className="row">
+              <div className="col-sm-4 text-left">
+                <div className="row">
+                  <div className="col-sm-12 text-center">
+                    <button
+                      className="btn-success btn-lg createProject btn-padding btn-size"
+                      onClick={this.connectToProject.bind(this)}>
+                      Join
+                    </button>
+                    <button
+                      className="btn-danger btn-lg createProject btn-padding btn-size"
+                      onClick={this.disconnectFromProject.bind(this)}>
+                      Abandon
+                    </button>
+                  </div>
+                </div>
+                <div className="row text-center">
+                  <div className="col-sm-offset-4 scroll-block text-center background-color vert-align">
+                    {_.map((_.range(0, thisProject.workers.length)), (i) => {
+                        return (<div className="userBlock text-center">{`User ${i + 1}`}</div>);
+                      })
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-sm-8 viz-block">
+                {visualization}
+              </div>
             </div>
-            <div>
-              Total number of jobs: {this.props.results[projectId].length === 0 ? 'Project is currently not in progress': this.props.selectedProject.jobsLength}
+
+            <div className="row">
+              <div className="progressbar">
+                Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
+                %
+                <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
+              </div>
+              <div>
+              Final Result: {thisProject.finalResult}
+              </div>
+              <div>
+              Final Time: {thisProject.projectTime ? Math.round((thisProject.projectTime / 1000), 1) + ' seconds' : ''}
+              </div>
             </div>
-            <div className="progressbar">
-              Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
-              %
-              <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
-            </div>
-            <div>
-            Final Result: {thisProject.finalResult}
-            </div>
-            <div>
-            Final Time: {thisProject.projectTime ? thisProject.projectTime + ' milliseconds' : ''}
-            </div>
+
           </div>
         );
       } else if (this.props.selectedProject.projectType === 'ANN') {

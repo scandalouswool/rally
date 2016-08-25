@@ -42,7 +42,6 @@ class Project {
     this.availableJobs = (() => {
       let dataSet;
 
-      console.log('The data set: ', this.dataSet);
       if (!this.dataSet) {
         console.log('Evaluating code');
         dataSet = eval(this.generateDataSet)();
@@ -174,9 +173,11 @@ USER-INTERFACE-AFFECTING FUNCTIONS
 
   removeWorker(socketId) {
     if (_.size(this.workers) === 1) {
-      this.timer.stop();
-      this.projectTime = this.projectTime + this.timer.time();
-      this.timer.reset();
+      if (!this.complete) {
+        this.timer.stop();
+        this.projectTime = this.projectTime + this.timer.time();
+        this.timer.reset();
+      }
     }
 
     console.log(`Removing worker ${socketId} in project ${this.projectId}`);
