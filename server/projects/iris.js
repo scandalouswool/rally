@@ -25,8 +25,7 @@ const irisOptions = {
     iterations: 5000,
     error: .00001,
     shuffle: true,
-    log: 1000,
-    cost: Trainer.cost.CROSS_ENTROPY    
+    log: 1000
   },
 
   generateDataSet: '',

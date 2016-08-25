@@ -153,40 +153,7 @@ export default class AppView extends Component {
     // Check if user's computer can run web workers
     if (typeof(Worker) === 'undefined') {
       console.log('This browser does not support Web Workers. The main browser process will perform the calculations, which will likely cause noticeable delays.');
-
     } else {
-
-      // // Create a Web Worker pool based on the maximum number of 
-      // // concurrent processes that user's CPU can support. Default to 
-      // // two workers if navigator.hardwareConcurrency is unavailable
-      // const MAX_WEBWORKERS = navigator.hardwareConcurrency || 2;
-      // this.webWorkerPool = [];
-
-      // for (var i = 0; i < MAX_WEBWORKERS; i++) {
-      //   let newWorker = {
-      //     worker: new Worker('/webWorker'),
-      //     isBusy: false,
-      //     jobId: null
-      //   }
-    
-      //   newWorker.worker.onmessage = (event) => {
-      //     console.log('Sending completed job to server');
-      //     const job = event.data;
-
-      //     this.webWorkerPool.forEach( (worker) => {
-      //       if (worker.jobId === job.jobId) {
-      //         worker.isBusy = false;
-      //         worker.jobId = null;
-      //       }
-      //     });
-
-      //     this.socket.emit('userJobDone', job);
-      //   };
-
-      //   this.webWorkerPool.push(newWorker);
-      // }
-      // console.log('Web worker pool initialized:', this.webWorkerPool);
-      // this.props.createWebWorkersPool(this.webWorkerPool);
       this.props.createWebWorkersPool({
         webWorkersPool: this.props.webWorkersPool,
         socket: this.socket
@@ -237,15 +204,17 @@ export default class AppView extends Component {
         // console.log('Network with reconciled weight:', updatedNetwork);
         
         doneJob.result = updatedNetwork;
+        doneJob.workerId = this.workerId;
         this.socket.emit('ANNUpdatedNetwork', doneJob);
       });
   }
 
   assignANNJob(worker, newJob) {
     // console.log('Assigning job to', worker);
+    this.workerId = newJob.workerId;
+
     return new Promise( (resolve, reject) => {
       worker.postMessage(newJob);
-      worker.isBusy = true;
 
       worker.onmessage = (e) => {
         worker.isBusy = false;
@@ -262,7 +231,6 @@ export default class AppView extends Component {
          partialNetworks[i].trainedNetwork.connections[j].weight;
       }
     }
-    // console.log('After op:', partialNetworks[0].trainedNetwork.connections[0].weight);
 
     console.log('Reconciled the weights of partial networks');
     return partialNetworks[0];

@@ -41,7 +41,7 @@ io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
   const jobCallback = (newJob) => {
-    if (newJob.jobType === 'ANN') {
+    if (newJob.projectType === 'ANN') {
       console.log('Sending ANN job');
       socket.emit('newANNJob', newJob);        
     } else {
@@ -73,7 +73,7 @@ io.on('connect', (socket) => {
   // The socket connection will be passed to the relevant Worker object
   // so that it can emit messages directly.
   socket.on('userReady', (readyMessage) => {
-    console.log(readyMessage);
+    console.log('USER READY MESSAGE:', readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
 
     pc.userReady(readyMessage, jobCallback);
@@ -115,7 +115,7 @@ io.on('connect', (socket) => {
   // The server will pass the io object to the ProjectController to directly
   // handle the sending of socket messages
   socket.on('createProject', (project) => {
-    console.log('RECEIVED NEW PROJECT: ', project);
+    // console.log('RECEIVED NEW PROJECT: ', project);
     if (pc.createProject(project)) {
       console.log('Successfully created a new project');
       io.emit('updateAllProjects', pc.getUpdateAllProjects());
@@ -159,22 +159,23 @@ io.on('connect', (socket) => {
     NEURAL NETWORK EVENT HANDLERS
   */
   socket.on('ANNUpdatedNetwork', (doneJob) => {
-    console.log('Received Updated Network');
-    const projectComplete = pc.updateANN(doneJob);
+    console.log('Received Updated Network from', doneJob.workerId);
+    const synchronizeANN = pc.updateANN(doneJob);
     const ANNJobCallback = (name, newJob) => {
       io.to(name).emit('newANNJob', newJob);
     }
 
-    if (!projectComplete) {
+    if (synchronizeANN) {
       setTimeout( () => {
         pc.restartANN(doneJob.projectId, ANNJobCallback);
       }, 4000);
-    }
+    } 
   });
 
 });
 
 // TESTS
 const irisOptions = require('./projects/iris.js');
+const mnistOptions = require('./projects/mnist.js');
 pc.createProject(irisOptions);
-// pc.createProject();
+pc.createProject(mnistOptions);

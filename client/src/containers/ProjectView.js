@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
-import PrimesVisualView from './PrimesVisual';
+import PrimesVisualView from './PrimesVisualView';
+import NQueensVisualView from './NQueensVisualView';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import {
@@ -55,6 +56,8 @@ class ProjectView extends Component {
       // Display Custom Visualization
       if (this.props.selectedProject.projectType === 'primes') {
         visualization = <PrimesVisualView />;
+      } else if (this.props.selectedProject.projectType === 'nqueens') {
+        visualization = <NQueensVisualView />;
       } else {
         visualization = <div className="viz-placeholder"></div>;
       }

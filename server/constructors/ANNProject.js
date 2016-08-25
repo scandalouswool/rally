@@ -23,8 +23,7 @@ class ANNProject extends Project {
         iterations: NUMBER,
         error: NUMBER,
         shuffle: BOOLEAN,
-        log: NUMBER,
-        cost: STRING
+        log: NUMBER
       }
     }
 
@@ -34,9 +33,13 @@ class ANNProject extends Project {
     // ANNProject class only supports Perceptron network architecture
     this.perceptron = new Architect.Perceptron(options.inputLayer, ...options.hiddenLayer, options.outputLayer);
 
+    this.projectType = 'ANN';
+
     this.network = this.perceptron.trainer.network.toJSON();
 
     this.trainerOptions = options.trainerOptions;
+
+    this.trainerOptions.cost = Trainer.cost.CROSS_ENTROPY;
 
     this.epochCycleReady = true;
 
@@ -61,17 +64,19 @@ class ANNProject extends Project {
           newJob = new Job(dataSet.slice(i * numJobsPerSet, (i + 1) * numJobsPerSet), i, this.projectId);
         }
 
-        newJob.jobType = 'ANN';
+        newJob.projectType = 'ANN';
         newJob.ANNNetwork = this.network;
         newJob.trainerOptions = this.trainerOptions;
 
         trainingSets.push(newJob);
       }
-
+      console.log('NUMBER OF TRAINING SETS:', trainingSets.length);
       return trainingSets;
     });
 
     this.availableJobs = this.createJobsFunc();
+
+    this.partialNetworks = [];
 
     this.testSet = options.testSet;
 
@@ -91,6 +96,7 @@ class ANNProject extends Project {
 
       if (newJob) {
         worker.currentJob.push(newJob);
+        worker.isBusy = true;
       }
 
       // Alternate timer
@@ -98,6 +104,7 @@ class ANNProject extends Project {
         this.timer.start();
       }
       // console.log('New ANNJob:', newJob);
+
       return newJob;
 
     } else {
@@ -114,18 +121,22 @@ class ANNProject extends Project {
   }
 
   testNetwork(trainedNetwork) {
+    // console.log(trainedNetwork);
+    console.log('Testing the updated neural network');
+    trainedNetwork = Network.fromJSON(trainedNetwork);
     const trainer = new Trainer(trainedNetwork);
     // console.log('Test set:', this.testSet);
     // console.log('Trainer options:', this.trainerOptions);
     const result = trainer.test(this.testSet, this.trainerOptions)
-    console.log(result);
+    // console.log(result);
 
-    return result.error;
+    return result;
   }
 
   updateNetwork(trainedNetwork) {
-    this.network = Network.fromJSON( trainedNetwork.toJSON() );
+    this.network = Network.fromJSON( trainedNetwork );
     // console.log('Updated network:', this.network);
+    return;
   }
 
   resetTrainingSet() {
@@ -138,6 +149,12 @@ class ANNProject extends Project {
     console.log(`Max of ${numWorkers} workers`);
     this.availableJobs = this.createJobsFunc(numWorkers);
     console.log('New jobs created:', this.availableJobs.length);
+    return;
+  }
+
+  completeProject(finalResult) {
+    this.finalResult = finalResult;
+    console.log('Project complete:', finalResult);
   }
 }
 
