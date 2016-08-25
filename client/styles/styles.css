@@ -14,7 +14,7 @@ body {
 }
 
 .progressbar {
-  width: 600px;
+  width: 100%;
 }
 
 .navbar {
@@ -98,3 +98,42 @@ h3 {
 .selected {
   text-align: center;
 }
+
+.testcolor1 {
+  background-color: #b2b2b1;
+}
+
+.testcolor3 {
+  background-color: #2222ff;
+}
+
+.viz-block {
+  background-color: #54585E;
+}
+
+.viz-placeholder {
+  width: 600px;
+  height: 400px;
+  opacity: 0;
+}
+
+.userBlock {
+  width: 150px;
+  height: 250px;
+  background-color: #ff69b4;
+  text-align: center;
+  vertical-align: center
+}
+
+.scroll-block {
+  overflow-y: scroll;
+}
+
+.vertAlign {
+  vertical-align: center;
+}
+
+.btn-size {
+  width: 100px;
+}
+
