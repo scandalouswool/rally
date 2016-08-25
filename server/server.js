@@ -175,7 +175,7 @@ io.on('connect', (socket) => {
 });
 
 // TESTS
-const irisOptions = require('./projects/iris.js');
-const mnistOptions = require('./projects/mnist.js');
-pc.createProject(irisOptions);
-pc.createProject(mnistOptions);
+// const irisOptions = require('./projects/iris.js');
+// const mnistOptions = require('./projects/mnist.js');
+// pc.createProject(irisOptions);
+// pc.createProject(mnistOptions);
