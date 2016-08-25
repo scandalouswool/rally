@@ -109,12 +109,29 @@ h3 {
 
 .viz-block {
   background-color: #54585E;
+  width: 100%;
+  height: 500px;
+  text-align: center;
 }
 
 .viz-placeholder {
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height: 500px;
   opacity: 0;
+}
+
+/* Yellow block */
+#visualizer {
+  background-color: #FFFF00;
+  width: 100%;
+  height: 500px;
+  vertical-align: middle;
+}
+
+/* Pink block */
+.svg-block {
+  background-color: #ff22b8;
+  margin: 0 auto;
 }
 
 .userBlock {

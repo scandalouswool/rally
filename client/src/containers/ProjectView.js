@@ -63,73 +63,68 @@ class ProjectView extends Component {
         visualization = <div className="viz-placeholder"></div>;
       }
 
-      // Display Project Data
-      if (this.props.selectedProject.projectType !== 'ANN') {
-        return (
-
-          <div className="container">
-
-            <div className="row">
-              <div className="col-sm-8">
-                <SelectedProjectView />
-              </div>
-              <div className="col-sm-4">
-                <button
-                  className="btn-success btn-lg createProject btn-padding btn-size"
-                  onClick={this.connectToProject.bind(this)}>
-                  Join
-                </button>
-                <button
-                  className="btn-danger btn-lg createProject btn-padding btn-size"
-                  onClick={this.disconnectFromProject.bind(this)}>
-                  Abandon
-                </button>
-              </div>
+      // Change stats depending on the type of project (ANN or otherwise)
+      let stats;
+      if (this.props.selectedProject.projectType === 'ANN') {
+        stats = (
+          <div className="row">
+            This is a Neural Network Project
+            <div>
+            Total Number of Training Data Available: {thisProject.availableJobsNum}
             </div>
-
-            <div className="row">
-              <div className="col-sm-12 viz-block">
-                {visualization}
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="progressbar">
-                Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
-                %
-                <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
-              </div>
-              <div>
-              Final Result: {thisProject.finalResult}
-              </div>
-              <div>
-              Final Time: {thisProject.projectTime ? Math.round((thisProject.projectTime / 1000), 1) + ' seconds' : ''}
-              </div>
-            </div>
-
           </div>
         );
-      } else if (this.props.selectedProject.projectType === 'ANN') {
-        return(
-          <div>
-            <SelectedProjectView />
-
-            {visualization}
-
-            <button className="btn-success btn-lg createProject" onClick={this.connectToProject.bind(this)}>Join Project</button>
-            <button className="btn-danger btn-lg createProject" onClick={this.disconnectFromProject.bind(this)}>Leave ProjectView</button>
-            
-
+      } else {
+        stats = (
+          <div className="row">
+            <div className="progressbar">
+              Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
+              %
+              <Progress color='#3CC76A' completed={this.props.results[projectId].length === 0 ? 0 : this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 } />
+            </div>
             <div>
-              This is a Neural Network Project
-              <div>
-              Total Number of Training Data Available: {thisProject.availableJobsNum}
-              </div>
+            Final Result: {thisProject.finalResult}
+            </div>
+            <div>
+            Final Time: {thisProject.projectTime ? Math.round((thisProject.projectTime / 1000), 1) + ' seconds' : ''}
             </div>
           </div>
         );
       }
 
+      // Display Project Data
+      return (
+        <div className="container">
+
+          <div className="row">
+            <div className="col-sm-8">
+              <SelectedProjectView />
+            </div>
+
+            <div className="col-sm-4">
+              <button
+                className="btn-success btn-lg createProject btn-padding btn-size"
+                onClick={this.connectToProject.bind(this)}>
+                Join
+              </button>
+              <button
+                className="btn-danger btn-lg createProject btn-padding btn-size"
+                onClick={this.disconnectFromProject.bind(this)}>
+                Abandon
+              </button>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-12 viz-block">
+              {visualization}
+            </div>
+          </div>
+
+          {stats}
+
+        </div>
+      );
     }
   }
 }
@@ -154,7 +149,7 @@ function mapStateToProps(state) {
     results: state.updateResults,
     job: state.updateJob,
     webWorkersPool: state.webWorkersPool
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
