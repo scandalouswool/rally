@@ -76,6 +76,8 @@ class ANNProject extends Project {
 
     this.availableJobs = this.createJobsFunc();
 
+    this.partialNetworks = [];
+
     this.testSet = options.testSet;
 
     this.jobsLength = this.availableJobs.length;
@@ -94,6 +96,7 @@ class ANNProject extends Project {
 
       if (newJob) {
         worker.currentJob.push(newJob);
+        worker.isBusy = true;
       }
 
       // Alternate timer
@@ -101,6 +104,7 @@ class ANNProject extends Project {
         this.timer.start();
       }
       // console.log('New ANNJob:', newJob);
+
       return newJob;
 
     } else {
@@ -117,18 +121,21 @@ class ANNProject extends Project {
   }
 
   testNetwork(trainedNetwork) {
+    console.log(trainedNetwork);
+    trainedNetwork = Network.fromJSON(trainedNetwork);
     const trainer = new Trainer(trainedNetwork);
     // console.log('Test set:', this.testSet);
     // console.log('Trainer options:', this.trainerOptions);
     const result = trainer.test(this.testSet, this.trainerOptions)
     console.log(result);
 
-    return result.error;
+    return result;
   }
 
   updateNetwork(trainedNetwork) {
-    this.network = Network.fromJSON( trainedNetwork.toJSON() );
+    this.network = Network.fromJSON( trainedNetwork );
     // console.log('Updated network:', this.network);
+    return;
   }
 
   resetTrainingSet() {
@@ -141,6 +148,7 @@ class ANNProject extends Project {
     console.log(`Max of ${numWorkers} workers`);
     this.availableJobs = this.createJobsFunc(numWorkers);
     console.log('New jobs created:', this.availableJobs.length);
+    return;
   }
 }
 

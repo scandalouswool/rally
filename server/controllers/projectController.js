@@ -186,13 +186,14 @@ class ProjectController {
       this.allWorkers[newWorker.workerId] = project.projectId;
 
       // Assign the new worker as many jobs as the worker can handle
+
       for (var i = 0; i < newWorker.maxJobs; i++) {
         const newJob = project.assignJob(newWorker)
         console.log('New job for worker:', newJob);
         if (newJob) {
           callback(newJob);
-        }
-      } 
+        } 
+      }
 
     } else {
       console.log('Error in userReady: Project does not exist');
@@ -240,33 +241,79 @@ class ProjectController {
     NEURAL NETWORK HANDLERS
   */
   updateANN(doneJob) {
-    // console.log(updatedNetwork);
-    const updatedNetwork = doneJob.result;
+    // console.log('Received finished ANN job:', doneJob);
+    console.log('Updating partial networks');
+    const partialNetwork = doneJob.result.trainedNetwork;
+    // console.log('Result is: ', partialNetwork);
     const project = this.allProjects[doneJob.projectId];
+    let networksSynchronized = false;
     // console.log('Updated network info:', updatedNetwork);
-    const trainedNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
+    // const partialNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
     // console.log('Inside new network:', trainedNetwork);
     // console.log(trainedNetwork.layers.input.list);
-    const error = project.testNetwork(trainedNetwork);
-    let trainingComplete;
+    // const error = project.testNetwork(trainedNetwork);
+    // let trainingComplete;
 
-    if (error < project.trainerOptions.error) {
-      console.log('Desired error rate reached. Training complete.');
-      console.log('Final error rate:', error);
-      trainingComplete = true;
-    } else {
-      console.log('Error rate too high - continuing training.');
-      project.updateNetwork(trainedNetwork);
-      trainingComplete = false;
+    project.partialNetworks.push(partialNetwork);
+
+    project.workers[doneJob.workerId].isBusy = false;
+    // console.log(project.workers[doneJob.workerId]);
+    // Check if all workers are busy
+    let readyToSync = true;
+    for (let worker in project.workers) {
+      // console.log(project.workers);
+      if (project.workers[worker].isBusy === true) {
+        console.log('There are still busy workers in this project');
+        readyToSync = false;
+      }
     }
 
-    return trainingComplete;
+    if (!readyToSync) {
+      console.log('Not ready to sync');
+      return networksSynchronized;
+    } 
+
+    if (readyToSync) {
+      const trainedNetwork = this.syncNetworks(project.partialNetworks);
+      const result = project.testNetwork(trainedNetwork);
+
+      // evaluate the error rate and continue is necessary
+      // otherwise complete project
+
+      if (result.error < project.trainerOptions.error) {
+        console.log('Desired error rate reached. Training complete.');
+        console.log('Final error rate:', project.error);
+        this.completeProject();
+
+      } else {
+        console.log('Error rate too high - continuing training.');
+        project.updateNetwork(trainedNetwork);
+        project.partialNetworks = [];
+        networksSynchronized = true;
+        return networksSynchronized;
+      }    
+    }
+  }
+
+  syncNetworks(partialNetworks) {
+    console.log(`Synchronizing ${partialNetworks.length} networks`);
+    for (var i = 1; i < partialNetworks.length; i++) {
+      for (var j = 0; j < partialNetworks[0].trainedNetwork.connections.length; j++) {
+        partialNetworks[0].trainedNetwork.connections[j].weight =
+         partialNetworks[0].trainedNetwork.connections[j].weight + 
+         partialNetworks[i].trainedNetwork.connections[j].weight;
+      }
+    }
+
+    console.log('Reconciled the weights of partial networks', partialNetworks[0]);
+    return partialNetworks[0];
   }
 
   restartANN(projectId, ANNJobCallback) {
     console.log('Resetting ANN project');
     const project = this.allProjects[projectId];
     project.resetTrainingSet();
+    project.completedJobs = [];
 
     console.log('Reinitialized jobs:', project.availableJobs.length);
     console.log('Available workers:', project.workers);
@@ -370,8 +417,8 @@ class ProjectController {
   }
 
   //TODO: completeProject method
-  completeProject() {
-    console.log('Project done');
+  completeProject(finalResult) {
+    console.log('Project done. Final result:', finalResult);
   }
 }
 

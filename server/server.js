@@ -41,7 +41,6 @@ io.on('connect', (socket) => {
   // On initial connection, send the projects list to the client
   console.log('User connected:', socket.id);
   const jobCallback = (newJob) => {
-    console.log('Sending new Job', newJob);
     if (newJob.projectType === 'ANN') {
       console.log('Sending ANN job');
       socket.emit('newANNJob', newJob);        
@@ -160,16 +159,18 @@ io.on('connect', (socket) => {
     NEURAL NETWORK EVENT HANDLERS
   */
   socket.on('ANNUpdatedNetwork', (doneJob) => {
-    console.log('Received Updated Network');
-    const projectComplete = pc.updateANN(doneJob);
+    console.log('Received Updated Network from', doneJob.workerId);
+    const synchronizeANN = pc.updateANN(doneJob);
     const ANNJobCallback = (name, newJob) => {
       io.to(name).emit('newANNJob', newJob);
     }
 
-    if (!projectComplete) {
+    if (synchronizeANN) {
       setTimeout( () => {
         pc.restartANN(doneJob.projectId, ANNJobCallback);
       }, 4000);
+    } else {
+      console.log('Waiting for pending jobs');
     }
   });
 
@@ -177,4 +178,6 @@ io.on('connect', (socket) => {
 
 // TESTS
 const irisOptions = require('./projects/iris.js');
+const mnistOptions = require('./projects/mnist.js');
 pc.createProject(irisOptions);
+pc.createProject(mnistOptions);

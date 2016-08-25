@@ -5,6 +5,7 @@ class Worker {
     this.workerId = socketId;
     this.currentJob = [];
     this.maxJobs = null;
+    this.isBusy = false;
   }
 }
 //export job constructor
