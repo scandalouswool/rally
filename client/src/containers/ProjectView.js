@@ -52,8 +52,6 @@ class ProjectView extends Component {
         }
       });
 
-      console.log(thisProject);
-
       // Display Custom Visualization
       if (this.props.selectedProject.projectType === 'primes') {
         visualization = <PrimesVisualView />;
