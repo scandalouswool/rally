@@ -121,13 +121,14 @@ class ANNProject extends Project {
   }
 
   testNetwork(trainedNetwork) {
-    console.log(trainedNetwork);
+    // console.log(trainedNetwork);
+    console.log('Testing the updated neural network');
     trainedNetwork = Network.fromJSON(trainedNetwork);
     const trainer = new Trainer(trainedNetwork);
     // console.log('Test set:', this.testSet);
     // console.log('Trainer options:', this.trainerOptions);
     const result = trainer.test(this.testSet, this.trainerOptions)
-    console.log(result);
+    // console.log(result);
 
     return result;
   }
@@ -149,6 +150,11 @@ class ANNProject extends Project {
     this.availableJobs = this.createJobsFunc(numWorkers);
     console.log('New jobs created:', this.availableJobs.length);
     return;
+  }
+
+  completeProject(finalResult) {
+    this.finalResult = finalResult;
+    console.log('Project complete:', finalResult);
   }
 }
 

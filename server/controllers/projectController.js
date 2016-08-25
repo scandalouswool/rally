@@ -282,11 +282,11 @@ class ProjectController {
 
       if (result.error < project.trainerOptions.error) {
         console.log('Desired error rate reached. Training complete.');
-        console.log('Final error rate:', project.error);
-        this.completeProject();
+        console.log('Final error rate:', result.error);
+        this.completeProject(result);
 
       } else {
-        console.log('Error rate too high - continuing training.');
+        console.log('Error rate too high - continuing training:', result.error);
         project.updateNetwork(trainedNetwork);
         project.partialNetworks = [];
         networksSynchronized = true;
@@ -298,14 +298,14 @@ class ProjectController {
   syncNetworks(partialNetworks) {
     console.log(`Synchronizing ${partialNetworks.length} networks`);
     for (var i = 1; i < partialNetworks.length; i++) {
-      for (var j = 0; j < partialNetworks[0].trainedNetwork.connections.length; j++) {
-        partialNetworks[0].trainedNetwork.connections[j].weight =
-         partialNetworks[0].trainedNetwork.connections[j].weight + 
-         partialNetworks[i].trainedNetwork.connections[j].weight;
+      for (var j = 0; j < partialNetworks[0].connections.length; j++) {
+        partialNetworks[0].connections[j].weight =
+         partialNetworks[0].connections[j].weight + 
+         partialNetworks[i].connections[j].weight;
       }
     }
 
-    console.log('Reconciled the weights of partial networks', partialNetworks[0]);
+    console.log('Reconciled the weights of partial networks');
     return partialNetworks[0];
   }
 
@@ -316,7 +316,7 @@ class ProjectController {
     project.completedJobs = [];
 
     console.log('Reinitialized jobs:', project.availableJobs.length);
-    console.log('Available workers:', project.workers);
+    // console.log('Available workers:', project.workers);
 
     for (var key in project.workers) {
 

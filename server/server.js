@@ -169,9 +169,7 @@ io.on('connect', (socket) => {
       setTimeout( () => {
         pc.restartANN(doneJob.projectId, ANNJobCallback);
       }, 4000);
-    } else {
-      console.log('Waiting for pending jobs');
-    }
+    } 
   });
 
 });
