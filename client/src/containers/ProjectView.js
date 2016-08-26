@@ -28,7 +28,7 @@ class ProjectView extends Component {
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
-    console.log(this.props);
+
     this.props.resetWebWorkersPool({
       webWorkersPool: this.props.webWorkersPool,
       socket: this.props.socket

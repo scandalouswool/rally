@@ -196,10 +196,8 @@ class ProjectController {
       this.allWorkers[newWorker.workerId] = project.projectId;
 
       // Assign the new worker as many jobs as the worker can handle
-      console.log('Assigning max jobs:', newWorker.maxJobs);
       for (var i = 0; i < newWorker.maxJobs; i++) {
         const newJob = project.assignJob(newWorker)
-        console.log('New job for worker:', newJob);
         if (newJob) {
           callback(newJob);
         } 
@@ -337,7 +335,6 @@ class ProjectController {
         project.workers[key].currentJob = [];
         // console.log('Assigning to:', project.workers);
         // console.log(project.workers[key]);
-        console.log('sending job to:', key);
         ANNJobCallback(key, project.assignJob(project.workers[key]) );
       }
     }

@@ -10,7 +10,7 @@ import UpdateResults from './reducer_results';
 import WebWorkersPool from './reducer_web_workers';
 import Auth from './reducer_auth';
 import PendingProjects from './reducer_pending_projects';
-import TestResults from './reducer_testing_results';
+import UpdatedNetwork from './reducer_testing_results';
 
 const rootReducer = combineReducers({
   allProjects: AllProjectsUpdate,
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   webWorkersPool: WebWorkersPool,
   pendingProjects: PendingProjects,
   ANNJobPoolReady: ANNJobPoolReady,
-  testResults: TestResults
+  updatedNetwork: UpdatedNetwork
 });
 
 export default rootReducer;

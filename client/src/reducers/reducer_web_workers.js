@@ -31,7 +31,6 @@ export default function (state = [], action) {
 
         webWorkerPool.push(newWorker);
       }  
-      // console.log('WWReducer: Created new web workers', webWorkerPool);
       return webWorkerPool;
     
     case 'RESET_WEB_WORKER':

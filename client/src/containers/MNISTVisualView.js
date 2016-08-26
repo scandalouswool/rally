@@ -35,8 +35,11 @@ class MNISTVisualView extends Component {
   }
 
   componentDidUpdate() {
-    console.log('From Inside componentDidUpdate:', this.props.ANNJobPoolReady);
     this.drawChart(this.props.ANNJobPoolReady);
+
+    if (this.props.updatedNetwork.length !== 0) {
+      this.testNetwork(this.props.updatedNetwork);
+    }
   }
 
   drawChart (dataSet) {
@@ -107,12 +110,11 @@ class MNISTVisualView extends Component {
   }
 
   drawTestingData() {
-    console.log('Testing Results:', this.props.testResults);
     const self = this;
     const trainingNumbers = this.testingData.map( (item) => {
       return item.output.indexOf(1);
     });
-    console.log('Training data solutions:', trainingNumbers);
+
     trainingNumbers.forEach( (num, i) => {
       const image = new Image();
 
@@ -121,6 +123,35 @@ class MNISTVisualView extends Component {
       }
       image.src = '../../assets/mnist.png';
     });
+  }
+
+  drawTestingResults(results) {
+    const self = this;
+
+    results.forEach( (num, i) => {
+      const image = new Image();
+
+      image.onload = () => {
+        self.context.drawImage(image, num * 28 + num * 1, num * 28 + num * 1, 28, 28, 400 + i * 28 + i * 10, 175, 28, 28);
+      }
+      image.src = '../../assets/mnist.png';
+    });
+  }
+
+  testNetwork(updatedNetwork) {  
+    updatedNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
+    const testResults = [];
+    console.log(updatedNetwork);
+    this.testingData.forEach( (test) => {
+      const result = updatedNetwork.activate(test.input);
+      console.log('testing', test.input);
+      const guess = _.max(result);
+      console.log('guess:', guess);
+      console.log('number:', result.indexOf(guess));
+      testResults.push(result.indexOf(guess));
+    });
+    this.drawTestingResults(testResults);
+    console.log('Predictions from network:', testResults);
   }
 
   render() {
@@ -135,7 +166,7 @@ function mapStateToProps(state) {
     results: state.updateResults,
     project: state.selectedProject,
     ANNJobPoolReady: state.ANNJobPoolReady,
-    testResults: state.testResults
+    updatedNetwork: state.updatedNetwork
   };
 }
 

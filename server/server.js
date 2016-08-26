@@ -73,7 +73,6 @@ io.on('connect', (socket) => {
   // The socket connection will be passed to the relevant Worker object
   // so that it can emit messages directly.
   socket.on('userReady', (readyMessage) => {
-    console.log('USER READY MESSAGE:', readyMessage);
     console.log('User ready for project:', readyMessage.projectId);
 
     pc.userReady(readyMessage, jobCallback);

@@ -49,8 +49,7 @@ export default class AppView extends Component {
 
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
-      console.log('Web worker pool:', this.props.webWorkersPool);
-      // console.log('New job', job);
+
       if (this.props.webWorkersPool !== null) {
         console.log('Assigning new job to an available web worker');
         let availableWorker = false;
@@ -110,7 +109,7 @@ export default class AppView extends Component {
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-      console.log('Available projects:', projectList);
+
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
@@ -119,7 +118,6 @@ export default class AppView extends Component {
 
     // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
-      console.log('Updating list of pending projects', pendingProjects);
       this.props.updatePendingProjects(pendingProjects);
     });
 
@@ -180,7 +178,6 @@ export default class AppView extends Component {
 
       this.ANNWorkerPool.push(worker);
     }
-    console.log('ANNWorkers initialized:', this.ANNWorkerPool);
   }
 
   beginEpochCycle(ANNJobPool) {
@@ -209,6 +206,9 @@ export default class AppView extends Component {
         doneJob.result = updatedNetwork;
         doneJob.workerId = this.workerId;
         this.socket.emit('ANNUpdatedNetwork', doneJob);
+
+        // Test the updated network locally
+        this.props.updateTestResults(updatedNetwork);
       });
   }
 
@@ -236,7 +236,6 @@ export default class AppView extends Component {
     }
 
     console.log('Reconciled the weights of partial networks');
-    this.props.updateTestResults([1, 2, 3]);
     return partialNetworks[0];
   }
 
