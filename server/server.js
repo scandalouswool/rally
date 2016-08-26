@@ -99,7 +99,7 @@ io.on('connect', (socket) => {
     pc.userJobDone(completedJob, jobCallback);
     io.emit('updateAllProjects', pc.getUpdateAllProjects());
   });
-
+  
   // 'createProject' event handler
   // Passes an 'options' object to the ProjectController
   // Options must have the form that's defined in the Project constructor script, specifically:
