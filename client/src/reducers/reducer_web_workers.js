@@ -16,7 +16,7 @@ export default function (state = [], action) {
         }
     
         newWorker.worker.onmessage = (event) => {
-          console.log('Sending completed job to server');
+          // console.log('Sending completed job to server');
           const job = event.data;
 
           webWorkerPool.forEach( (worker) => {
@@ -31,11 +31,11 @@ export default function (state = [], action) {
 
         webWorkerPool.push(newWorker);
       }  
-      console.log('WWReducer: Created new web workers', webWorkerPool);
+      // console.log('WWReducer: Created new web workers', webWorkerPool);
       return webWorkerPool;
     
     case 'RESET_WEB_WORKER':
-      console.log('Terminating web workers');
+      // console.log('Terminating web workers');
       action.payload.webWorkersPool.forEach( (worker) => {
         worker.worker.terminate();
       });

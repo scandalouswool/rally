@@ -5,6 +5,7 @@ import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisualView';
 import NQueensVisualView from './NQueensVisualView';
+import UserView from '../Components/UserView';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import {
@@ -67,7 +68,7 @@ class ProjectView extends Component {
       let stats;
       if (this.props.selectedProject.projectType === 'ANN') {
         stats = (
-          <div className="row">
+          <div className="row stats">
             This is a Neural Network Project
             <div>
             Total Number of Training Data Available: {thisProject.availableJobsNum}
@@ -76,7 +77,7 @@ class ProjectView extends Component {
         );
       } else {
         stats = (
-          <div className="row">
+          <div className="row stats">
             <div className="progressbar">
               Progress: {this.props.results[projectId].length === 0 ? '0': Math.floor(this.props.results[projectId].length / this.props.selectedProject.jobsLength * 100 || 100)}
               %
@@ -121,20 +122,19 @@ class ProjectView extends Component {
             </div>
           </div>
 
-          {stats}
+         {stats}
+
+          <div className="row">
+            <div className="col-sm-12 user-container">
+              <UserView workerArray={thisProject.workers}/>
+            </div>
+          </div>
 
         </div>
       );
     }
   }
 }
-
-/*<div className="col-sm-offset-4 scroll-block text-center background-color vert-align">
-  {_.map((_.range(0, thisProject.workers.length)), (i) => {
-      return (<div className="userBlock text-center">{`User ${i + 1}`}</div>);
-    })
-  }
-</div>*/
 
 // Attach router to context
 ProjectView.contextTypes = {
