@@ -184,3 +184,11 @@ h3 {
   margin-bottom: 20px;
   padding: 5px;
 }
+
+textarea {
+  width: 100%;
+}
+
+.submit-padding {
+  padding-bottom: 50px;
+}

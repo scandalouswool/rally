@@ -9,7 +9,7 @@ class UserView extends Component {
     this.svgHeight = 500;
     this.userRadius = 45;
     this.projectRadius = 65;
-    this.addCoordinates();
+    this.duration = 100;
   }
 
   componentDidMount() {
@@ -18,6 +18,7 @@ class UserView extends Component {
       .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
       .classed('svg-content', true);
 
+    this.addCoordinates();
     this.drawUsers();
   }
 
@@ -70,6 +71,7 @@ class UserView extends Component {
   }
 
   drawUsers() {
+    console.log(this.props.workerArray);
     // Make the lines
     let lines = this.graph.selectAll('line')
       .data(this.props.workerArray);

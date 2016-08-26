@@ -15,7 +15,7 @@ class CreateANNProjectView extends Component {
       generateDataSet: '',
       testSet: '',
       trainingOptions: ''
-    }
+    };
   }
 
   handleInputChange(event) {
@@ -37,7 +37,7 @@ class CreateANNProjectView extends Component {
     } else {
       this.props.socket.emit('pendProject', this.state);
     }
-  
+
     this.context.router.push('/menu');
   }
 
@@ -48,12 +48,12 @@ class CreateANNProjectView extends Component {
       + 'input the data here, or provide a function below that will generate'
       + 'the desired data set. At the moment, that function is unable to accept'
       + 'any arguments.\n'
-      + 'Training data set must be an array with individual data objects' 
+      + 'Training data set must be an array with individual data objects'
       + 'with the following form:\n'
       + '    {\n'
       + '      input: ARRAY,\n'
       + '      output: ARRAY\n'
-      + '                       }';
+      + '    }';
     let testSetText = 'Please enter the test set that will be used to determine'
       + 'whether the neutral network has been sufficiently trained.'
       + 'The test set must have the same format as the training set, '
@@ -62,7 +62,7 @@ class CreateANNProjectView extends Component {
       + '    {\n'
       + '      input: ARRAY,\n'
       + '      output: ARRAY\n'
-      + '                       }';
+      + '    }';
     let trainingOptionsText = 'Please provide the options that you would like'
       + 'the Synaptic trainer to use. The options must have the following format:\n'
       + '    {\n'
@@ -72,49 +72,69 @@ class CreateANNProjectView extends Component {
       + '      shuffle: BOOLEAN,\n'
       + '      log: NUMBER,\n'
       + '    }';
-  
+
     let rows = this.numRows;
     let cols = this.numCols;
 
     return (
-      <div>
-        <h2>Create a new ANN project</h2>
+      <div className="container">
+        <div className="row">
+          <h2>Create a new ANN project</h2>
+        </div>
 
-        <label className="block-label">Project Name:</label>
-        <textarea
-          rows="1" cols={cols} id="title"
-          placeholder={titleText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Project Name:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows="1" cols={cols} id="title"
+            placeholder={titleText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Training Set:</label>
-        <textarea
-          rows={rows} cols={cols} id="dataSet"
-          placeholder={dataSetText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Training Set:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="dataSet"
+            placeholder={dataSetText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Test Set:</label>
-        <textarea
-          rows={rows} cols={cols} id="testSet"
-          placeholder={testSetText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Test Set:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="testSet"
+            placeholder={testSetText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Training Options</label>
-        <textarea
-          rows={rows} cols={cols} id="trainingOptions"
-          placeholder={trainingOptionsText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Training Options</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="trainingOptions"
+            placeholder={trainingOptionsText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <form className="form" onSubmit={this.submitNewProject.bind(this)}>
-          <button
-            className="btn btn-success btn-block"
-            type="submit">
-            Submit
-          </button>
-        </form>
+        <div className="row submit-padding">
+          <form className="form" onSubmit={this.submitNewProject.bind(this)}>
+            <button
+              className="btn btn-success btn-block"
+              type="submit">
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
