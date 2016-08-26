@@ -122,7 +122,7 @@ class ProjectView extends Component {
           </div>
 
           <div className="row">
-            <div className="col-sm-12 viz-block">
+            <div className="col-sm-12 graph-container">
               {visualization}
             </div>
           </div>

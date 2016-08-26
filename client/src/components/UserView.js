@@ -9,7 +9,6 @@ class UserView extends Component {
     this.svgHeight = 500;
     this.userRadius = 45;
     this.projectRadius = 65;
-    this.duration = 100;
   }
 
   componentDidMount() {
@@ -63,8 +62,8 @@ class UserView extends Component {
   addCoordinates() {
     let coords = this.getValidCoordinates();
     _.map(this.props.workerArray, (item, index) => {
-      item.x = coords.x;
-      item.y = coords.y;
+      item.x = item.x ? item.x : coords.x;
+      item.y = item.y ? item.y : coords.y;
       item.index = index + 1;
       return item;
     });

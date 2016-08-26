@@ -161,11 +161,32 @@ h3 {
   overflow: hidden;
 }
 
+.graph-viz {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.graph-container {
+  border-style: solid;
+  border-color: #464646;
+  border-radius: 5px;
+  border-width: 2px;
+  margin-bottom: 20px;  
+}
+
 .svg-content {
   display: inline-block;
   position: relative;
   top: 0;
   left: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-right: 40px;
+  padding-left: 40px;
 }
 
 .user-container {
