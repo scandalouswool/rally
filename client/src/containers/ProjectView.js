@@ -5,7 +5,7 @@ import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisualView';
 import NQueensVisualView from './NQueensVisualView';
-import UserView from '../Components/UserView';
+import UserView from '../components/UserView';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import {
