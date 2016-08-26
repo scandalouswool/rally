@@ -16,8 +16,8 @@ const mnistOptions = {
   outputLayer: 10,
   trainerOptions: {
     rate: 0.2,
-    iterations: 10,
-    error: .1,
+    iterations: 5,
+    error: .2,
     shuffle: true,
     log: 1
   },

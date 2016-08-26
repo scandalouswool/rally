@@ -4,7 +4,7 @@ export default function (state = [], action) {
       // Create a Web Worker pool based on the maximum number of 
       // concurrent processes that user's CPU can support. Default to 
       // two workers if navigator.hardwareConcurrency is unavailable
-      const MAX_WEBWORKERS = 2;
+      const MAX_WEBWORKERS = 4;
       const webWorkerPool = [];
       const socket = action.payload.socket;
 
@@ -31,7 +31,6 @@ export default function (state = [], action) {
 
         webWorkerPool.push(newWorker);
       }  
-      // console.log('WWReducer: Created new web workers', webWorkerPool);
       return webWorkerPool;
     
     case 'RESET_WEB_WORKER':

@@ -6,6 +6,7 @@ import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisualView';
 import NQueensVisualView from './NQueensVisualView';
 import UserView from '../components/UserView';
+import MNISTVisualView from './MNISTVisualView';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import {
@@ -27,7 +28,7 @@ class ProjectView extends Component {
   disconnectFromProject() {
     console.log(`Disconnecting from project: ${this.props.selectedProject['title']}`);
     this.props.socket.emit('userDisconnect');
-    console.log(this.props);
+
     this.props.resetWebWorkersPool({
       webWorkersPool: this.props.webWorkersPool,
       socket: this.props.socket
@@ -60,7 +61,10 @@ class ProjectView extends Component {
         visualization = <PrimesVisualView />;
       } else if (this.props.selectedProject.projectType === 'nqueens') {
         visualization = <NQueensVisualView />;
-      } else {
+      } else if (this.props.selectedProject.title === 'Handwriting Recognition') {
+        visualization = <MNISTVisualView />
+      }
+        else {
         visualization = <div className="viz-placeholder"></div>;
       }
 
@@ -70,6 +74,7 @@ class ProjectView extends Component {
         stats = (
           <div className="row stats">
             This is a Neural Network Project
+            
             <div>
             Total Number of Training Data Available: {thisProject.availableJobsNum}
             </div>

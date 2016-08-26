@@ -14,7 +14,10 @@ import { createdSocket,
          finalResults,
          createWebWorkersPool,
          updateAllProjects,
-         updatePendingProjects
+         updatePendingProjects,
+         ANNJobPoolReady,
+         updateTestResults
+
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -46,8 +49,7 @@ export default class AppView extends Component {
 
     this.socket.on('newJob', (job) => {
       this.props.newJob(job);
-      console.log('Web worker pool:', this.props.webWorkersPool);
-      // console.log('New job', job);
+
       if (this.props.webWorkersPool !== null) {
         console.log('Assigning new job to an available web worker');
         let availableWorker = false;
@@ -107,7 +109,7 @@ export default class AppView extends Component {
         // Update results of all projects
         resultsList[project.projectId] = project.completedJobs === null ? [] : project.completedJobs;
       });
-      console.log('Available projects:', projectList);
+
       this.props.updateAllProjects(allProjectsUpdate);
       this.props.updateProjects(projectList);
       this.props.updateResults(resultsList);
@@ -116,7 +118,6 @@ export default class AppView extends Component {
 
     // Update list of pending projects
     this.socket.on('updatePendingProjects', (pendingProjects) => {
-      console.log('Updating list of pending projects', pendingProjects);
       this.props.updatePendingProjects(pendingProjects);
     });
 
@@ -130,11 +131,11 @@ export default class AppView extends Component {
       console.log('Receiving new ANNJob', newJob);
       this.ANNJobPool.push(newJob);
 
-      // console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
-
       if (this.ANNJobPool.length === this.ANNWorkerPool.length || 
           newJob.jobId === newJob.jobsLength - 1) {
         console.log('Reached full ANN pool. Beginning epoch cycle now');
+
+        this.props.ANNJobPoolReady( this.createVisualizationDataSet(this.ANNJobPool) );
         this.beginEpochCycle(this.ANNJobPool);
       }
 
@@ -165,7 +166,6 @@ export default class AppView extends Component {
     NEURAL NETWORK EPOCH LIFECYCLE METHODS
   */
   initializeANNWebWorkers() {
-    // TODO: Should this be a promise? These are async ops
     const MAX_WORKERS = navigator.hardwareConcurrency || 2;
     this.ANNWorkerPool = [];
 
@@ -178,7 +178,6 @@ export default class AppView extends Component {
 
       this.ANNWorkerPool.push(worker);
     }
-    console.log('ANNWorkers initialized:', this.ANNWorkerPool);
   }
 
   beginEpochCycle(ANNJobPool) {
@@ -189,8 +188,9 @@ export default class AppView extends Component {
     const doneJob = ANNJobPool[0];
 
     for (var key in this.ANNWorkerPool) {
-      if (ANNJobPool.pop()) {
-        const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
+      const job = ANNJobPool.pop();
+      if (job) {
+        const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, job);
         workerPromises.push(promise);
       }
     }
@@ -206,6 +206,9 @@ export default class AppView extends Component {
         doneJob.result = updatedNetwork;
         doneJob.workerId = this.workerId;
         this.socket.emit('ANNUpdatedNetwork', doneJob);
+
+        // Test the updated network locally
+        this.props.updateTestResults(updatedNetwork);
       });
   }
 
@@ -234,6 +237,26 @@ export default class AppView extends Component {
 
     console.log('Reconciled the weights of partial networks');
     return partialNetworks[0];
+  }
+
+  createVisualizationDataSet (ANNJobPoolReady) {
+    let dataSet = [];
+
+    let dataItems = _.flatten( _.flatten(ANNJobPoolReady).map( (item) => {
+      return item.data;
+    }) );
+
+    dataSet = dataItems.map( (item) => {
+      let num;
+      item.output.forEach( (val, i) => {
+        if (val === 1) {
+          num = i;
+        }
+      })
+      return num;
+    });
+    // console.log('Processed numbers:', dataSet);
+    return dataSet; 
   }
 
   render() {
@@ -269,7 +292,9 @@ function mapDispatchToProps(dispatch) {
       finalResults,
       createWebWorkersPool,
       updateAllProjects,
-      updatePendingProjects
+      ANNJobPoolReady,
+      updatePendingProjects,
+      updateTestResults
     }, dispatch);
 }
 

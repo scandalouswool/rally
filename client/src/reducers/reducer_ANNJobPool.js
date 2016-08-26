@@ -1,11 +1,7 @@
 export default function (state = [], action) {
   switch(action.type) {
-    case 'ALL_PROJECTS':
-      return action.payload;
-
-    default:
-      return state;
+    case 'ANN_JOBPOOL_READY':
+      return action.payload; 
   }
-
   return state;
 }
