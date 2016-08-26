@@ -135,7 +135,7 @@ export default class AppView extends Component {
           newJob.jobId === newJob.jobsLength - 1) {
         console.log('Reached full ANN pool. Beginning epoch cycle now');
 
-        this.props.ANNJobPoolReady(this.ANNJobPool);
+        this.props.ANNJobPoolReady( this.createVisualizationDataSet(this.ANNJobPool) );
         this.beginEpochCycle(this.ANNJobPool);
       }
 
@@ -166,7 +166,6 @@ export default class AppView extends Component {
     NEURAL NETWORK EPOCH LIFECYCLE METHODS
   */
   initializeANNWebWorkers() {
-    // TODO: Should this be a promise? These are async ops
     const MAX_WORKERS = navigator.hardwareConcurrency || 2;
     this.ANNWorkerPool = [];
 
@@ -235,6 +234,26 @@ export default class AppView extends Component {
 
     console.log('Reconciled the weights of partial networks');
     return partialNetworks[0];
+  }
+
+  createVisualizationDataSet (ANNJobPoolReady) {
+    let dataSet = [];
+
+    let dataItems = _.flatten( _.flatten(ANNJobPoolReady).map( (item) => {
+      return item.data;
+    }) );
+
+    dataSet = dataItems.map( (item) => {
+      let num;
+      item.output.forEach( (val, i) => {
+        if (val === 1) {
+          num = i;
+        }
+      })
+      return num;
+    });
+    // console.log('Processed numbers:', dataSet);
+    return dataSet; 
   }
 
   render() {

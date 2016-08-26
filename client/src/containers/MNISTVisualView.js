@@ -11,6 +11,7 @@ class MNISTVisualView extends Component {
     this.chart = null;
     this.maxWidth = 900;
     this.maxHeight = 500;
+    this.dataSet = [];
   }
 
   componentDidMount() {
@@ -26,23 +27,12 @@ class MNISTVisualView extends Component {
     // Create a D3 selection for the detached container
     this.dataContainer = d3.select(this.detachedContainer);
 
-    setInterval( () => {
-      const dataSet = [];
-      for (var i = 0; i < 10; i++) {
-        dataSet.push(Math.floor(Math.random() * 10));
-      }
-
-      this.drawChart(dataSet);
-    }, 1000);
+    this.drawChart(this.props.ANNJobPoolReady);
   }
 
   componentDidUpdate() {
     console.log('From Inside componentDidUpdate:', this.props.ANNJobPoolReady);
-    let numJobs = 0;
-    this.props.ANNJobPoolReady.forEach( (job) => {
-      numJobs += job.data.length;
-    });
-    console.log('Number of data items in this pool:', numJobs);
+    this.drawChart(this.props.ANNJobPoolReady);
   }
 
   drawChart (dataSet) {
@@ -54,9 +44,11 @@ class MNISTVisualView extends Component {
       .classed('rect', true)
       .attr('opacity', 0.5)
       .attr('x', (d, i) => {
-        return 100 + 50 * i;
+        return 10 + (28 * (i % 10)) + (1 * (i % 10));
       })
-      .attr('y', 300)
+      .attr('y', (d, i) => {
+        return 10 + (28 * Math.floor(i / 10)) + Math.floor(1 * (i / 10));
+      })
       .attr('num', (d) => { return d; })
 
     // ENTER
@@ -64,9 +56,11 @@ class MNISTVisualView extends Component {
       .append('custom')
       .classed('rect', true)
       .attr('x', (d, i) => {
-        return 100 + 50 * i;
+        return 10 + (28 * (i % 10)) + (1 * (i % 10));
       })
-      .attr('y', 300)
+      .attr('y', (d, i) => {
+        return 10 + (28 * Math.floor(i / 10)) + Math.floor(1 * (i / 10));
+      })
       .attr('num', (d) => { return d; })
 
     // EXIT
