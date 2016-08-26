@@ -9,7 +9,6 @@ class UserView extends Component {
     this.svgHeight = 500;
     this.userRadius = 45;
     this.projectRadius = 65;
-    this.duration = 100;
   }
 
   componentDidMount() {
