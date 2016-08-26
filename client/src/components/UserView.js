@@ -9,7 +9,7 @@ class UserView extends Component {
     this.svgHeight = 500;
     this.userRadius = 45;
     this.projectRadius = 65;
-    this.actualData = [];
+    this.addCoordinates();
   }
 
   componentDidMount() {
@@ -17,7 +17,7 @@ class UserView extends Component {
       .attr('perserveAspectRatio', 'xMinYMin')
       .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
       .classed('svg-content', true);
-      
+
     this.drawUsers();
   }
 
@@ -61,9 +61,10 @@ class UserView extends Component {
 
   addCoordinates() {
     let coords = this.getValidCoordinates();
-    return  _.map(this.props.workerArray, (item) => {
+    _.map(this.props.workerArray, (item, index) => {
       item.x = coords.x;
       item.y = coords.y;
+      item.index = index + 1;
       return item;
     });
   }
@@ -95,6 +96,17 @@ class UserView extends Component {
       .attr('class', 'circles');
 
     field.exit().remove();
+
+    // Add text labels to each user
+    let text = this.graph.selectAll('text')
+      .data(this.props.workerArray);
+
+    text.enter().append('text')
+      .attr('x', (d) => { return d.x - (this.userRadius / 2.5); })
+      .attr('y', (d) => { return d.y + (this.userRadius / 9); })
+      .text((d) => { return `User ${d.index}`;} );
+
+    text.exit().remove();
 
     this.graph.append('ellipse')
       .attr('cx', this.svgWidth / 2)
