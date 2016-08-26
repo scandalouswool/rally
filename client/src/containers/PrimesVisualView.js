@@ -14,10 +14,10 @@ class PrimesVisualView extends Component {
   }
 
   componentDidMount() {
-    this.graph = d3.select('#visualizer').append('svg')
-      .attr('width', this.svgWidth)
-      .attr('height', this.svgHeight)
-      .attr('class', 'svg-block');
+    this.graph = d3.select('#graph-viz').append('svg')
+      .attr('perserveAspectRatio', 'xMinYMin')
+      .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+      .classed('svg-content', true);
 
     this.drawPrimesGraph();
   }
@@ -80,7 +80,7 @@ class PrimesVisualView extends Component {
 
   render() {
     return (
-      <div id="visualizer"></div>
+      <div id="graph-viz"></div>
     );
   }
 }
