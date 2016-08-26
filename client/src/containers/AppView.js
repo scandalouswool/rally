@@ -191,8 +191,9 @@ export default class AppView extends Component {
     const doneJob = ANNJobPool[0];
 
     for (var key in this.ANNWorkerPool) {
-      if (ANNJobPool.pop()) {
-        const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, ANNJobPool.pop());
+      const job = ANNJobPool.pop();
+      if (job) {
+        const promise = this.assignANNJob(this.ANNWorkerPool[key].worker, job);
         workerPromises.push(promise);
       }
     }

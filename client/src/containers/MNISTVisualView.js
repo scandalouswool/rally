@@ -107,7 +107,7 @@ class MNISTVisualView extends Component {
   }
 
   drawTestingData() {
-    console.log('Testing Results:', this.updateTestResults);
+    console.log('Testing Results:', this.props.testResults);
     const self = this;
     const trainingNumbers = this.testingData.map( (item) => {
       return item.output.indexOf(1);
@@ -135,7 +135,7 @@ function mapStateToProps(state) {
     results: state.updateResults,
     project: state.selectedProject,
     ANNJobPoolReady: state.ANNJobPoolReady,
-    updateTestResults: state.updateTestResults
+    testResults: state.testResults
   };
 }
 
