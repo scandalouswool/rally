@@ -60,20 +60,21 @@ class UserView extends Component {
   }
 
   addCoordinates() {
-    let coords = this.getValidCoordinates();
     _.map(this.props.workerArray, (item, index) => {
+      let coords = this.getValidCoordinates();
+
       item.x = item.x ? item.x : coords.x;
       item.y = item.y ? item.y : coords.y;
+
       item.index = index + 1;
       return item;
     });
   }
 
   drawUsers() {
-    console.log(this.props.workerArray);
     // Make the lines
     let lines = this.graph.selectAll('line')
-      .data(this.props.workerArray);
+      .data(this.props.workerArray, (d) => { return d.workerId; });
 
     lines.enter().append('line')
       .attr('x1', (d) => { return d.x; })
@@ -87,7 +88,7 @@ class UserView extends Component {
 
     // Make the circles
     let field = this.graph.selectAll('circle')
-      .data(this.props.workerArray);
+      .data(this.props.workerArray, (d) => { return d.workerId; });
 
     field.enter().append('circle')
       .attr('cx', (d) => { return d.x; })

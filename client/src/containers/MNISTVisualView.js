@@ -24,7 +24,7 @@ class MNISTVisualView extends Component {
       .attr('height', this.maxHeight);
 
     this.context = this.chart.node().getContext('2d');
-    // console.log('Canvas context is:', this.context);
+
     // Create an in-memory element to hold the data
     this.detachedContainer = document.createElement('custom');
 
@@ -74,7 +74,7 @@ class MNISTVisualView extends Component {
     // EXIT
     dataBinding.exit()
       .remove();
-    // console.log(this.detachedContainer);
+
     this.drawCanvas(dataBinding);
     this.drawTestingData();
   }

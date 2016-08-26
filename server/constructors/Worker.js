@@ -1,4 +1,3 @@
-//begin worker constructor, projectId and socket as arguments
 class Worker {
   constructor(projectId, socketId) {
     this.projectId = projectId;
@@ -8,5 +7,5 @@ class Worker {
     this.isBusy = false;
   }
 }
-//export job constructor
+
 module.exports = Worker;

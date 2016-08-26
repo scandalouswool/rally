@@ -31,7 +31,7 @@ class CreateANNProjectView extends Component {
     // and send submitted string to different routes accordingly
     let user = this.props.auth.username;
     let whiteList = this.props.auth.whiteList;
-    console.log('Sending:', this.state);
+
     if (whiteList.indexOf(user) !== -1) {
       this.props.socket.emit('createProject', this.state);
     } else {

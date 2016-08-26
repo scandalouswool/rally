@@ -1,5 +1,6 @@
 export default function (state = [], action) {
 	switch(action.type){
+
 		case 'COMPLETED_RESULTS': 
       let nextState = action.payload;
       
@@ -21,5 +22,4 @@ export default function (state = [], action) {
     default: 
       return state; 	
 	}	
-	return state; 
-}
+};

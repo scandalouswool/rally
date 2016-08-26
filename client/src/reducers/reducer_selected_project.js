@@ -5,9 +5,11 @@
 //this reducer is responsible for
 export default function (state = null, action) {
   switch(action.type) {
-  case 'PROJECT_SELECTED':
-    return action.payload;
-  }
 
-  return state;
-}
+    case 'PROJECT_SELECTED':
+      return action.payload;
+    
+    default:
+      return state;
+    }
+};

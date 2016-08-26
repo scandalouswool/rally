@@ -22,7 +22,6 @@ class PrimesVisualView extends Component {
     this.drawPrimesGraph();
   }
 
-  // componentWillReceiveProps() {
   componentDidUpdate() {
     this.drawPrimesGraph();
   }
@@ -58,7 +57,6 @@ class PrimesVisualView extends Component {
       .attr('fill', '#3CC76A');
 
     // UPDATE
-
     notes
       .transition()
       .ease(d3.easeSin)

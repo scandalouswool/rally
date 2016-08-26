@@ -30,9 +30,7 @@ class MenuView extends Component {
 
   render() {
     return (
-
       <div className="center-block">
-
         <div>
           <SelectedProjectView />
         </div>

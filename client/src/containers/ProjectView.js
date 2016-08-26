@@ -45,7 +45,6 @@ class ProjectView extends Component {
       this.context.router.push('menu');
       return null;
 
-    // This the actual project view
     } else {
       let visualization, thisProject;
       const projectId = this.props.selectedProject.projectId;
@@ -59,8 +58,6 @@ class ProjectView extends Component {
       // Display Custom Visualization
       if (this.props.selectedProject.projectType === 'primes') {
         visualization = <PrimesVisualView />;
-      } else if (this.props.selectedProject.projectType === 'nqueens') {
-        visualization = <NQueensVisualView />;
       } else if (this.props.selectedProject.title === 'Handwriting Recognition') {
         visualization = <MNISTVisualView />
       }
@@ -74,7 +71,6 @@ class ProjectView extends Component {
         stats = (
           <div className="row stats">
             This is a Neural Network Project
-            
             <div>
             Total Number of Training Data Available: {thisProject.availableJobsNum}
             </div>
