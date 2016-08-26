@@ -62,50 +62,71 @@ class CreateProjectView extends Component {
     let cols = this.numCols;
 
     return (
-      <div>
-        <h2>Create a new project</h2>
+      <div className="container">
+        <div className="row">
+          <h2>Create a new project</h2>
+        </div>
 
-        <label className="block-label">Project Name:</label>
-        <textarea
-          rows="1" cols={cols} id="title"
-          placeholder={titleText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Project Name:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows="1" cols={cols} id="title"
+            placeholder={titleText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Data Set:</label>
-        <textarea
-          rows={rows} cols={cols} id="dataSet"
-          placeholder={dataSetText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Data Set:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="dataSet"
+            placeholder={dataSetText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="generateDataSet"
+            placeholder="Function to generate data set (optional)"
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <textarea
-          rows={rows} cols={cols} id="generateDataSet"
-          placeholder="Function to generate data set (optional)"
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Map Function:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="mapData"
+            placeholder={mapText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Map Function:</label>
-        <textarea
-          rows={rows} cols={cols} id="mapData"
-          placeholder={mapText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
+        <div className="row">
+          <label className="block-label">Reduce Function:</label>
+        </div>
+        <div className="row">
+          <textarea
+            rows={rows} cols={cols} id="reduceResults"
+            placeholder={reduceText}
+            onChange={this.handleInputChange.bind(this)}>
+          </textarea>
+        </div>
 
-        <label className="block-label">Reduce Function:</label>
-        <textarea
-          rows={rows} cols={cols} id="reduceResults"
-          placeholder={reduceText}
-          onChange={this.handleInputChange.bind(this)}>
-        </textarea>
-
-        <form className="form" onSubmit={this.submitNewProject.bind(this)}>
-          <button
-            className="btn btn-success btn-block"
-            type="submit">
-            Submit
-          </button>
-        </form>
+        <div className="row submit-padding">
+          <form className="form" onSubmit={this.submitNewProject.bind(this)}>
+            <button
+              className="btn btn-success btn-block"
+              type="submit">
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
