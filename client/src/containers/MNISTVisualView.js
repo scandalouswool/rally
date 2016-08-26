@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
+const Synaptic = require('synaptic');
+const Network = Synaptic.Network;
+
 class MNISTVisualView extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +107,7 @@ class MNISTVisualView extends Component {
   }
 
   drawTestingData() {
+    console.log('Testing Results:', this.updateTestResults);
     const self = this;
     const trainingNumbers = this.testingData.map( (item) => {
       return item.output.indexOf(1);
@@ -130,7 +134,8 @@ function mapStateToProps(state) {
   return {
     results: state.updateResults,
     project: state.selectedProject,
-    ANNJobPoolReady: state.ANNJobPoolReady
+    ANNJobPoolReady: state.ANNJobPoolReady,
+    updateTestResults: state.updateTestResults
   };
 }
 

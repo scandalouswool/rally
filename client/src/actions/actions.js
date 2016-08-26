@@ -62,6 +62,13 @@ export function finalResults(final) {
 	}
 }
 
+export function updateTestResults(results) {
+  return {
+    type: 'UPDATE_TEST_RESULT',
+    payload: results
+  }
+}
+
 export function updateProjects(projects) {
   return {
     type: 'ALL_PROJECTS',

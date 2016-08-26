@@ -15,7 +15,9 @@ import { createdSocket,
          createWebWorkersPool,
          updateAllProjects,
          updatePendingProjects,
-         ANNJobPoolReady
+         ANNJobPoolReady,
+         updateTestResults
+
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -233,6 +235,7 @@ export default class AppView extends Component {
     }
 
     console.log('Reconciled the weights of partial networks');
+    this.props.updateTestResults([1, 2, 3]);
     return partialNetworks[0];
   }
 
@@ -290,7 +293,8 @@ function mapDispatchToProps(dispatch) {
       createWebWorkersPool,
       updateAllProjects,
       ANNJobPoolReady,
-      updatePendingProjects
+      updatePendingProjects,
+      updateTestResults
     }, dispatch);
 }
 
