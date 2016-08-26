@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import SelectedProjectView from './SelectedProjectView';
 import Progress from 'react-progressbar';
 import PrimesVisualView from './PrimesVisualView';
-import NQueensVisualView from './NQueensVisualView';
 import UserView from '../components/UserView';
 import MNISTVisualView from './MNISTVisualView';
 import _ from 'lodash';
