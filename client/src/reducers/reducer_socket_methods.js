@@ -6,6 +6,9 @@ export default function (state = null, action) {
   case 'SEND_COMPLETE_JOB':
     action.payload.socket.emit('userJobDone', action.payload.job);
     return state;
+
+  default:
+    return state;
+    
   }
-  return state;
-}
+};

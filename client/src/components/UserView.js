@@ -72,7 +72,6 @@ class UserView extends Component {
   }
 
   drawUsers() {
-    console.log(this.props.workerArray);
     // Make the lines
     let lines = this.graph.selectAll('line')
       .data(this.props.workerArray, (d) => { return d.workerId; });

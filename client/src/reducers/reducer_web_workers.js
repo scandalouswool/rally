@@ -16,7 +16,6 @@ export default function (state = [], action) {
         }
     
         newWorker.worker.onmessage = (event) => {
-          // console.log('Sending completed job to server');
           const job = event.data;
 
           webWorkerPool.forEach( (worker) => {
@@ -34,7 +33,6 @@ export default function (state = [], action) {
       return webWorkerPool;
     
     case 'RESET_WEB_WORKER':
-      // console.log('Terminating web workers');
       action.payload.webWorkersPool.forEach( (worker) => {
         worker.worker.terminate();
       });
@@ -44,4 +42,4 @@ export default function (state = [], action) {
     default:
       return state;
   }
-}
+};

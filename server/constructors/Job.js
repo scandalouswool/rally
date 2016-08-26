@@ -1,4 +1,3 @@
-//begin job constructor, takes item (job data), index, projectId as arguments
 class Job {
   constructor(item, index, projectId) {
     this.jobId = index;
@@ -12,5 +11,4 @@ class Job {
   }
 }
 
-//export job constructor
 module.exports = Job;

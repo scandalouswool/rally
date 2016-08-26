@@ -249,27 +249,17 @@ class ProjectController {
     NEURAL NETWORK HANDLERS
   */
   updateANN(doneJob) {
-    // console.log('Received finished ANN job:', doneJob);
     console.log('Updating partial networks');
     const partialNetwork = doneJob.result.trainedNetwork;
-    // console.log('Result is: ', partialNetwork);
     const project = this.allProjects[doneJob.projectId];
     let networksSynchronized = false;
-    // console.log('Updated network info:', updatedNetwork);
-    // const partialNetwork = Network.fromJSON(updatedNetwork.trainedNetwork);
-    // console.log('Inside new network:', trainedNetwork);
-    // console.log(trainedNetwork.layers.input.list);
-    // const error = project.testNetwork(trainedNetwork);
-    // let trainingComplete;
 
     project.partialNetworks.push(partialNetwork);
 
     project.workers[doneJob.workerId].isBusy = false;
-    // console.log(project.workers[doneJob.workerId]);
     // Check if all workers are busy
     let readyToSync = true;
     for (let worker in project.workers) {
-      // console.log(project.workers);
       if (project.workers[worker].isBusy === true) {
         console.log('There are still busy workers in this project');
         readyToSync = false;
@@ -324,7 +314,6 @@ class ProjectController {
     project.completedJobs = [];
 
     console.log('Reinitialized jobs:', project.availableJobs.length);
-    // console.log('Available workers:', project.workers);
 
     for (var key in project.workers) {
 
@@ -333,8 +322,6 @@ class ProjectController {
 
       for (var i = 0; i < worker.maxJobs; i++) {
         project.workers[key].currentJob = [];
-        // console.log('Assigning to:', project.workers);
-        // console.log(project.workers[key]);
         ANNJobCallback(key, project.assignJob(project.workers[key]) );
       }
     }
@@ -358,7 +345,6 @@ class ProjectController {
 
     // Store the newly created project in the allProjects object
     this.allProjects[projectId] = newProject;
-    // console.log(newProject);
     return projectId;
   }
 
@@ -375,7 +361,6 @@ class ProjectController {
   }
 
   getPendingProjects() {
-    console.log('Pending projects:', this.pendingProjects);
     return this.pendingProjects;
   }
 
@@ -423,7 +408,6 @@ class ProjectController {
     return allProjectsUpdate;
   }
 
-  //TODO: completeProject method
   completeProject(finalResult) {
     console.log('Project done. Final result:', finalResult);
   }

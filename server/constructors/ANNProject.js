@@ -107,7 +107,6 @@ class ANNProject extends Project {
       if (this.timer.state() === 'clean' || this.timer.state() === 'stopped') {
         this.timer.start();
       }
-      // console.log('New ANNJob:', newJob);
 
       return newJob;
 
@@ -125,21 +124,16 @@ class ANNProject extends Project {
   }
 
   testNetwork(trainedNetwork) {
-    // console.log(trainedNetwork);
     console.log('Testing the updated neural network');
     trainedNetwork = Network.fromJSON(trainedNetwork);
     const trainer = new Trainer(trainedNetwork);
-    // console.log('Test set:', this.testSet);
-    // console.log('Trainer options:', this.trainerOptions);
     const result = trainer.test(this.testSet, this.trainerOptions)
-    // console.log(result);
 
     return result;
   }
 
   updateNetwork(trainedNetwork) {
     this.network = Network.fromJSON( trainedNetwork );
-    // console.log('Updated network:', this.network);
     return;
   }
 
@@ -163,12 +157,3 @@ class ANNProject extends Project {
 }
 
 module.exports = ANNProject;
-
-
-
-
-
-
-
-
-

@@ -75,7 +75,6 @@ export default class AppView extends Component {
         var mapDataFunc = eval('(' + job.mapData + ')');
         job.result = mapDataFunc(job.data);
 
-        // console.log('Job complete. Result is: ', job.result);
         console.log('Job complete. Sending result back to server');
         
         this.socket.emit('userJobDone', job);
@@ -138,7 +137,6 @@ export default class AppView extends Component {
         this.props.ANNJobPoolReady( this.createVisualizationDataSet(this.ANNJobPool) );
         this.beginEpochCycle(this.ANNJobPool);
       }
-
     });
     
     const socketMethods = {

@@ -11,9 +11,6 @@ const nQueenOptions = {
   generateDataSet: () => {
     var dataSet = [];
 
-    // change the n here! 
-    // the n in n-Queens
-    // need to change in reduced results 
     var n = 10; 
 
     var min = '10'; // initial state of the minDiagonal conflict after branch in level 1
@@ -66,7 +63,6 @@ const nQueenOptions = {
 
   reduceResults: (results) => {
     
-    // change the n here! 
     var n = 10; 
     var total = 0; 
 
