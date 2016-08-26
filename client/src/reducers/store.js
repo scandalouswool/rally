@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import AllProjectsUpdate from './reducer_all_projects';
+import ANNJobPoolReady from './reducer_ANNJobPool';
 import ProjectsList from './reducer_projects';
 import SelectedProject from './reducer_selected_project';
 import CreatedSocket from './reducer_socket_methods';
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   updateResults: UpdateResults,
   auth: Auth,
   webWorkersPool: WebWorkersPool,
-  pendingProjects: PendingProjects
+  pendingProjects: PendingProjects,
+  ANNJobPoolReady: ANNJobPoolReady
 });
 
 export default rootReducer;

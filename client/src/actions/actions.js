@@ -40,6 +40,14 @@ export function sendCompleteJob(socket, job) {
 	}
 }
 
+export function ANNJobPoolReady(ANNJobPool) {
+  console.log('Inside actions');
+  return {
+    type: 'ANN_JOBPOOL_READY',
+    payload: ANNJobPool
+  }
+}
+
 export function updateResults(results) {
 	return {
 		type: 'COMPLETED_RESULTS', 

@@ -14,7 +14,8 @@ import { createdSocket,
          finalResults,
          createWebWorkersPool,
          updateAllProjects,
-         updatePendingProjects
+         updatePendingProjects,
+         ANNJobPoolReady
        } from '../actions/actions';
 
 export default class AppView extends Component {
@@ -130,11 +131,11 @@ export default class AppView extends Component {
       console.log('Receiving new ANNJob', newJob);
       this.ANNJobPool.push(newJob);
 
-      // console.log(this.ANNJobPool.length, this.ANNWorkerPool.length);
-
       if (this.ANNJobPool.length === this.ANNWorkerPool.length || 
           newJob.jobId === newJob.jobsLength - 1) {
         console.log('Reached full ANN pool. Beginning epoch cycle now');
+
+        this.props.ANNJobPoolReady(this.ANNJobPool);
         this.beginEpochCycle(this.ANNJobPool);
       }
 
@@ -269,6 +270,7 @@ function mapDispatchToProps(dispatch) {
       finalResults,
       createWebWorkersPool,
       updateAllProjects,
+      ANNJobPoolReady,
       updatePendingProjects
     }, dispatch);
 }
