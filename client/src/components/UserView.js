@@ -14,9 +14,10 @@ class UserView extends Component {
 
   componentDidMount() {
     this.graph = d3.select('#user-viz').append('svg')
-      .attr('width', this.svgWidth)
-      .attr('height', this.svgHeight);
-
+      .attr('perserveAspectRatio', 'xMinYMin')
+      .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+      .classed('svg-content', true);
+      
     this.drawUsers();
   }
 
